@@ -47,7 +47,7 @@ class tx_skcalendar_boxview extends tx_skcalendar_htmlview {
 					$next['tx_skcalendar_pi1[view]']= 'detail';
 					$next['tx_skcalendar_pi1[uid]']= $data['uid'];
 					$next['no_cache'] = 1;
-					$this->content .= '<font color="' . $data['color'] . '">'.  $data['title'] . '</font><br>' . $data['description'] . '<br><div align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target'],$next) . '"> >> mehr</a></div><br><br>';
+					$this->content .= '<font color="' . $data['color'] . '">'.  $data['title'] . '</font><br>' . $data['description'] . '<br><div align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target'],$next) . '"> >> ' . $this->pi_getLL('more') . '</a></div><br><br>';
 				}
 				$this->content .= '</td></tr></table></td></tr>';
 			}

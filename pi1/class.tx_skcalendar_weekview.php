@@ -36,7 +36,7 @@ class tx_skcalendar_weekview extends tx_skcalendar_htmlview {
 		$act_date = $this->offset;
 		if ($this->conf['showlinks']) $this->makeLinks();
 		if ($this->conf['showfilters']) $this->makeFilters();
-				$this->content .= '<table cellspacing=0 cellpadding=0 border=1 width=400 bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>Wochenansicht:</b></td></tr></table></td></tr>';
+				$this->content .= '<table cellspacing=0 cellpadding=0 border=1 width=400 bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>' . $this->pi_getLL('week_view') . ':</b></td></tr></table></td></tr>';
 		while ($act_date < $this->todate) {
 			$m = intval(date('m',$act_date));
 			$d = intval(date('d',$act_date));
@@ -67,7 +67,7 @@ class tx_skcalendar_weekview extends tx_skcalendar_htmlview {
 		$back = $this->prepareTypolink();
 		$next['tx_skcalendar_pi1[offset]'] = $this->offset + $span;
 		$back['tx_skcalendar_pi1[offset]'] = $this->offset - $span;
-		$this->content .= '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"> << vorherige Woche</a></td><td align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"> >> nächste Woche</a></td></tr></table>';
+		$this->content .= '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"> << ' . $this->pi_getLL('prev_week') . '</a></td><td align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"> >> ' . $this->pi_getLL('next_week') . '</a></td></tr></table>';
 	}
 }
 

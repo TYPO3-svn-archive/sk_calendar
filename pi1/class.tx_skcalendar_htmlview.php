@@ -52,7 +52,7 @@ class tx_skcalendar_htmlview extends fe_engine {
 	function makeLinks() {
 			$link_arr = array ('week' => 'Wochenansicht', 'month' => 'Monatsansicht', 'year' => 'Jahresansicht als PDF');
 	
-		$this->content .= '<table cellspacing=0 cellpadding=0 width=100%><tr><td colspan=4><b>Alternative Ansichten</b></td></tr><tr valign=top>';
+		$this->content .= '<table cellspacing=0 cellpadding=0 width=100%><tr><td colspan=4><b>' . $this->pi_getLL('other_views') . '</b></td></tr><tr valign=top>';
 		$link= $this->prepareTypolink();
 		while (list($key,$value) = each($link_arr)) {
 
@@ -65,33 +65,33 @@ class tx_skcalendar_htmlview extends fe_engine {
 	
 	function makeFilters() {
 	if ((count($this->categories)>1) || (count($this->locations)>1) || (count($this->organizers)>1) || (count($this->targetgroups)>1)) {
-	$this->content .= '<br><form action="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target']) . '" method="post"><input type=hidden name=tx_skcalendar_pi1[view] value=' . $this->type . '><input type=hidden name=tx_skcalendar_pi1[offset] value=' . $this->offset . '><table><tr><td nowrap colspan=5><b>Anzeige Filtern</b></td></tr><tr><td>';
+	$this->content .= '<br><form action="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target']) . '" method="post"><input type=hidden name=tx_skcalendar_pi1[view] value=' . $this->type . '><input type=hidden name=tx_skcalendar_pi1[offset] value=' . $this->offset . '><table><tr><td nowrap colspan=5><b>' . $this->pi_getLL('filter_view') . '</b></td></tr><tr><td>';
 	
 	reset ($this->categories);
 	if (count($this->categories)>1) {
 	$cat_sel[$this->container->filters['categories'][0]] = ' selected';
-	$this->content .= '<td><select name="tx_skcalendar_pi1[categories]"><option value="">Alle Kategorien</option>';
+	$this->content .= '<td><select name="tx_skcalendar_pi1[categories]"><option value="">' . $this->pi_getLL('all_cat') . '</option>';
 	while (list(,$data) = each ($this->categories)) $this->content .= '<option value="' . $data[0] . '"'. $cat_sel [$data[0]] . '>' . $data[1] . '</option>';
 	$this->content .= '</select></td>';
 	}
 	reset ($this->locations);
 	if (count($this->locations)>1) {
 	$loc_sel[$this->container->filters['locations'][0]] = ' selected';
-	$this->content .= '<td><select name="tx_skcalendar_pi1[locations]"><option value="">Alle Veranstaltungsorte</option>';
+	$this->content .= '<td><select name="tx_skcalendar_pi1[locations]"><option value="">' . $this->pi_getLL('all_location') . '</option>';
 	while (list(,$data) = each ($this->locations)) $this->content .= '<option value="' . $data[0] . '"'. $loc_sel [$data[0]] . '>' . $data[1] . '</option>';
 	$this->content .= '</select></td>';
 	}
 	reset ($this->organizers);
 	if (count($this->organizers)>1) {
 	$org_sel[$this->container->filters['organizers'][0]] = ' selected';
-	$this->content .= '<td><select name="tx_skcalendar_pi1[organizers]"><option value="">Alle Veranstalter</option>';
+	$this->content .= '<td><select name="tx_skcalendar_pi1[organizers]"><option value="">' . $this->pi_getLL('all_organizer') . '</option>';
 	while (list(,$data) = each ($this->organizers)) $this->content .= '<option value="' . $data[0] . '"'. $org_sel [$data[0]] . '>' . $data[1] . '</option>';
 	$this->content .= '</select></td>';
 	}
 	reset ($this->targetgroups);
 	if (count($this->targetgroups)>1) {
 	$tar_sel[$this->container->filters['targetgroups'][0]] = ' selected';
-	$this->content .= '<td><select name="tx_skcalendar_pi1[targetgroups]"><option value="">Alle Zielgruppen</option>';
+	$this->content .= '<td><select name="tx_skcalendar_pi1[targetgroups]"><option value="">' . $this->pi_getLL('all_targetgroup') . '</option>';
 	while (list(,$data) = each ($this->targetgroups)) $this->content .= '<option value="' . $data[0] . '"'. $tar_sel [$data[0]] . '>' . $data[1] . '</option>';
 	$this->content .= '</select></td>';
 	}
@@ -99,7 +99,7 @@ class tx_skcalendar_htmlview extends fe_engine {
 	// close form
 	$this->content .= '<td><input type=submit value="Anzeige Filtern"></td></tr></table></form>';
 	}
-	else $this->content .= '<br>Kein Filtern möglich, da mindestens zwei Kategorien, zwei Zielgruppen, zwei Veranstaltungsorte oder zwei Veranstalter angelegt sein müssen. Holen Sie dies entweder nach oder deaktivieren Sie die Filter mit TypoScript.';
+	else $this->content .= '<br>' . $this->pi_getLL('filter_error') . '';
 	
 	
 	}

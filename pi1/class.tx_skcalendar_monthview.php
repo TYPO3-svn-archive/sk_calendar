@@ -38,7 +38,7 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 		
 		if ($this->conf['showlinks']) $this->makeLinks();
 		if ($this->conf['showfilters']) $this->makeFilters();
-		$this->content .= '<table cellspacing=0 cellpadding=0 border=0 width=100% bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>Monatsansicht ' . strftime('%B %Y',$this->offset) . ':</b></td></tr></table></td></tr>';
+		$this->content .= '<table cellspacing=0 cellpadding=0 border=0 width=100% bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>' . $this->pi_getLL('month_view') . ' ' . strftime('%B %Y',$this->offset) . ':</b></td></tr></table></td></tr>';
 		$this->content .= '<tr><td><table cellspacing=0 cellpadding=2 border=1 width =100%><tr><td><b>Mo</b></td><td><b>Di</b></td><td><b>Mi</b></td><td><b>Do</b></td><td><b>Fr</b></td><td><b>Sa</b></td><td><b>So</b></b></td></tr>';
 		$d = date('w',mktime(0,0,0,$month,1,$this->year));
 		if ($d == 0) $d=7;
@@ -74,7 +74,7 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 		$back = $this->prepareTypolink();
 		$next['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$offset+1,1,$this->year);
 		$back['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$offset-1,1,$this->year);
-		$this->content .= '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"> << vorheriger Monat</a></td><td align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"> >> nächster Monat</a></td></tr></table>';
+		$this->content .= '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"> << ' . $this->pi_getLL('prev_month') . '</a></td><td align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"> >> ' . $this->pi_getLL('next_month') . '</a></td></tr></table>';
 	}
 }
 

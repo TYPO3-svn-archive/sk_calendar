@@ -52,26 +52,26 @@ class tx_skcalendar_detailview extends tx_skcalendar_htmlview {
 							$end = $data['date'] + $data['endtime'];
 							$this->content .= 'Zeit: ' . strftime('%A, %d.%m %Y',$start) . ' - ' . strftime('%M:%H',$start) . ' bis ' . strftime('%M:%H',$end) . ' Uhr<br>';
 						}
-						else $this->content .= 'Datum: ' . strftime('%A, %d.%m %Y',$data['date']) . '<br>';
-						if ($data['cost']) $this->content .= 'Kosten: ' . $data['cost'] . ' &euro;<br>';
+						else $this->content .= $this->pi_getLL('date') . ': ' . strftime('%A, %d.%m %Y',$data['date']) . '<br>';
+						if ($data['cost']) $this->content .= $this->pi_getLL('cost') . ': ' . $data['cost'] . ' &euro;<br>';
 						if ($data['description']) $this->content .= '<br>' . $data['description'] . '<br>';
 						if ($data['highlight']) $this->content .= 'Highlight!<br>';
 						if ($data['image']) $this->content .= 'Image: ' . $data['image'] . '<br>';
 						if ($data['pages']) $this->content .= 'pages: ' . $data['pages'] . '<br>';
-						if ($data['pages']) $this->content .= 'Weitere Informationen: <a href="' . $data['link'] . '" target="new">' . $data['link'] . '</a><br>';
+						if ($data['pages']) $this->content .= $this->pi_getLL('further_information') . ': <a href="' . $data['link'] . '" target="new">' . $data['link'] . '</a><br>';
 						if ($data['category']) {
 							$cat = $this->getCategory($data['category']);
-							$this->content .= 'Kategorie: ' . $cat['title'] . '<br>';
+							$this->content .= $this->pi_getLL('category') . ': ' . $cat['title'] . '<br>';
 						}
 						if ($data['organizer']) {
 							$orga = $this->getOrganizer($data['organizer']);
-							$this->content .= 'Organizer: ' . $orga['name'] . '<br>';
+							$this->content .= $this->pi_getLL('organizer') . ': ' . $orga['name'] . '<br>';
 						}
 						if ($data['targetgroup']) {
 							$target = $this->getTargetgroup($data['targetgroup']);
-							$this->content .= 'Zielgruppe: ' . $target['title'] . '<br>';
+							$this->content .= $this->pi_getLL('targetgroup') . ': ' . $target['title'] . '<br>';
 						}						
-						$this->content .= '<div align=right><a href="' . "javascript:history.back()" . '"> << zurück</a></div><br><br>';
+						$this->content .= '<div align=right><a href="' . "javascript:history.back()" . '"> << ' . $this->pi_getLL('back') . '</a></div><br><br>';
 
 					}
 				}

@@ -21,16 +21,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_weekview.php');
-include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_boxview.php');
-include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_detailview.php');
-include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_yearview.php');
-include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_monthview.php');
-include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_listview.php');
-include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_archiveview.php');
-include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_upcomingview.php');
-include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_te.php');
-include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_defaultTF.php');
 
 
 // FE-Engine
@@ -185,6 +175,7 @@ return $return;
 				for ($day=1; $day<=$count_days; $day++)
 				{
 					$date_unix = mktime(0,0,0,$temp,$day,$this->year);
+					$this->calendarArray[$temp][$day]['d_ts'] = $date_unix;
 					$this->calendarArray[$temp][$day]['d_name']['no'] = strftime("%d",$date_unix);
 					$this->calendarArray[$temp][$day]['d_name']['short'] = strftime("%a",$date_unix);
 					$this->calendarArray[$temp][$day]['d_name']['long'] = strftime("%A",$date_unix);
@@ -212,6 +203,18 @@ return $return;
 
 
 	}
+	
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_weekview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_boxview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_detailview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_yearview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_monthview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_listview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_archiveview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_upcomingview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_te.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_defaultTF.php');
+
 
 	if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_htmlview.php"])	{
 		include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_htmlview.php"]);

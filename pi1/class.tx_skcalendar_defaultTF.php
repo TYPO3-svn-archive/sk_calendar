@@ -72,6 +72,13 @@ var $snippet;
 	function templatefunc_nextlink() {
 		$this->snippet = $this->TempData['nextlink'];
 	}
+	function templatefunc_backlinkyear() {
+		$this->snippet = $this->TempData['backlinkyear'];
+	}
+		
+	function templatefunc_nextlinkyear() {
+		$this->snippet = $this->TempData['nextlinkyear'];
+	}
 
 	function templatefunc_daystyle() {
 		$this->snippet = $this->TempData['style'];
@@ -86,8 +93,17 @@ var $snippet;
 	}
 
 	function templatefunc_actdate() {
-		$this->snippet = strftime('%A, %d.%m %Y',$this->TempData['date']);
+		$this->snippet = strftime('%A, %d.%m.%Y',$this->TempData['date']);
 	}
+	
+	function templatefunc_year() {
+		$this->snippet = strftime('%Y',$this->TempData['date']);
+	}
+
+	function templatefunc_weekno() {
+		$this->snippet = strftime('%W',$this->TempData['timestamp']-432000); // minus 5 days to get somewhere within the last week
+	}
+
 
 	function templatefunc_sortlink_date() {
 		$this->snippet = $this->TempData['sortlink_date'];

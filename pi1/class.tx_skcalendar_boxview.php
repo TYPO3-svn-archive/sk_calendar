@@ -42,7 +42,7 @@ class tx_skcalendar_boxview extends tx_skcalendar_htmlview {
 
 			if ($this->calendarArray[$m][$d]['events']) {	
 				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
-					unset($linktext);
+					unset($linktext,$temp['wrapit']);
 					if ($data['start_time']) $linktext = gmstrftime('%H:%M',$data['start_time']) . ' '; 
 					$linktext .= $data['title'];
 					
@@ -55,7 +55,7 @@ class tx_skcalendar_boxview extends tx_skcalendar_htmlview {
 				$temp['date'] = $act_date;
 				$this->template->setTempData($temp);
 				$this->template->getSubpart('BOX_VIEW_DAYWRAP');
-				$c_result = $this->template->parseTemplate();
+				$c_result .= $this->template->parseTemplate();
 
 			}
 			

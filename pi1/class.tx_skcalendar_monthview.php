@@ -55,6 +55,7 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 			for ($i=1;$i<=7;$i++) {
 				$temp['style'] = 'month_' . $this->calendarArray[$month][$d]['style'];
 				$temp['name'] = $this->calendarArray[$month][$d]['d_name']['no'] . '&nbsp;' . $this->calendarArray[$month][$d]['d_name']['short'];
+				$temp['timestamp'] = $this->calendarArray[$month][$d]['d_ts'];
 
 				if ($this->calendarArray[$month][$d]['events']) {
 					while (list(,$data) = each($this->calendarArray[$month][$d]['events'])) {
@@ -83,6 +84,7 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 			}
 			
 			// close row
+			$temp['timestamp'] = $this->calendarArray[$month][$d]['d_ts'];
 			$temp['wrapit'] = $content_row;
 			$this->template->setTempData($temp);
 			$this->template->getSubpart('MONTH_VIEW_ROWWRAP');
@@ -112,8 +114,17 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 		$offset = date('m',$this->offset);
 		$next = $this->prepareTypolink();
 		$back = $this->prepareTypolink();
+		$nextyear = $this->prepareTypolink();
+		$backyear = $this->prepareTypolink();
+		
 		$next['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$offset+1,1,$this->year);
 		$back['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$offset-1,1,$this->year);
+		$nextyear['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$offset,1,$this->year+1);
+		$backyear['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$offset,1,$this->year-1);
+
+		$navi['backlinkyear'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$backyear) . '"> << ' . strftime("%Y",mktime(0,0,0,$offset,1,$this->year-1)) . '</a>';
+		$navi['nextlinkyear'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$nextyear) . '">' . strftime("%Y",mktime(0,0,0,$offset,1,$this->year+1)) . ' >> ' .'</a>';
+
 		$navi['backlink'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"> << ' . $this->pi_getLL('prev_month') . '</a>';
 		$navi['nextlink'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"> >> ' . $this->pi_getLL('next_month') . '</a>';
 		return $navi;

@@ -1,12 +1,53 @@
-HTML Template for sk_calendar
-Please notice when using markers that there are 3 different kinds
-Labelmarkers follow the form ###LABEL_xxxxxx#### where xxxxxx resembles a Label from pi1/locallang.php. They will be rendered taking account of the choosen language!
-Fieldmarkers are regular markers that render fields from the database. They consist of a letter for the table (e for event, c for category, t for targetgroups and l for location) followed by a '_' and the fieldname
-Example: ###e_title### gives you the eventtitle whereas ###c_color### renders the Color of the corresponding category.
-You can define your own PHP-Functions by extending class.tx_skcalendar_defaultTF.php. Using ###myfunct### will try to call a function templatefunc_myfunct() if it isn't there nothing happens
-defining a function templatefunc_e_title() would override the return of just the eventtitle but output whatever your function returns. See class.tx_skcalendar_defaultTF.php for examples. Put your override-class in uploads/sk_calendar or somewhere in fileadmin to not loose your function after updates.
+<html>
+<body>
+<font face="Verdana, Tahoma, Arial, Helvetica, sans-serif">
 
-Have fun and return your comments to: skcalendar@sitekick.de.
+<h1>HTML Template for sk_calendar</h1>
+
+<h2>Markers</h2>
+
+Please note: the are 2 different general markers types:<br />
+<ol>
+	<li>label markers:
+		<ul>
+			<li>label markers follow the form <b>###LABEL_xxx####</b> where xxx represents a label from pi1/locallang.php. These labels may be translated to other TYPO3 system languages and thus are rendered in the appropriate language.</li>
+		</ul>
+	<li>field markers are markers that render fields from the corresponding database tables. The syntax of a valid field marker is <b>###X_yyy###</b>, where <b>X</b> is one of the following uppercase letters<br />
+		<ul>
+			<li><b>E</b> for event</li>
+			<li><b>C</b> for category</li>
+			<li><b>O</b> for organizer</li>
+			<li><b>T</b> for targetgroup</li>
+			<li><b>L</b> for location</li>
+		</ul>
+		and <b>yyy</b> represents the actual data field of the given database table. Since the tables differ,  here is a list of valid marker fields
+		<ul>
+			<li><b>E_:</b> title, description, date, start_time, end_time, wholeday, link, cost, highlite, pages, category, organizer, targetgroup, location, recurr_until</li>
+			<li><b>C_:</b> title, icon, color</li>
+			<li><b>O_:</b> name, logo, link, phone, email</li>
+			<li><b>T_:</b> title, icon</li>
+			<li><b>L_:</b> name, link, street, zip, city</li>
+		</ul>
+	</li>
+Example: ###E_title### gives you the event title whereas ###C_color### renders the color of
+the corresponding category.<br />
+</li>
+</ul>
+</li>
+</ol>
+
+<h2>Extending VCE</h2>
+You can define your own PHP functions by extending class.tx_skcalendar_overrideTF.php. Using
+###MYFUNCTION### will try to call a function templatefunc_myfunction(). If it isn't there nothing
+happens, otherwise the result of this function is returned to the template.
+
+<h3>Overriding standard functions</h3>
+Defining a function templatefunc_E_title() would override the return of the standard
+event title function and print out whatever your function returns. Please have a look at class.tx_skcalendar_defaultTF.php for examples.<br />
+Put your override-class in uploads/sk_calendar or somewhere in fileadmin to not loose your
+private functions after an update of sk_calendar.<br />
+
+Have fun and return your comments to: skcalendar@sitekick.de.<br />
 
 <!-- start of the templates -->
 
@@ -202,7 +243,7 @@ Have fun and return your comments to: skcalendar@sitekick.de.
 <!--###MONTH_VIEW_ROWWRAP### begin
 	wrap row
 	-->
-	<tr valign=top>###WRAPIT###</tr>
+	<tr valign=top><td>###WEEKNO###</td>###WRAPIT###</tr>
 <!--###MONTH_VIEW_ROWWRAP### end -->
 
 
@@ -211,8 +252,8 @@ Have fun and return your comments to: skcalendar@sitekick.de.
 <!--###MONTH_VIEW_CALENDARWRAP### begin
 	wrap calendar
 	-->
-<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>###LABEL_month_view### ###MONTHNAME###</b></td></tr></table></td></tr>
-<tr><td><table cellspacing=0 cellpadding=2 border=1 width =100%><tr><td><b>Mo</b></td><td><b>Di</b></td><td><b>Mi</b></td><td><b>Do</b></td><td><b>Fr</b></td><td><b>Sa</b></td><td><b>So</b></b></td></tr>###WRAPIT###</table></td></tr>
+<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>###LABEL_month_view### ###MONTHNAME###  ###YEAR###</b></td></tr></table></td></tr>
+<tr><td><table cellspacing=0 cellpadding=2 border=1 width =100%><tr><td></td><td><b>Mo</b></td><td><b>Di</b></td><td><b>Mi</b></td><td><b>Do</b></td><td><b>Fr</b></td><td><b>Sa</b></td><td><b>So</b></b></td></tr>###WRAPIT###</table></td></tr>
 <!--###MONTH_VIEW_CALENDARWRAP### end -->
 
 
@@ -222,7 +263,13 @@ Have fun and return your comments to: skcalendar@sitekick.de.
 	navigation
 	-->
 <tr><td><table cellspacing=0 cellpadding =3 width=100%><tr valign=bottom><td>
-<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left>###BACKLINK###</td><td align=right>###NEXTLINK###</td></tr></table></td></tr></table></td></tr>
+<table cellpadding=0 cellspacing=0 border=0 width=100%>
+<tr><td align=left>###BACKLINK###</td><td align=right>###NEXTLINK###</td></tr>
+						<tr>
+							<td align=left>###BACKLINKYEAR###</td>
+							<td align=right>###NEXTLINKYEAR###</td>
+						</tr>
+</table></td></tr></table></td></tr>
 <!--###MONTH_VIEW_NAVIGATION### end -->
 
 

@@ -64,6 +64,7 @@ class tx_skcalendar_weekview extends tx_skcalendar_htmlview {
 		$temp['wrapit'] = $weekcontent . $this->template->parseTemplate();
 		
 		// wrap whole thing
+		$temp['timestamp'] = $this->calendarArray[$month][$d]['d_ts'];
 		$this->template->setTempData($temp);
 		$this->template->getSubpart('WEEK_VIEW_WHOLEWRAP');
 		$this->content .= $this->template->parseTemplate();

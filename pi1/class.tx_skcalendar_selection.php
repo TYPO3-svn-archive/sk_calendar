@@ -90,7 +90,29 @@ class tx_skcalendar_selection {
 	function postprocessQuery() {
 		$this->result = addRecurringEvents($this->result);
 		$this->result = filterRange($this->result,$this->filters);
+		$this->sortItems();
 	}
+	
+	/**
+	* @return void
+	* @desc sorts the items chronological
+	*/
+	function sortItems() {
+		// after having included recurring events, the sort order is broken
+		// mutisort for array is needed
+		// sorting of daily events based on start_time
+ 		$mydata = array();
+ 		$mydata = $this->result;
+ 		foreach ($mydata as $key => $row) {
+    		$mystart[$key]  = $row['start_time'];
+ 		}
+ 		array_multisort($mystart, SORT_ASC,$mydata);
+ 
+ 		$this->result = $mydata;
+		 unset ($mydata);
+		}
+
+		}
 }
 
 if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_selection.php"])	{

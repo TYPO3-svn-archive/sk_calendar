@@ -44,7 +44,7 @@ class tx_skcalendar_te extends tx_skcalendar_htmlview{
 		$this->subcode = $this->my_cObj->getSubpart($this->code,$subpart);
 		$this->markers['labels'] = array();
 		$this->markers['markers'] = array();
-		preg_match_all('/###[A-Z_a-z]+###/',$this->code,$markers); // get Markers
+		preg_match_all('/###[A-Z_a-z]+###/',$this->subcode,$markers); // get Markers
 		while (list(,$value) = each($markers[0])) {
 			
 			if (strpos($value,'##LABEL_')==1) { // 0 is not a good position

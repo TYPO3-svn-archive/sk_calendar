@@ -71,7 +71,7 @@ class tx_skcalendar_detailview extends tx_skcalendar_calendarView {
 							$target = $this->getTargetgroup($data['targetgroup']);
 							$this->content .= 'Zielgruppe: ' . $target['title'] . '<br>';
 						}						
-						$this->content .= '<div align=right><a href="' . "javascript:'history.back()'" . '"> << zurück</a></div><br><br>';
+						$this->content .= '<div align=right><a href="' . "javascript:history.back()" . '"> << zurück</a></div><br><br>';
 
 					}
 				}

@@ -3231,6 +3231,9 @@ if(isset($HTTP_SERVER_VARS['HTTP_USER_AGENT']) and $HTTP_SERVER_VARS['HTTP_USER_
 
 
 }
+if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/fpdf152/fpdf.php"])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/fpdf152/fpdf.php"]);
+}
 
 ?>
 

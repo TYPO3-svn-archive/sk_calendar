@@ -770,4 +770,5 @@ $TCA["tx_skcalendar_exeptions"] = Array (
 	"1" => Array("showitem" => "")
 	)
 );
+
 ?>

@@ -73,6 +73,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		if (!$this->conf['upcoming']['range']) $this->conf['upcoming']['range'] = 10;
 		if (!$this->conf['list']['limit']) $this->conf['list']['limit'] = 20;
 		if (!$this->conf['general']['htmltemplate']) $this->conf['general']['htmltemplate'] = 'EXT:sk_calendar/pi1/html_template.html';
+		else $this->conf['general']['htmltemplate'] = 'uploads/tx_skcalendar/' . $this->conf['general']['htmltemplate'];
 		if (!$this->conf['general']['pdftemplate']) $this->conf['general']['pdftemplate'] = t3lib_div::getFileAbsFileName('EXT:sk_calendar/pi1/pdf_template.pdf');
 		else $this->conf['general']['pdftemplate'] = t3lib_div::getFileAbsFileName('uploads/tx_skcalendar/' . $this->conf['general']['pdftemplate']);
 		if (!$this->conf['general']['overrideTF']) $this->conf['general']['overrideTF'] = 0; // needs to be otherwise directory will be included (results in an error)

@@ -66,6 +66,7 @@ class tx_skcalendar_feengine {
 }
 
 	function createHolidays ($lang) {
+	
 	$lang = strtolower($lang);
 		//international christian holidays
 		$this->holidays = array(

@@ -38,7 +38,6 @@ class tx_skcalendar_detailview extends tx_skcalendar_htmlview {
 	
 	$act_date = $this->offset;
 	
-	debug($this->conf['general']['rtefield_stdWrap']);
 	// topwrap
 	
 	// show data

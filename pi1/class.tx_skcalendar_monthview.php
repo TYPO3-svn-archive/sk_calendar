@@ -39,10 +39,19 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 		if ($this->conf['general']['showlinks']) $this->makeLinks();
 		if ($this->conf['general']['showfilters']) $this->makeFilters();
 		
-		$d = date('w',mktime(0,0,0,$month,1,$this->year));
-		if ($d == 0) $d=7;
-		$d=$d-(($d-1)*2);
-		for ($w=1; $w<=5;$w++) {
+		// calculate offset
+		$weekday = date('w',mktime(0,0,0,$month,1,$this->year));
+		if ($weekday == 0) $weekday=7;
+		$d=$weekday-(($weekday-1)*2);
+		
+		// amount weeks
+		$days = date('t',mktime(0,0,0,$month,1,$this->year))-28;
+		$days = $days+$weekday-1;// How many overhanging days?
+		if ($days > 7) $count_weeks=6;
+		elseif ($days == 0) $count_weeks=4;
+		else $count_weeks = 5;
+		
+		for ($w=1; $w<=$count_weeks;$w++) {
 			for ($i=1;$i<=7;$i++) {
 				$temp['style'] = 'month_' . $this->calendarArray[$month][$d]['style'];
 				$temp['name'] = $this->calendarArray[$month][$d]['d_name']['no'] . '&nbsp;' . $this->calendarArray[$month][$d]['d_name']['short'];

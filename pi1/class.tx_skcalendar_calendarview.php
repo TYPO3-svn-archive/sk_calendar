@@ -22,26 +22,35 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_weekview.php');
+require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_boxview.php');
+require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_detailview.php');
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_PDFview.php');
 
 // FE-Engine
 class tx_skcalendar_calendarview {
+	var $categories;
+	var $targetgroups;
+	var $organizers;
 	var $results;
 	var $calendarArray;
 	var $container;
 	var $type;
 	var $holidays;
 	var $year;
-	//var $content;
+	var $content;
 	var $offset;
 	var $todate;
+	var $targetpage;
 	var $events;
 
 	/**
 	* @return void
 	* @desc init stuff
 	*/
-	function tx_skcalendar_calendarview($container, $type) {
+	function tx_skcalendar_calendarview($container, $type,$conf) {
+		if ($conf['target']) $this->targetpage = $conf['target'];
+		else $this->targetpage = $GLOBALS["TSFE"]->id;
+
 		$this->container = $container;
 		$this->type = $type;
 		$this->year = date('Y');
@@ -179,6 +188,33 @@ class tx_skcalendar_calendarview {
 		$date_unix = mktime(0,0,0,$month,1,$year);
 		$name = strftime("%B",$date_unix);
 		return $name;
+	}
+
+	function getCategory($catid) {
+		if (!$this->categories) {
+			$sql = 'SELECT * FROM tx_skcalendar_category WHERE NOT hidden AND NOT deleted';
+			$result = mysql_query($sql);
+			while ($data = mysql_fetch_array($result,MYSQL_ASSOC)) $this->categories[$data['uid']] = $data;
+		}
+		return $this->categories[$catid];
+	}
+
+	function getOrganizer($orga) {
+		if (!$this->organizers) {
+			$sql = 'SELECT * FROM tx_skcalendar_organizer WHERE NOT hidden AND NOT deleted';
+			$result = mysql_query($sql);
+			while ($data = mysql_fetch_array($result,MYSQL_ASSOC)) $this->organizers[$data['uid']] = $data;
+		}
+		return $this->organizers[$orga];
+	}
+
+	function getTargetgroup($target) {
+		if (!$this->targetgroups) {
+			$sql = 'SELECT * FROM tx_skcalendar_targetgroup WHERE NOT hidden AND NOT deleted';
+			$result = mysql_query($sql);
+			while ($data = mysql_fetch_array($result,MYSQL_ASSOC)) $this->targetgroups[$data['uid']] = $data;
+		}
+		return $this->targetgroups[$target];
 	}
 
 }

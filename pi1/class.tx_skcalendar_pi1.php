@@ -46,19 +46,25 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 		if ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']) $offset = intval($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']);
 		elseif ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']) $offset = intval($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']);
-		if (!$this->conf['type']) $this->conf['type'] = 'week';
+		if (!$this->conf['type']) $this->conf['type'] = 'box';
+		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['detail']) $this->conf['type'] = 'detail';
 
 		switch ($this->conf['type']) {
 			case 'week':
-			case 'weekbox';
-			if (!$offset) $offset = mktime(0,0,0);			
+			if (!$offset) $offset = mktime(0,0,0);
 			$offset = $offset - date('w',$offset) * 86400 + 86400; // we like mondays
 			$filters['startdate'] = $offset;
 			$filters['enddate'] = $offset + 604800;
 			break;
 
+			case 'box';
+			if (!$offset) $offset = mktime(0,0,0);
+			$filters['startdate'] = $offset;
+			$filters['enddate'] = $offset + $this->conf['range']; // default one week
+			break;
+
 			case 'day':
-			if (!$offset) $offset = date('m-d-Y');
+			if (!$offset) $offset = mktime(0,0,0);
 			$filters['startdate'] = $offset;
 			$filters['enddate'] = $offset + 86400;
 			break;
@@ -83,50 +89,48 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			$filters['enddate'] = $end;
 			break;
 
-		}
+			case 'detail':
+			$filters['startdate'] = $offset;
+			$filters['enddate'] = $offset + 86400;
+			break;
 
-		// prepare typolinks
+
+		}
 
 		$selection = new tx_skcalendar_internal();
 		$selection->setFilters($filters);
 		$selection->prepareQuery();
 		$selection->getResults();
-		
+
 		switch ($this->conf['type']) {
 			case 'week':
-			$calendar = new tx_skcalendar_weekview($selection,'list',$conf);
-			$calendar->setRange($filters['startdate'],$filters['enddate']);
-			$calendar->createCalendar();
-			$calendar->parseCalendar();
+			$calendar = new tx_skcalendar_weekview($selection,'',$this->conf);
 			break;
 
-			case 'weekbox';
-			$calendar = new tx_skcalendar_weekboxview($selection,'list',$conf);
-			$calendar->setRange($filters['startdate'],$filters['enddate']);
-			$calendar->parseCalendar();
+			case 'box';
+			$calendar = new tx_skcalendar_boxview($selection,'',$this->conf);
 			break;
 
 			case 'day':
-			$calendar = new tx_skcalendar_weekview($selection,'list',$conf);
-			$calendar->setRange($filters['startdate'],$filters['enddate']);
-			$calendar->parseCalendar();
+			$calendar = new tx_skcalendar_dayview($selection,'',$this->conf);
 			break;
 
 			case 'month':
-			$calendar = new tx_skcalendar_monthview($selection,'list',$conf);
-			$calendar->setRange($filters['startdate'],$filters['enddate']);
-			$calendar->createCalendar();
-			$calendar->parseCalendar();
+			$calendar = new tx_skcalendar_monthview($selection,'',$this->conf);
 			break;
 
 			case 'year':
-			$calendar = new tx_skcalendar_yearview($selection,'list',$conf);
-			$calendar->setRange($filters['startdate'],$filters['enddate']);
-			$calendar->createCalendar();
-			$calendar->parseCalendar();
+			$calendar = new tx_skcalendar_yearview($selection,'',$this->conf);
 			break;
 
+			case 'detail';
+			$this->conf['uid'] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['uid'];
+			$calendar = new tx_skcalendar_detailview($selection,'',$this->conf);
+			break;
 		}
+		$calendar->setRange($filters['startdate'],$filters['enddate']);
+		$calendar->createCalendar();
+		$calendar->parseCalendar();
 
 
 		return $this->pi_wrapInBaseClass($calendar->content);

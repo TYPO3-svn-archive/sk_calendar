@@ -1,0 +1,40 @@
+td.date {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal; font-weight: lighter}
+
+td.calendarheading {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: bold}
+
+td.RM {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal; font-weight: bold; color: #000000; background-color: #CCCCCC; text-align: center}
+
+td.RM2 {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal; font-weight: bold; color: #000000; background-color: #CCCCCC; text-align: center}
+
+td.BIO {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal; font-weight: bold; color: #FFFFFF; background-color: #996600; text-align: center}
+
+td.GS {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal; font-weight: bold; color: #000000; background-color: #FFFF00; text-align: center}
+
+td.GA {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal; font-weight: bold; color: #000000; background-color: #009933; text-align: center}
+
+td.AM {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal; font-weight: bold; color: #FFFFFF; background-color: #0000CC; text-align: center}
+
+td.HZ {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal; font-weight: bold; color: #000000; background-color: #FF0099; text-align: center}
+
+td.K+B {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal; font-weight: bold; color: #000000; background-color: #63B4FF; text-align: center}
+
+td.SM {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal; font-weight: bold; color: #000000; background-color: #FF6600; text-align: center}
+
+td.PS {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal; font-weight: bold; color: #FFFFFF; background-color: #FF0000; text-align: center}
+
+td.FREI {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal; font-weight: bold; color: #000000; text-align: center}
+
+td.holiday {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; color: #CC3300; background-color: #CCCCCC}
+
+td.holiday_text {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; color: #CC3300; background-color: #CCCCCC; text-align: right}
+
+td.legende {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; color: #000000;}
+
+.content {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; color: #000000; font-style: normal; font-weight: normal}
+
+.important {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #CC3300;}
+
+.header {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 30px; font-style: normal; font-weight: bold; color: #000000;}
+
+.small {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-style: normal; font-weight: normal; color: #000000;}
+

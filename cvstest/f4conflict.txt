@@ -1,0 +1,13 @@
+That 
+file will be edited by Paul and Wing.
+asdf asdf 
+This line has been changed by Paul.
+
+Chage The rest of this file will remain the same.
+
+Add=======
+Chage The rest of this file Change here remain the same.
+
+Add
+
+Another test here. Added line>>>>>>> 1.3.2.2

@@ -1,0 +1,16 @@
+<?php
+if (!defined ("TYPO3_MODE")) 	die ("Access denied.");
+
+  ## Extending TypoScript from static template uid=43 to set up userdefined tag:
+t3lib_extMgm::addTypoScript($_EXTKEY,"editorcfg","
+	tt_content.CSS_editor.ch.tx_skcalendar_pi1 = < plugin.tx_skcalendar_pi1.CSS_editor
+",43);
+// Alters Listview adding ghost copies
+$TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.db_list_extra.inc'] = t3lib_extMgm::extPath($_EXTKEY)."class.ux_localrecordlist.php";
+
+// alters editmode - checks for ghostcopy first
+$TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/alt_doc.php'] = t3lib_extMgm::extPath($_EXTKEY)."class.ux_sc_alt_doc.php";
+
+// VCE Context Edit
+t3lib_extMgm::addPItoST43($_EXTKEY,"pi1/class.tx_skcalendar_pi1.php","_pi1","list_type",1);
+?>

@@ -25,13 +25,13 @@
 
 // Manage HTML-View of Data
 
-class tx_skcalendar_detailview extends tx_skcalendar_calendarView {
+class tx_skcalendar_detailview extends tx_skcalendar_htmlview {
 	var $showID;
 
 	function tx_skcalendar_detailview($container,$conf) {
 		$this->showID = $conf['uid'];
 		// calls mothership
-		$this->tx_skcalendar_calendarView($container,$conf);
+		$this->tx_skcalendar_htmlview($container,$conf);
 	}
 
 	function parseCalendar() {

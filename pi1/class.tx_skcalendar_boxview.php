@@ -25,12 +25,12 @@
 
 // Manage HTML-View of Data
 
-class tx_skcalendar_boxview extends tx_skcalendar_calendarView {
+class tx_skcalendar_boxview extends tx_skcalendar_htmlview {
 
 
 	function tx_skcalendar_boxview($container,$conf) {
 		// calls mothership
-		$this->tx_skcalendar_calendarView($container,$conf);
+		$this->tx_skcalendar_feengine($container,$conf);
 	}
 
 	function parseCalendar() {

@@ -24,6 +24,12 @@
 
 
 class tx_skcalendar_internal extends tx_skcalendar_selection {
+var $prefix = 'INT';
+var $categories =array();
+var $locations = array();
+var $organizers = array();
+var $targetgroups = array();
+
 
 	/**
 	* @return void
@@ -60,6 +66,19 @@ class tx_skcalendar_internal extends tx_skcalendar_selection {
 			$this->query .= ') ';
 		}
 	}
+	
+		function getAdditionalInformation () {
+	// retrieve data
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title','tx_skcalendar_category','NOT deleted AND NOT hidden','','title');
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->categories[$prefix][] = array($id,$name);
+	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title','tx_skcalendar_location','NOT deleted AND NOT hidden','','title');
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->locations[$prefix][] = array($id,$name);
+	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,name','tx_skcalendar_organizer','NOT deleted AND NOT hidden','','name');
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->organizers[$prefix][] = array($id,$name);
+	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title','tx_skcalendar_targetgroup','NOT deleted AND NOT hidden','','title');
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->targetgroups[$prefix][] = array($id,$name);
+}
+
 
 	/**
 	* @return boolean

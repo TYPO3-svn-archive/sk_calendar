@@ -35,6 +35,7 @@ class tx_skcalendar_selection {
 	var $error;
 	var $offset;
 	
+	
 	/**
 	* @return void
 	* @desc Connects to the Source
@@ -53,6 +54,13 @@ class tx_skcalendar_selection {
 		$this->filters[locations]=$filter_array[locations]; // array with locations
 		$this->filters[organizers]=$filter_array[organizers]; // array with organizers
 		$this->filters[targetgroups]=$filter_array[targetgroups]; // array with targetgroups
+	}
+	
+	/**
+	* @return void
+	* @desc gets additional information like categories, etc.
+	*/
+	function getAddInfo () {
 	}
 	
 	/**
@@ -78,6 +86,7 @@ class tx_skcalendar_selection {
 	function postprocessQuery() {
 		$this->result = addRecurringEvents($this->result);
 		$this->result = filterRange($this->result,$this->filters);
+		$this->getAddInfo();
 	}
 }
 

@@ -25,17 +25,19 @@
 
 // Manage HTML-View of Data
 
-class tx_skcalendar_monthview extends tx_skcalendar_calendarView {
+class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 
 	function tx_skcalendar_monthview($container,$conf) {
 		// calls mothership
-		$this->tx_skcalendar_calendarView($container,$conf);
+		
+		$this->tx_skcalendar_feengine($container,$conf);
 	}
 
 	function parseCalendar() {
 		$month = intval(date('m',$this->offset));
-		if ($this->makelinks) $this->makeLinks();
-		if ($this->makefilters) $this->makeFilters();
+		
+		if ($this->conf['showlinks']) $this->makeLinks();
+		if ($this->conf['showfilters']) $this->makeFilters();
 		$this->content .= '<table cellspacing=0 cellpadding=0 border=0 width=100% bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>Monatsansicht ' . strftime('%B %Y',$this->offset) . ':</b></td></tr></table></td></tr>';
 		$this->content .= '<tr><td><table cellspacing=0 cellpadding=2 border=1 width =100%><tr><td><b>Mo</b></td><td><b>Di</b></td><td><b>Mi</b></td><td><b>Do</b></td><td><b>Fr</b></td><td><b>Sa</b></td><td><b>So</b></b></td></tr>';
 		$d = date('w',mktime(0,0,0,$month,1,$this->year));

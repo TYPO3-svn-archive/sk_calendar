@@ -25,18 +25,18 @@
 
 // Manage HTML-View of Data
 
-class tx_skcalendar_weekview extends tx_skcalendar_calendarView {
+class tx_skcalendar_weekview extends tx_skcalendar_htmlview {
 
 	function tx_skcalendar_weekview($container,$conf) {
 		// calls mothership
-		$this->tx_skcalendar_calendarView($container,$conf);
+		$this->tx_skcalendar_feengine($container,$conf);
 	}
 
 	function parseCalendar() {
 		$act_date = $this->offset;
-		if ($this->makelinks) $this->makeLinks();
-		if ($this->makefilters) $this->makeFilters();
-		$this->content .= '<table cellspacing=0 cellpadding=0 border=1 width=400 bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>Wochenansicht:</b></td></tr></table></td></tr>';
+		if ($this->conf['showlinks']) $this->makeLinks();
+		if ($this->conf['showfilters']) $this->makeFilters();
+				$this->content .= '<table cellspacing=0 cellpadding=0 border=1 width=400 bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>Wochenansicht:</b></td></tr></table></td></tr>';
 		while ($act_date < $this->todate) {
 			$m = intval(date('m',$act_date));
 			$d = intval(date('d',$act_date));

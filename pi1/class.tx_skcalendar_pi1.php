@@ -29,7 +29,7 @@
 
 
 require_once(PATH_tslib."class.tslib_pibase.php");
-require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_calendarview.php');
+require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_feengine.php');
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_selection.php');
 
 class tx_skcalendar_pi1 extends tslib_pibase {
@@ -48,8 +48,10 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		// view & Offset
 		if ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']) $offset = intval($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']);
 		elseif ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']) $offset = intval($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']);
-		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['view']) $this->conf['type'] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['view'];
-		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['view']) $this->conf['type'] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['view'];
+		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['view']) $this->conf['view'] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['view'];
+		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['view']) $this->conf['view'] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['view'];
+		if (!$offset) $offset = mktime(0,0,0);
+		$this->conf['offset'] = $offset;
 		
 		// Filters
 		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['targetgroups']) $filters['targetgroups'][0] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['targetgroups'];
@@ -61,39 +63,34 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['organizers']) $filters['organizers'][0] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['organizers'];
 		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['organizers']) $filters['organizers'][0] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['organizers'];
 		
-		switch ($this->conf['type']) {
+		switch ($this->conf['view']) {
 			case 'week':
-			if (!$offset) $offset = mktime(0,0,0);
 			$offset = $offset - date('w',$offset) * 86400 + 86400; // we like mondays
 			$filters['startdate'] = $offset;
 			$filters['enddate'] = $offset + 604800;
 			break;
 
 			case 'box';
-			if (!$offset) $offset = mktime(0,0,0);
 			$filters['startdate'] = $offset;
 			$filters['enddate'] = $offset + $this->conf['range']; // default one week
 			break;
 
 			case 'day': // not yet implemented
-			if (!$offset) $offset = mktime(0,0,0);
 			$filters['startdate'] = $offset;
 			$filters['enddate'] = $offset + 86400;
 			break;
 
-			case 'month': // not yet implemented
-			if (!$offset) $offset = date('m-d-Y');
-			else $offset = date('m-d-Y',$offset);
-			$offset = explode('-',$offset);
-			$start = mktime(0,0,0,$offset[0],1,$offset[2]);
-			$end = mktime(0,0,0,$offset[0]+1,1,$offset[2]);
+			case 'month':
+			$offset_temp = date('m-d-Y',$offset);
+			$offset_temp = explode('-',$offset_temp);
+			$start = mktime(0,0,0,$offset_temp[0],1,$offset_temp[2]);
+			$end = mktime(0,0,0,$offset_temp[0]+1,1,$offset_temp[2]);
 			$filters['startdate'] = $start;
 			$filters['enddate'] = $end;
 			break;
 
 			case 'year':
-			if (!$offset) $offset = date('Y');
-			else $offset = date('Y',$offset);
+			$offset = date('Y',$offset);
 			$start = mktime(0,0,0,1,1,$offset);
 			$end = mktime(23,59,59,12,31,$offset);
 			$filters['startdate'] = $start;
@@ -112,7 +109,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$selection->setFilters($filters);
 		$selection->getResults();
 
-		switch ($this->conf['type']) {
+		switch ($this->conf['view']) {
 			case 'week':
 			$calendar = new tx_skcalendar_weekview($selection,$this->conf);
 			break;
@@ -137,11 +134,10 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			$this->conf['uid'] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['uid'];
 			$calendar = new tx_skcalendar_detailview($selection,$this->conf);
 			break;
-		}
+		}		
 		$calendar->setRange($filters['startdate'],$filters['enddate']);
 		$calendar->createCalendar();
 		$calendar->parseCalendar();
-
 
 		return $this->pi_wrapInBaseClass($calendar->content);
 	}

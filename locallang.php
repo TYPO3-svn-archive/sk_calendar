@@ -8,11 +8,17 @@
 $LOCAL_LANG = Array (
 	"default" => Array (
 		"cm1_title" => "VCE Edit",	
+        "pi1_title" => "VCE Calendar",  		
+		"pi1_plus_wiz_description" => "VCE Calendar",
+        "pi1_plus_wiz_description" => "Shows customizable calendars on your website.", 		
 	),
 	"dk" => Array (
 	),
 	"de" => Array (
 		"cm1_title" => "VCE Edit",	
+        "pi1_title" => "VCE Kalender",  		
+		"pi1_plus_wiz_description" => "VCE Kalender",
+		"pi1_plus_wiz_description" => "Bindet Termine und Ereignisse auf Ihren Seite ein.",		
 	),
 	"no" => Array (
 	),

@@ -8,19 +8,13 @@ if ($confArr['centralStoragePid']) { // special sysfolder for cats, etc.
     $dataSource = $confArr['centralStoragePid'];
 }
 else {
-	// allow calendardata on normal pages, events are always allowed
-	t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_category");
-	t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_organizer");
-	t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_location");
-	t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_targetgroup");
-
 	$dataSource = '###CURRENT_PID###';
 }
+
 $fTableWhere['cat'] = 'AND tx_skcalendar_category.pid='. $dataSource . ' ';
 $fTableWhere['org'] = 'AND tx_skcalendar_organizer.pid='. $dataSource . ' ';
 $fTableWhere['loc'] = 'AND tx_skcalendar_location.pid='. $dataSource . ' ';
 $fTableWhere['tar'] = 'AND tx_skcalendar_targetgroup.pid='. $dataSource . ' ';
-
 
 $TCA["tx_skcalendar_category"] = Array (
 	"ctrl" => $TCA["tx_skcalendar_category"]["ctrl"],

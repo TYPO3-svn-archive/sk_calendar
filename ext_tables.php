@@ -1,9 +1,20 @@
 <?php
-/*
- * $Id$
- */
 if (!defined ("TYPO3_MODE")) 	die ("Access denied.");
-t3lib_div::loadTCA("tt_content");
+// Sysfolder-Mode?
+$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sk_calendar']);
+
+if (!$confArr['centralStoragePid']) { // special sysfolder for cats, etc.
+	// allow calendardata on normal pages, events are always allowed
+	t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_category");
+	t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_organizer");
+	t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_location");
+	t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_targetgroup");
+}
+
+
+
+
+
 
 
 if (TYPO3_MODE=="BE")	{
@@ -100,6 +111,7 @@ $TCA["tx_skcalendar_targetgroup"] = Array (
 
 t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_events");
 
+
 $TCA["tx_skcalendar_events"] = Array (
 	"ctrl" => Array (
 		"title" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events",		
@@ -149,12 +161,13 @@ $TCA["tx_skcalendar_exeptions"] = Array (
 );
 
 
+t3lib_div::loadTCA("tt_content");
 $TCA["tt_content"]["types"]["list"]["subtypes_excludelist"][$_EXTKEY."_pi1"]="layout,select_key";
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='pi_flexform';
-t3lib_extMgm::addPlugin(Array("LLL:EXT:sk_calendar/locallang_db.php:tt_content.list_type", $_EXTKEY."_pi1"),"list_type");
-
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi1', 'FILE:EXT:sk_calendar/flexform_ds.xml');
 
-t3lib_extMgm::addStaticFile($_EXTKEY,'static/ts_new/','CSS-based template');
+if (TYPO3_MODE=="BE")    $TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_skcalendar_pi1_wizicon"] = t3lib_extMgm::extPath($_EXTKEY)."pi1/class.tx_skcalendar_pi1_wizicon.php";
 
+
+t3lib_extMgm::addPlugin(Array("LLL:EXT:sk_calendar/locallang_db.php:tt_content.list_type", $_EXTKEY."_pi1"),"list_type");
 ?>

@@ -15,6 +15,7 @@ class ux_sc_alt_doc extends SC_alt_doc
 	function processData() {
 	$table = 'tx_skcalendar_events';
 	$data_arr = t3lib_div::_GP('data');
+	if ($data_arr[$table]) {
 	list(,$data)  = each ($data_arr[$table]); // get first entry
 	$exeptdate = $data['date'];
 	
@@ -30,6 +31,7 @@ class ux_sc_alt_doc extends SC_alt_doc
 		$where = "uid='$uid'";
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,$where,$updatefields);
 
+	}
 	}
 		// go on saving
 		parent::processData();

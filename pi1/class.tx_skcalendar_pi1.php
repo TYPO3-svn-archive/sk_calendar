@@ -196,8 +196,8 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			else {
 				$filters['startdate'] = 1; // show us everything (0 would disable filter)
 				$offset_temp = date('m-d-Y');
-				$filters['enddate'] = mktime(); // ... until today
-			}
+				$filters['enddate'] = mktime(0,0,0)-1; // ... until not quite today
+				}
 			break;
 
 

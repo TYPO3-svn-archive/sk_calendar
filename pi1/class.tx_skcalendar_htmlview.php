@@ -38,7 +38,7 @@ class tx_skcalendar_htmlview extends tx_skcalendar_feengine {
 			}
 		if (class_exists(tx_skcalendar_overrideTF)) $this->template = new tx_skcalendar_overrideTF;	
 		else $this->template = new tx_skcalendar_defaultTF;
-		$this->template->setContainer($container);
+		$this->template->setTemplate($container,$conf);
 		$this->template->setCode($this->myCobj->fileResource($this->conf['general']['htmltemplate']));
 		
 		}

@@ -101,7 +101,7 @@ var $snippet;
 	}
 
 	function templatefunc_weekno() {
-		$this->snippet = strftime('%W',$this->TempData['timestamp']-432000); // minus 5 days to get somewhere within the last week
+		$this->snippet = strftime('%W',$this->TempData['timestamp']-3600); // minus one hour
 	}
 
 

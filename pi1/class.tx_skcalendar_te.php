@@ -67,7 +67,7 @@ class tx_skcalendar_te extends tx_skcalendar_htmlview{
 		$this->code = $code;
 		}
 	
-	function setContainer($container) {
+	function setTemplate($container,$conf) {
 		$this->tx_skcalendar_feengine($container,$conf);
 	}
 	

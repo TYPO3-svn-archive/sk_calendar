@@ -101,6 +101,7 @@ class tx_skcalendar_selection {
 		// after having included recurring events, the sort order is broken
 		// mutisort for array is needed
 		// sorting of daily events based on start_time
+		if (is_array($this->result)) {
  		$mydata = array();
  		$mystart = array();
 		$mydata = $this->result;
@@ -113,10 +114,11 @@ class tx_skcalendar_selection {
 		 unset ($mydata);
 
 		}
+		}
 }
 
 if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_selection.php"])	{
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_selection.php"]);
 }
 
-			
+?>

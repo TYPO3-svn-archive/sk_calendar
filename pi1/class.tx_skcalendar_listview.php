@@ -112,7 +112,7 @@ class tx_skcalendar_listview extends tx_skcalendar_htmlview {
 		if ($this->conf['general']['showfilters']) $this->makeFilters();
 
 		// get 123
-		$temp['wrapit'] = $this->make123($result_count);
+		$temp['wrapit'] = $this->make123($result_count,$sorting);
 		$this->template->setTempData($temp);
 		$this->template->getSubpart('LIST_VIEW_123');
 		$content .= $this->template->parseTemplate();
@@ -146,7 +146,7 @@ class tx_skcalendar_listview extends tx_skcalendar_htmlview {
 			}
 			
 		// get 123
-		$temp['wrapit'] = $this->make123($result_count);
+		$temp['wrapit'] = $this->make123($result_count,$sorting);
 		$this->template->setTempData($temp);
 		$this->template->getSubpart('LIST_VIEW_123');
 		$content .= $this->template->parseTemplate();

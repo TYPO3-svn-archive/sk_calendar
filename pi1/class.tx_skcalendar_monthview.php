@@ -55,7 +55,7 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 			for ($i=1;$i<=7;$i++) {
 				$temp['style'] = 'month_' . $this->calendarArray[$month][$d]['style'];
 				$temp['name'] = $this->calendarArray[$month][$d]['d_name']['no'] . '&nbsp;' . $this->calendarArray[$month][$d]['d_name']['short'];
-				$temp['timestamp'] = $this->calendarArray[$month][$d]['d_ts'];
+				if ($this->calendarArray[$month][$d]['d_ts']) $temp['timestamp'] = $this->calendarArray[$month][$d]['d_ts'];
 
 				if ($this->calendarArray[$month][$d]['events']) {
 					while (list(,$data) = each($this->calendarArray[$month][$d]['events'])) {
@@ -84,7 +84,6 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 			}
 			
 			// close row
-			$temp['timestamp'] = $this->calendarArray[$month][$d]['d_ts'];
 			$temp['wrapit'] = $content_row;
 			$this->template->setTempData($temp);
 			$this->template->getSubpart('MONTH_VIEW_ROWWRAP');

@@ -536,15 +536,6 @@ $TCA["tx_skcalendar_events"] = Array (
 				"maxitems" => 1,
 			)
 		),
-		"exeptions" => Array (		
-			"exclude" => 0,		
-			"label" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.exeptions",		
-			"config" => Array (
-				"type" => "user",
-				"userFunc" => 'user_exeption_handling'
-			),
-		
-		),
 		"recurring" => Array (		
 			"exclude" => 1,		
 			"label" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.recurring",		
@@ -779,27 +770,4 @@ $TCA["tx_skcalendar_exeptions"] = Array (
 	"1" => Array("showitem" => "")
 	)
 );
-
-function user_exeption_handling($PA)
-{
-	if (!$PA['row']['exeptions'] || strchr($PA['row']['exeptions'],'_')) $out = "No exeptions";
-	else {
-		$out = "The following exeptions apply: ";
-		$exeptions = explode(',',$PA['row']['exeptions']);
-		while (list($void, $exeption) = each ($exeptions))
-		{
-			if ($comma) $out .= ', '; // don't comma first entry
-			$comma = 1;
-			$exeption = trim($exeption);
-			$exeption = date('Y-m-d',$exeption);
-			$out .= $exeption;
-		}
-		if ($exept_arr) 
-		$out .= $PA['row']['exeptions'];
-		// there will be posibility to edit the exeption panel in the near future
-	}
-	// hidden field
-	$out .= '<input type="hidden" name="data[tx_skcalendar_events]['. $PA['row']['uid'] .'][exeptions]" value="'.$PA['row']['exeptions'].'">';
-	return $out;
-}
 ?>

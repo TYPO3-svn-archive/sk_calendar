@@ -226,5 +226,8 @@ class ux_localrecordlist extends localRecordList
 	}
 	}
 }
+if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/class.ux_localrecordlist.php"])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/class.ux_localrecordlist.php"]);
+}
 
 ?>

@@ -58,3 +58,7 @@ class tx_skcalendar_boxview extends tx_skcalendar_calendarView {
 		$this->content .= '<tr><td>&nbsp;</td></tr></table>';
 	}
 }
+
+if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_boxview.php"])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_boxview.php"]);
+}

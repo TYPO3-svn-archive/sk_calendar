@@ -114,7 +114,6 @@ CREATE TABLE tx_skcalendar_events (
 	highlight tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	fe_owner blob NOT NULL,
 	pages blob NOT NULL,
-	exeptions text NOT NULL,
 	recurring int(11) unsigned DEFAULT '0' NOT NULL,
 	recurr_until int(11) DEFAULT '0' NOT NULL,
 	category blob NOT NULL,

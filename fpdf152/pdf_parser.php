@@ -182,7 +182,7 @@ class pdf_parser {
 
     function pdf_parser($filename,&$fpdi) {
 
-    echo $this->hex2String('FEFF004A0061006E00200053006C00610062006F006E') . '<br>';
+   
 
         $this->filename = $filename;
 

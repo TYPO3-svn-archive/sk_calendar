@@ -9,11 +9,13 @@ class tx_skcalendar_vceedit  extends tx_skcalendar_htmlview   {
 	$this->container = $container;
 	$this->events = $container->result;
 	if (!$this->events) $this->events = Array();
-
+	$this->year = date('Y',$conf['offset']);
+	
 	}
 
 	function parseCalendar()
 	{
+		
 		$content = '<style type="text/css">
 <!--
 td.holiday {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; color: #CC3300; background-color: #CCCCCC}

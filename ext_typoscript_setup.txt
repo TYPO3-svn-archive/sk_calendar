@@ -1,8 +1,13 @@
 plugin.tx_skcalendar >
 
 #cat=tx_skcalendar//test; type=options[,1,2]; label=Testentry: This does nothing whatsoever.
-plugin.tx_skcalendar_pi1.range = 604800
+plugin.tx_skcalendar_pi1.range = 31449600
 plugin.tx_skcalendar_pi1.view = month
 plugin.tx_skcalendar_pi1.showlinks = 1
 plugin.tx_skcalendar_pi1.showfilters = 1
 #plugin.tx_skcalendar_pi1.pid = 407
+plugin.tx_skcalendar_pi1.iconmode = 1
+#plugin.tx_skcalendar_pi1.filter_cat = 1
+#plugin.tx_skcalendar_pi1.filter_orga = 1
+#plugin.tx_skcalendar_pi1.filter_loc = 1
+#plugin.tx_skcalendar_pi1.filter_target = 1

@@ -11,26 +11,29 @@ include_once('calendar_functions.php');
 
 class ux_sc_alt_doc extends SC_alt_doc 
 {
+	var $uid;
 	
 	function processData() {
 	global $BE_USER;
 	
 	$data_arr = t3lib_div::_GP('data');
+	
 	if ($data_arr['tx_skcalendar_events']) {
 	list(,$data)  = each ($data_arr['tx_skcalendar_events']); // get first entry
 	$exeptdate = $data['date'];
 		$exept_to = array_flip($this->editconf['tx_skcalendar_events']);
 	// should we write an exeption?
 	if (strpos($exept_to['edit'],'_ex')) {
-		$uid = explode('_ex',$exept_to['edit']); // get the ID
-		$uid = $uid[0];
+		$this->uid = explode('_ex',$exept_to['edit']); // get the ID
+		$this->uid = $this->uid[0];
 		}
+		
 	}
 
 	// save first
 		parent::processData();
-
-	if ($uid) {
+	
+	if ($this->uid) {
 		// get data
 		$record['substitute_event'] = array_flip($this->editconf['tx_skcalendar_events']); //todo
 		$record['substitute_event'] = intval($record['substitute_event']['edit']);
@@ -38,7 +41,7 @@ class ux_sc_alt_doc extends SC_alt_doc
 		$record['tstamp'] = mktime();
 		$record['crdate'] = mktime();
 		$record['cruser_id'] = ''; // todo
-		$record['event'] = intval($uid);
+		$record['event'] = intval($this->uid);
 		$record['exeptdate'] = intval($exeptdate);
 
 		// write exception
@@ -47,6 +50,27 @@ class ux_sc_alt_doc extends SC_alt_doc
 	}
 	
 		
+	}
+	
+	function closeDocument($code=0)	{
+		
+		if ($this->uid) {
+		// get data
+		$record['substitute_event'] = array_flip($this->editconf['tx_skcalendar_events']); //todo
+		$record['substitute_event'] = intval($record['substitute_event']['edit']);
+		$record['pid'] = intval($data['pid']);
+		$record['tstamp'] = mktime();
+		$record['crdate'] = mktime();
+		$record['cruser_id'] = ''; // todo
+		$record['event'] = intval($this->uid);
+		$record['exeptdate'] = intval($exeptdate);
+		
+		// write exception
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_skcalendar_exeptions',$record);
+		
+	}
+	// closing the doc
+	parent::closeDocument($code);
 	}
 	
 	

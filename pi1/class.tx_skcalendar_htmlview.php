@@ -28,7 +28,7 @@ require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_yearv
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_monthview.php');
 
 // FE-Engine
-class tx_skcalendar_htmlview extends fe_engine {
+class tx_skcalendar_htmlview extends tx_skcalendar_feengine {
 	var $results;
 	var $calendarArray;
 
@@ -178,8 +178,8 @@ class tx_skcalendar_htmlview extends fe_engine {
 
 	}
 
-	if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_calendarview.php"])	{
-		include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_calendarview.php"]);
+	if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_htmlview.php"])	{
+		include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_htmlview.php"]);
 	}
 
 ?>

@@ -30,3 +30,4 @@ ToDo:
 - Dates > 100 seem to be a problem
 - Count of the dates only count physical amounts (bug or feature?)
 - Disable the creation of exeptions as item on page, but still show them readonly
+- templatesystem for detailview (only!)

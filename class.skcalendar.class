@@ -294,6 +294,7 @@ class htmlView extends sk_calendar {
 			$this->calendarArray[$date[1]][$date[0]]['hname'] = $name;
 			$this->calendarArray[$date[1]][$date[0]]['isholiday'] = 1;
 		}
+		if (!$this->events) $this->events=array();
 		while (list($id, $event) = each($this->events))
 		{
 			$date = date('Y-m-d',$event['date']);

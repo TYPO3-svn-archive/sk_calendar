@@ -28,7 +28,7 @@
 */
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_htmlview.php');
 
-class fe_engine {
+class tx_skcalendar_feengine {
 	var $scriptRelPath = "pi1/class.tx_skcalendar_pi1.php";	// Path to this script relative to the extension dir.
 	var $extKey = "sk_calendar";	// The extension key.
 	var $categories = array();
@@ -165,4 +165,9 @@ class fe_engine {
 		$this->todate = $todate;
 	}
 }
+
+if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_feengine.php"])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_fengine.php"]);
+}
+
 ?>

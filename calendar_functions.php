@@ -116,7 +116,7 @@ function addRecurringEvents($event_arr) {
 				if ($weekday_fnm == 0) $weekday_fnm =7;
 				if ($date[2] < $weekday_fnm) $add = 5*604800; // need an aditional week to jump the month
 				else $add = 4*604800;
-				echo date('d.m. h:i', $row['date']) . ' -> ' . $add . '<br>';
+				
 				$row['date'] = $row['date']  + $add; // ta da ...
 				if (date('H',$row['date']) ==23) $row['date'] = $row['date'] + 3600; // stupid DST
 				elseif (date('H',$row['date']) ==1) $row['date'] = $row['date'] - 3600; // stupid DST

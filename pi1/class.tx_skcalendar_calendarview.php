@@ -24,7 +24,7 @@
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_weekview.php');
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_boxview.php');
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_detailview.php');
-require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_PDFview.php');
+require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_yearview.php');
 
 // FE-Engine
 class tx_skcalendar_calendarview {
@@ -182,6 +182,12 @@ class tx_skcalendar_calendarview {
 			$this->calendarArray[intval($date[1])][intval($date[2])]['events'][] = $event;
 		}
 
+	}
+	
+	function pdfLink() {
+		$pdf['tx_skcalendar[offset]'] = $this->offset;
+		$pdf['tx_skcalendar[view]'] = 'year';
+		$this->content .= '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$pdf) . '">Jahreskalender als PDF</a>';
 	}
 
 	function getMonthName($month) {

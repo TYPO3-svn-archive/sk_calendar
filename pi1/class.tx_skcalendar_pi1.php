@@ -46,8 +46,9 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 		if ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']) $offset = intval($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']);
 		elseif ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']) $offset = intval($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']);
-		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['detail']) $this->conf['type'] = 'detail';
-
+		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['view']) $this->conf['type'] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['view'];
+		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['view']) $this->conf['type'] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['view'];
+		
 		switch ($this->conf['type']) {
 			case 'week':
 			if (!$offset) $offset = mktime(0,0,0);
@@ -62,13 +63,13 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			$filters['enddate'] = $offset + $this->conf['range']; // default one week
 			break;
 
-			case 'day':
+			case 'day': // not yet implemented
 			if (!$offset) $offset = mktime(0,0,0);
 			$filters['startdate'] = $offset;
 			$filters['enddate'] = $offset + 86400;
 			break;
 
-			case 'month':
+			case 'month': // not yet implemented
 			if (!$offset) $offset = date('m-d-Y');
 			else $offset = date('m-d-Y',$offset);
 			$offset = explode('-',$offset);
@@ -79,11 +80,10 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			break;
 
 			case 'year':
-			if (!$offset) $offset = date('m-d-Y');
-			else $offset = date('m-d-Y',$offset);
-			$offset = explode('-',$offset);
-			$start = mktime(0,0,0,1,1,$offset[2]);
-			$end = mktime(0,0,0,1,1,$offset[2]+1);
+			if (!$offset) $offset = date('Y');
+			else $offset = date('Y',$offset);
+			$start = mktime(0,0,0,1,1,$offset);
+			$end = mktime(23,59,59,12,31,$offset);
 			$filters['startdate'] = $start;
 			$filters['enddate'] = $end;
 			break;

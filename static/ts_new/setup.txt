@@ -1,0 +1,44 @@
+#
+#
+# $Id$
+#
+
+includeLibs.tx_skcalendar_pi1 = EXT:sk_calendar/pi1/class.tx_skcalendar_pi1.php
+
+plugin.tx_skcalendar_pi1 >
+plugin.tx_skcalendar_pi1 = USER
+plugin.tx_skcalendar_pi1 {
+  userFunc = tx_skcalendar_pi1->main
+  
+  # Rendering of calendar items.
+  # Reuse the RTE parseFunc configuration for normal content
+  general_stdWrap {
+    parseFunc < tt_content.text.20.parseFunc
+  }
+  
+  _CSS_DEFAULT_STYLE (
+    /* example styles for sk_calendar */
+    .month_past_weekday TD { color:#C0C0C0; } 
+    .month_weekday TD { color:#000000; }
+    .month_holiday TD { color:#FF0000; }
+
+    .week_past_weekday TD { color:#C0C0C0; } 
+    .week_weekday TD { color:#000000; }
+    .week_holiday  TD { color:#FF0000; }   
+  )
+}	
+
+#plugin.tx_skcalendar_pi1.general.rtefield_stdWrap.parseFunc < tt_content.text.20.parseFunc
+#
+#plugin.tx_skcalendar_pi1 {
+#  _CSS_DEFAULT_STYLE (
+#      /* example styles for sk_calendar */
+#      .month_past_weekday TD { color:#C0C0C0; } 
+#      .month_weekday TD { color:#000000; }
+#      .month_holiday TD { color:#FF0000; }
+#
+#      .week_past_weekday TD { color:#C0C0C0; } 
+#      .week_weekday TD { color:#000000; }
+#      .week_holiday  TD { color:#FF0000; }   
+#  )
+#}

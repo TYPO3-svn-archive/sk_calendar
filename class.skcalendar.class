@@ -231,7 +231,7 @@ class sk_calendar {
 	
 	function getTargetgroups()
 	{
-		$sql = "SELECT * FROM tx_skcalendar_category WHERE NOT deleted AND NOT hidden";
+		$sql = "SELECT * FROM tx_skcalendar_targetgroup WHERE NOT deleted AND NOT hidden";
 		$ergebnis = mysql_query($sql);
 		while ($target = mysql_fetch_array($ergebnis,MYSQL_ASSOC)) {
 			$tar[$target['uid']] = ARRAY ('title' => $target['title'], 'icon'=>$target['icon']);

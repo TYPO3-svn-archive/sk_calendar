@@ -65,7 +65,7 @@ var $targetgroups = array();
 			$this->query .= ') ';
 		}
 		if ($this->filters['sword']) $this->query .= 'AND (title LIKE \'%' . $this->filters['sword'] . '%\' OR description LIKE \'%' . $this->filters['sword'] . '%\')';
-		$this->query  .= ' AND pid IN (' . $this->filters['pid'] . ')';
+		$this->query  .= ' AND pid IN (' . $this->filters['pid'] . ') ORDER BY date, start_time';
 				
 		parent::prepareQuery();
 	}

@@ -44,7 +44,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-
+	
 		// view & Offset
 		$offset = intval($this->piVars['offset']);
 		if (!$offset) $offset = mktime(0,0,0);

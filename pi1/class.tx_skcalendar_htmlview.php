@@ -50,7 +50,7 @@ class tx_skcalendar_htmlview extends fe_engine {
 	}
 
 	function makeLinks() {
-		$link_arr = array ('week' => 'Wochenansicht', 'month' => 'Monatsansicht', 'year' => 'Jahresansicht als PDF');
+		$link_arr = array ('week' => $this->pi_getLL('week_view'), 'month' =>  $this->pi_getLL('month_view'), 'year' => $this->pi_getLL('pdf_view'));
 
 		$this->content .= '<table cellspacing=0 cellpadding=0 width=100%><tr><td colspan=4><b>' . $this->pi_getLL('other_views') . '</b></td></tr><tr valign=top>';
 		$link= $this->prepareTypolink();

@@ -135,6 +135,7 @@ class fe_engine {
 	}
 	
 	function pi_getLL($id) {
+		tslib_pibase::tslib_pibase();
 		tslib_pibase::pi_setPiVarDefaults();
 		tslib_pibase::pi_loadLL();
 		return tslib_pibase::pi_getLL($id);

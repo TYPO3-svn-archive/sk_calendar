@@ -8,6 +8,9 @@
 $LOCAL_LANG = Array (
 	"default" => Array (
 		"choose_month" => "Choose month",
+		"time" => "Time",
+		"show" => "Display",
+		"of" => "of",
 		"all_month" => "Show all months",
 		"other_views" => "Other views",
 		"month_view" => "monthly view",
@@ -66,13 +69,22 @@ $LOCAL_LANG = Array (
 		"choose_tar" => "Choose targetgroup",
 		"archive_make_selection" => "Please specify your search",
 		"page" => "Page",
+		
+		// for registration module How could this be done more elegant?
+		"tx_skcalregistration_register_date" => "Register until",
+		"tx_skcalregistration_register_tolate" => "Registration not possible any more",
+		"tx_skcalregistration_register_files" => "Files",		
+		"tx_skcalregistration_register_remarks" => "Registration",		
 		),
 	"dk" => Array (
 	),
 	"de" => Array (
+		"time" => "Uhrzeit",
 		"choose_month" => "Monat wählen",
 		"all_month" => "alle Monate anzeigen",
 		"page" => "Seite",
+		"show" => "Anzeige",
+		"of" => "von",
 		"other_views" => "Alternative Ansichten",
 		"month_view" => "Monatsansicht",
 		"week_view" => "Wochenansicht",
@@ -131,6 +143,12 @@ $LOCAL_LANG = Array (
 		"choose_org" => "Veranstalter wählen",
 		"choose_tar" => "Zielgruppe wählen",
 		"archive_make_selection" => "Bitte treffen Sie eine Auswahl um das Archiv zu durchsuchen.",
+		
+		// for registration module How could this be done more elegant?
+		"tx_skcalregistration_register_date" => "Registrieren bis",
+		"tx_skcalregistration_register_tolate" => "Registrierung nicht mehr möglich",
+		"tx_skcalregistration_register_files" => "Dateien",
+		"tx_skcalregistration_register_remarks" => "Infos zur Registrierung",	
 	),
 	"no" => Array (
 	),

@@ -21,18 +21,32 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_weekview.php');
-require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_boxview.php');
-require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_detailview.php');
-require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_yearview.php');
-require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_monthview.php');
-require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_listview.php');
-require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_archiveview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_weekview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_boxview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_detailview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_yearview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_monthview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_listview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_archiveview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_upcomingview.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_te.php');
+include_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_defaultTF.php');
+
 
 // FE-Engine
 class tx_skcalendar_htmlview extends tx_skcalendar_feengine {
 	var $results;
 	var $calendarArray;
+	var $template;
+	
+	function tx_skcalendar_htmlview($container,$conf) {
+		//call mothership
+		$this->tx_skcalendar_feengine($container,$conf);
+		$this->template = new tx_skcalendar_defaultTF;
+		$this->template->setContainer($container);
+		$this->template->setCode($this->myCobj->fileResource($this->conf['general']['htmltemplate']));
+		
+		}
 
 	/**
 	* @return void
@@ -81,7 +95,7 @@ return $return;
 				$out .= ' '. $this->pi_getLL('until') .' ' . gmstrftime('%H:%M',$end) . ' ' . $this->pi_getLL('clock');
 			}
 		}
-		else $out = $this->pi_getLL('date') . ': ' . gmstrftime('%A, %d.%m %Y',$date);
+		else $out = $this->pi_getLL('date') . ': ' . gmstrftime('%A, %d.%m.%Y',$date);
 		return $out;
 	}
 
@@ -114,7 +128,7 @@ return $return;
 				if (count($this->organizers)>1) {
 					$org_sel[$this->container->filters['organizers'][0]] = ' selected';
 					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_org') . '</td><td><select name="tx_skcalendar_pi1[organizers]"><option value="">' . $this->pi_getLL('all_organizer') . '</option>';
-					while (list(,$data) = each ($this->organizers)) $this->content .= '<option value="' . $data['id'] . '"'. $org_sel [$data['uid']] . '>' . $data['title'] . '</option>';
+					while (list(,$data) = each ($this->organizers)) $this->content .= '<option value="' . $data['id'] . '"'. $org_sel [$data['uid']] . '>' . $data['name'] . '</option>';
 					$this->content .= '</select></td></tr>';
 				}
 				reset ($this->targetgroups);
@@ -128,15 +142,24 @@ return $return;
 				
 			}
 			elseif ($this->conf['warning']['filter']) $this->content .= '<tr valign=top><td>' . $this->pi_getLL('filter_error') . '</td></tr>';
-			if (!$this->conf['list']['filter_month']) {
+			if ($this->conf['list']['filter_month']) {
+						
 					$month_sel[$this->offset] = ' selected';
 					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_month') . '</td><td><select name="tx_skcalendar_pi1[monthfilter]"><option value="">' . $this->pi_getLL('all_month') . '</option>';
 					$act_date = date('m-Y');
 					$act_date = explode('-',$act_date);
 					
+					if ($this->conf['list']['filter_month'] == 'reverse') {
+						$act_date = mktime(0,0,0,$act_date[0]-24,1,$act_date[1]);
+						$act_date = date('m-Y',$act_date);
+						$act_date = explode('-',$act_date);
+					}
+					
+					
+					
 					while ($m < 24) {
 						$newoffset = mktime(0,0,0,$act_date[0]+$m,1,$act_date[1]);
-						$this->content .= '<option value="' . $newoffset . '"'. $month_sel[$newoffset] . '>' . strftime('%B %Y',$newoffset) . '</option>';
+						$this->content .= '<option value="' . $newoffset . '"'. $month_sel[$newoffset] . '>' . strftime('%Y %B',$newoffset) . '</option>';
 						$m++;
 					}
 					$this->content .= '</select></td></tr>';

@@ -1,0 +1,240 @@
+HTML Template for sk_calendar
+Please notice when using markers that there are 3 different kinds
+Labelmarkers follow the form ###LABEL_xxxxxx#### where xxxxxx resembles a Label from pi1/locallang.php. They will be rendered taking account of the choosen language!
+Fieldmarkers are regular markers that render fields from the database. They consist of a letter for the table (e for event, c for category, t for targetgroups and l for location) followed by a '_' and the fieldname
+Example: ###e_title### gives you the eventtitle whereas ###c_color### renders the Color of the corresponding category.
+You can define your own PHP-Functions by extending class.tx_skcalendar_defaultTF.php. Using ###myfunct### will try to call a function templatefunc_myfunct() if it isn't there nothing happens
+defining a function templatefunc_e_title() would override the return of just the eventtitle but output whatever your function returns. See class.tx_skcalendar_defaultTF.php for examples. Put your override-class in uploads/sk_calendar or somewhere in fileadmin to not loose your function after updates.
+
+Have fun and return your comments to: skcalendar@sitekick.de.
+
+<!-- start of the templates -->
+
+<!--###DETAIL_VIEW_WRAP### begin
+	Wrap Detailview in some HTML
+	-->	
+	<br>
+	###WRAPIT###
+	<br>
+<!--###DETAIL_VIEW_WRAP### end -->
+
+
+
+<!--###DETAIL_VIEW_MAIN### begin
+	HTML-Template for the Detailview
+	-->
+<b><font size=+1>< ###E_TITLE### ></font></b><br><table class=detail>
+<tr valign=top><td>###LABEL_description###:</td><td>&nbsp;</td><td>###E_description###</td></tr>
+<tr valign=top><td>###LABEL_targetgroup###:</td><td>&nbsp;</td><td>###T_title###</td></tr>
+<tr valign=top><td>###LABEL_date###:</td><td>&nbsp;</td><td>###E_date###</td></tr>
+<tr valign=top><td>###LABEL_time###:</td><td>&nbsp;</td><td>###E_start_time### ###E_end_time###</td></tr>
+<tr valign=top><td>###LABEL_location###:</td><td>&nbsp;</td><td>###L_street###, ###L_zip### ###L_city###</td></tr>
+
+<tr valign=top><td>###LABEL_organizer###:</td><td>&nbsp;</td><td>###O_title###</td></tr>
+</table>
+<div align=right><a href="javascript:history.back()"> << ###LABEL_back###</a></div><br><br>		
+<!--###DETAIL_VIEW_MAIN### end -->
+
+
+
+
+<!--###BOX_VIEW_ITEM### begin
+	HTML-Template for the Boxview
+	-->
+	###DETAILLINK###<br>
+<!--###BOX_VIEW_ITEM### end -->	
+
+
+
+<!--###BOX_VIEW_DAYWRAP### begin
+	Wrap box dayview in some HTML
+	-->	
+<tr><td><table cellspacing = 3 cellpadding=0 border=0><tr valign=top><td>&nbsp;</td><td>###ACTDATE###<br>###WRAPIT###</td></tr></table></td></tr>
+<!--###BOX_VIEW_DAYWRAP### end -->
+
+
+
+<!--###BOX_VIEW_NOENTRY### begin
+	Show in case of no entry
+	-->	
+<tr><td align=center>###LABEL_no_entries###</td></tr>
+<!--###BOX_VIEW_NOENTRY### end -->
+
+
+
+<!--###BOX_VIEW_NAVIGATION### begin
+	navigation
+	-->	
+<tr><td>&nbsp;</td></tr><tr><td><table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left>###BACKLINK###</td><td align=right>###NEXTLINK###</td></tr></table></td></tr>
+<!--###BOX_VIEW_NAVIGATION### end -->
+
+
+
+<!--###BOX_VIEW_WHOLEWRAP### begin
+	Wrap whole boxview
+	-->	
+<table cellspacing=0 cellpadding=0 border=1 width=95%>###WRAPIT###</table>
+<!--###BOX_VIEW_WHOLEWRAP### end -->
+
+
+
+<!--###LIST_VIEW_ITEM### begin
+	Line of Listview
+	-->	
+	<tr valign=top class=list_header><td colspan=9><hr style="border: 1px dashed;"></td></tr><tr valign=top class=list_data><td>###E_date###</td><td>&nbsp;</td><td>###DETAILLINK###</td><td>&nbsp;</td><td>###O_name###</td><td>&nbsp;</td><td>###L_city###</td><td>&nbsp;</td><td>###C_name###</td></tr>
+<!--###LIST_VIEW_ITEM### end -->
+
+
+
+<!--###LIST_VIEW_NAVIGATION### begin
+	Navigation of Listview
+	-->	
+	<tr><td>&nbsp;</td></tr><tr><td colspan=9><table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left>###BACKLINK###</td><td align=right>###NEXTLINK###</td></tr></table></td><tr>
+<!--###LIST_VIEW_NAVIGATION### end -->
+
+
+
+<!--###LIST_VIEW_123### begin
+	123-Navigation of Listview
+	-->	
+	<tr><td>&nbsp;</td></tr><tr valign=top class=list_header><td colspan=9>###WRAPIT###</td></tr>
+<!--###LIST_VIEW_123### end -->
+
+
+
+<!--###LIST_VIEW_WHOLEWRAP### begin
+	wholewrap of Listview
+	-->	
+	<table cellspacing=0 cellpadding=0 border=0 width=95%>###WRAPIT###</table>
+<!--###LIST_VIEW_WHOLEWRAP### end -->
+
+
+
+<!--###LIST_VIEW_SORTLINKS### begin
+	Sorry, only those 5 work
+	-->	
+	<tr><td>&nbsp;</td></tr><tr valign=top class=list_header><td>###SORTLINK_DATE###</td><td>&nbsp;</td><td>###SORTLINK_TITLE###</td><td>&nbsp;</td><td>###SORTLINK_ORGANIZER###</td><td>&nbsp;</td><td>###SORTLINK_LOCATION###</td><td>&nbsp;</td><td>###SORTLINK_CATEGORY###</td></tr>
+<!--###LIST_VIEW_SORTLINKS### end -->
+
+
+
+<!--###UPCOMING_VIEW_ITEM### begin
+	Line of upcoming view
+	-->	
+	<b>###DETAILLINK###</b><br>###E_date###<br><br>
+<!--###UPCOMING_VIEW_ITEM### end -->
+
+
+<!--###ARCHIVE_VIEW_NOSELECTION### begin
+	Show in case of no selection
+	-->	
+<p align=center>###LABEL_archive_make_selection###</p>
+<!--###ARCHIVE_VIEW_NOSELECTION### end -->
+
+
+
+<!--###LIST_VIEW_NOENTRY### begin
+	Show in case of no entry
+	-->	
+<tr><td align=center colspan=10>###LABEL_no_entries###</td></tr>
+<!--###LIST_VIEW_NOENTRY### end -->
+
+
+
+<!--###WEEK_VIEW_WRAP### begin
+	Top Part for Weekview
+	-->	
+	<table cellspacing=0 cellpadding=0 border=1 width=400 bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>###LABEL_week_view###:</b></td></tr></table></td></tr>###WRAPIT###
+	</table>
+<!--###WEEK_VIEW_WRAP### end -->
+
+
+
+<!--###WEEK_VIEW_ITEM### begin
+	Item for weekview
+	-->
+	###DETAILLINK###<br>###E_description###<br><br>
+<!--###WEEK_VIEW_ITEM### end -->
+
+
+<!--###WEEK_VIEW_DAYWRAP### begin
+	wrap days for weekview
+	-->
+	<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td class="###DAYSTYLE###" nowrap>###ACTDATE###<br>###WRAPIT###</td></tr></table></td></tr>
+<!--###WEEK_VIEW_DAYWRAP### end -->
+
+
+
+<!--###WEEK_VIEW_NAVIGATION### begin
+	navigation for weekview
+	-->
+	<tr><td><table cellspacing=0 cellpadding =3 width=100%><tr valign=bottom><td><table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left>###BACKLINK###</td><td align=right>###NEXTLINK###</td></tr></table></td></tr></td></tr>
+<!--###WEEK_VIEW_NAVIGATION### end -->
+
+
+
+<!--###WEEK_VIEW_WHOLEWRAP### begin
+	wrap the whole week
+	-->
+	<table cellspacing=0 cellpadding=0 border=1 width=400 bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>###LABEL_week_view###</b></td></tr></table></td></tr>###WRAPIT###</table>
+<!--###WEEK_VIEW_WHOLEWRAP### end -->
+
+
+
+<!--###MONTH_VIEW_ITEM### begin
+	Item for monthview
+	-->
+	###DETAILLINK###<br>
+<!--###MONTH_VIEW_ITEM### end -->
+
+
+
+
+<!--###MONTH_VIEW_DAYWRAP### begin
+	wrap day
+	-->
+	<td height=50 width=14% class="###DAYSTYLE###">###DAYNAME###<br>###WRAPIT###</td>
+<!--###MONTH_VIEW_DAYWRAP### end -->
+
+
+
+
+<!--###MONTH_VIEW_ROWWRAP### begin
+	wrap row
+	-->
+	<tr valign=top>###WRAPIT###</tr>
+<!--###MONTH_VIEW_ROWWRAP### end -->
+
+
+
+
+<!--###MONTH_VIEW_CALENDARWRAP### begin
+	wrap calendar
+	-->
+<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>###LABEL_month_view### ###MONTHNAME###</b></td></tr></table></td></tr>
+<tr><td><table cellspacing=0 cellpadding=2 border=1 width =100%><tr><td><b>Mo</b></td><td><b>Di</b></td><td><b>Mi</b></td><td><b>Do</b></td><td><b>Fr</b></td><td><b>Sa</b></td><td><b>So</b></b></td></tr>###WRAPIT###</table></td></tr>
+<!--###MONTH_VIEW_CALENDARWRAP### end -->
+
+
+
+
+<!--###MONTH_VIEW_NAVIGATION### begin
+	navigation
+	-->
+<tr><td><table cellspacing=0 cellpadding =3 width=100%><tr valign=bottom><td>
+<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left>###BACKLINK###</td><td align=right>###NEXTLINK###</td></tr></table></td></tr></table></td></tr>
+<!--###MONTH_VIEW_NAVIGATION### end -->
+
+
+
+
+<!--###MONTH_VIEW_WHOLEWRAP### begin
+	wrap whole month
+	-->
+	<table cellspacing=0 cellpadding=0 border=0 width=100%>###WRAPIT###</table>
+<!--###MONTH_VIEW_WHOLEWRAP### end -->
+
+
+
+
+

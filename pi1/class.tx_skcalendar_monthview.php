@@ -30,7 +30,7 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 	function tx_skcalendar_monthview($container,$conf) {
 		// calls mothership
 		
-		$this->tx_skcalendar_feengine($container,$conf);
+		$this->tx_skcalendar_htmlview($container,$conf);
 	}
 
 	function parseCalendar() {
@@ -38,16 +38,15 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 		
 		if ($this->conf['general']['showlinks']) $this->makeLinks();
 		if ($this->conf['general']['showfilters']) $this->makeFilters();
-		$this->content .= '<table cellspacing=0 cellpadding=0 border=0 width=100% bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>' . $this->pi_getLL('month_view') . ' ' . strftime('%B %Y',$this->offset) . ':</b></td></tr></table></td></tr>';
-		$this->content .= '<tr><td><table cellspacing=0 cellpadding=2 border=1 width =100%><tr><td><b>Mo</b></td><td><b>Di</b></td><td><b>Mi</b></td><td><b>Do</b></td><td><b>Fr</b></td><td><b>Sa</b></td><td><b>So</b></b></td></tr>';
+				
 		$d = date('w',mktime(0,0,0,$month,1,$this->year));
 		if ($d == 0) $d=7;
 		$d=$d-(($d-1)*2);
 		for ($w=1; $w<=5;$w++) {
-			$this->content .= '<tr valign=top>';
 			for ($i=1;$i<=7;$i++) {
-				$this->content .= '<td height=50 width=14% class="month_' . $this->calendarArray[$month][$d]['style'] . '">';
-				$this->content .= $this->calendarArray[$month][$d]['d_name']['no'] . '&nbsp;' . $this->calendarArray[$month][$d]['d_name']['short'];
+				$temp['style'] = 'month_' . $this->calendarArray[$month][$d]['style'];
+				$temp['name'] = $this->calendarArray[$month][$d]['d_name']['no'] . '&nbsp;' . $this->calendarArray[$month][$d]['d_name']['short'];
+
 				if ($this->calendarArray[$month][$d]['events']) {
 					while (list(,$data) = each($this->calendarArray[$month][$d]['events'])) {
 					if ($this->conf['month']['iconmode']) {
@@ -56,18 +55,48 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 					$linktext = '<img border=0 width=10 src="uploads/tx_skcalendar/'.  $cat['icon'] . '">';
 					}
 					else $linktext = $data['title'];
-					$this->content .= '<br>'. $this->detailLink($data['uid'],$linktext,$data['color'],$data['date']);
+					$temp['linktext'] = $linktext;
+					$this->template->setItem($data);
+					$this->template->setTempData($temp);
+					$this->template->getSubpart('MONTH_VIEW_ITEM');
+
+					$content_day .= $this->template->parseTemplate();
 					}
 				}
-				$this->content .= '</td>';
+				
+				// Make my day
+				$temp['wrapit'] = $content_day;
+				$this->template->setTempData($temp);
+				$this->template->getSubpart('MONTH_VIEW_DAYWRAP');
+				$content_row .= $this->template->parseTemplate();
+				unset ($content_day);
 				$d++;
 			}
-			$this->content .= '</tr>';
+			
+			// close row
+			$temp['wrapit'] = $content_row;
+			$this->template->setTempData($temp);
+			$this->template->getSubpart('MONTH_VIEW_ROWWRAP');
+			$content .= $this->template->parseTemplate();
+			unset ($content_row);
+
 		}
-		$this->content .= '</table></td></tr>';
-		$this->content .= '<tr><td><table cellspacing=0 cellpadding =3 width=100%><tr valign=bottom><td>';
-		$this->makeNavigation();
-		$this->content .= '</td></tr></table></td></tr></table>';
+		
+		$temp['date'] = $this->offset;
+		$temp['wrapit'] = $content;
+		$this->template->setTempData($temp);
+		$this->template->getSubpart('MONTH_VIEW_CALENDARWRAP');
+		$content = $this->template->parseTemplate();
+		
+		// get Navigation
+		$this->template->setTempData($this->makeNavigation());
+		$this->template->getSubpart('MONTH_VIEW_NAVIGATION');
+		$temp['wrapit'] = $content . $this->template->parseTemplate();
+		
+		// wrap whole thing
+		$this->template->setTempData($temp);
+		$this->template->getSubpart('MONTH_VIEW_WHOLEWRAP');
+		$this->content = $this->template->parseTemplate();
 	}
 
 	function makeNavigation() {
@@ -76,7 +105,9 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 		$back = $this->prepareTypolink();
 		$next['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$offset+1,1,$this->year);
 		$back['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$offset-1,1,$this->year);
-		$this->content .= '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"> << ' . $this->pi_getLL('prev_month') . '</a></td><td align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"> >> ' . $this->pi_getLL('next_month') . '</a></td></tr></table>';
+		$navi['backlink'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"> << ' . $this->pi_getLL('prev_month') . '</a>';
+		$navi['nextlink'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"> >> ' . $this->pi_getLL('next_month') . '</a>';
+		return $navi;
 	}
 }
 

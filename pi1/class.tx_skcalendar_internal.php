@@ -57,14 +57,14 @@ var $targetgroups = array();
 			while (list($id, $value) = each ($this->filters['locations'])) $this->query .= ',' . $value;
 			$this->query .= ') ';
 		}
-		if (is_array($this->filters['organziers']))
+		if (is_array($this->filters['organizers']))
 		{
-			$this->query .= 'AND organizer in (' . $this->filters['organziers'][0];
-			next ($this->filters['organziers']);
-			while (list($id, $value) = each ($this->filters['organziers'])) $this->query .= ',' . $value;
+			$this->query .= 'AND organizer in (' . $this->filters['organizers'][0];
+			next ($this->filters['organizers']);
+			while (list($id, $value) = each ($this->filters['organizers'])) $this->query .= ',' . $value;
 			$this->query .= ') ';
 		}
-		if ($this->filters['sword']) $this->query .= 'AND title LIKE \'%' . $this->filters['sword'] . '%\'';
+		if ($this->filters['sword']) $this->query .= 'AND (title LIKE \'%' . $this->filters['sword'] . '%\' OR description LIKE \'%' . $this->filters['sword'] . '%\' OR tx_skcalregistration_registration_msg LIKE \'%' . $this->filters['sword'] . '%\')';
 		$this->query  .= ' AND pid IN (' . $this->filters['pid'] . ')';
 				
 		parent::prepareQuery();

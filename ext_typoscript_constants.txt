@@ -6,14 +6,23 @@ plugin.tx_skcalendar >
 #cat=plugin.tx_skcalendar/dims/a; type=int+; label=Boxview-Range: Range of Boxview in Days.
 plugin.tx_skcalendar_pi1.box.range = 7
 
-#cat=plugin.tx_skcalendar/dims/b; type=int+; label=Listview-Range: Range of Listview in items.
+#cat=plugin.tx_skcalendar/dims/b; type=int+; label=Upcoming-Range: Range of Upcoming events in items
+plugin.tx_skcalendar_pi1.upcoming.range = 10
+
+#cat=plugin.tx_skcalendar/dims/c; type=int+; label=Listview-Range: Range of Listview in items.
 plugin.tx_skcalendar_pi1.list.limit = 20
 
 #cat=plugin.tx_skcalendar/enable/a; type=options[yes=1, no=0]; label=Iconmode: Show Cat-icons or Eventtitles in Monthview.
 plugin.tx_skcalendar_pi1.month.iconmode = 0
 
-#cat=plugin.tx_skcalendar/others/a; type=options[boxview=box, listview=list, weekly View=week, Monthly view=month]; label=Default View: Choose the defaultview for the Calendar.
+#cat=plugin.tx_skcalendar/others/a; type=options[boxview=box, listview=list, weekly View=week, Monthly view=month, Upcomming events=upcoming]; label=Default View: Choose the defaultview for the Calendar.
 plugin.tx_skcalendar_pi1.general.view = month
+
+#cat=plugin.tx_skcalendar/others/i; type=file[html,htm,tmpl,txt]; label=Default HTML-Template: Use this template for HTML-Views.
+plugin.tx_skcalendar_pi1.general.htmltemplate = EXT:sk_calendar/pi1/html_template.html
+
+#cat=plugin.tx_skcalendar/others/j; type=file[pdf]; label=Default PDF-Template:  Use this template for PDFs.
+plugin.tx_skcalendar_pi1.general.pdftemplate = EXT:sk_calendar/pi1/pdf_template.pdf
 
 #cat=plugin.tx_skcalendar/enable/b; type=options[yes=1, no=0]; label=Show Links: Show Links to other views
 plugin.tx_skcalendar_pi1.general.showlinks = 1

@@ -30,37 +30,53 @@ class tx_skcalendar_boxview extends tx_skcalendar_htmlview {
 
 	function tx_skcalendar_boxview($container,$conf) {
 		// calls mothership
-		$this->tx_skcalendar_feengine($container,$conf);
+		$this->tx_skcalendar_htmlview($container,$conf);
 	}
 
 	function parseCalendar() {
 		$act_date = $this->offset;
-		$this->content = '<table cellspacing=0 cellpadding=0 border=1 width=95%>';
+		$this->content = '';
 		while ($act_date < $this->todate) {
 			$m = intval(date('m',$act_date));
 			$d = intval(date('d',$act_date));
 
-			if ($this->calendarArray[$m][$d]['events']) {
-				$c_result .= '<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td>' . strftime('%A, %d.%m %Y',$act_date) . '<br>';
+			if ($this->calendarArray[$m][$d]['events']) {	
 				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
 					unset($linktext);
-					if ($data['start_time']) $linktext = date('h:m',$data['start_time']) . ' '; 
+					if ($data['start_time']) $linktext = gmstrftime('%H:%M',$data['start_time']) . ' '; 
 					$linktext .= $data['title'];
-					$c_result .= '<table cellspacing=0 cellpadding=0><tr valign=top><td width=30% nowrap>';
-					$c_result .= $this->detailLink($data['uid'],$linktext,$data['color'],$data['date']);
-					$c_result .= '</td></tr></table>';
 					
+					$temp['linktext'] = $linktext;
+					$this->template->setItem($data);
+					$this->template->setTempData($temp);
+					$this->template->getSubpart('BOX_VIEW_ITEM');
+					$temp['wrapit'] .= $this->template->parseTemplate();				
 				}
-				$c_result .= '</td></tr></table></td></tr>';
+				$temp['date'] = $act_date;
+				$this->template->setTempData($temp);
+				$this->template->getSubpart('BOX_VIEW_DAYWRAP');
+				$c_result = $this->template->parseTemplate();
+
 			}
 			
-
 			$act_date = $act_date+86400;
 
 		}
-		if ($c_result) $this->content .= $c_result;
-		else $this->content .= '<tr><td align=center>' . $this->pi_getLL('no_entries') . '</td></tr>';
-		$this->content .= '<tr><td>&nbsp;</td></tr><tr><td>' . $this->makeNavigation() . '</td><tr></table>';
+		if ($c_result) $content .= $c_result;
+		else {
+			$this->template->getSubpart('BOX_VIEW_NOENTRY');
+			$content .= $this->template->parseTemplate();
+		}
+		
+		// get Navigation
+		$this->template->setTempData($this->makeNavigation());
+		$this->template->getSubpart('BOX_VIEW_NAVIGATION');
+		$temp['wrapit'] = $content . $this->template->parseTemplate();
+		
+		// wrap whole thing
+		$this->template->setTempData($temp);
+		$this->template->getSubpart('BOX_VIEW_WHOLEWRAP');
+		$this->content = $this->template->parseTemplate();
 	}
 	
 	function makeNavigation() {
@@ -70,7 +86,10 @@ class tx_skcalendar_boxview extends tx_skcalendar_htmlview {
 		$back = $this->prepareTypolink();
 		$next['tx_skcalendar_pi1[offset]'] = $offset + $step;
 		$back['tx_skcalendar_pi1[offset]'] = $offset - $step;
-		return '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"><img src="' . t3lib_extMgm::siteRelPath('sk_calendar') . 'pi1/images/arrow_l.gif" border=0></a></td><td align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"><img src="' . t3lib_extMgm::siteRelPath('sk_calendar') . 'pi1/images/arrow_r.gif" border=0></a></td></tr></table>';
+		$navi['backlink'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"><img src="' . t3lib_extMgm::siteRelPath('sk_calendar') . 'pi1/images/arrow_l.gif" border=0></a>';
+		$navi['nextlink'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"><img src="' . t3lib_extMgm::siteRelPath('sk_calendar') . 'pi1/images/arrow_r.gif" border=0></a>';
+		return $navi;
+		
 	}
 }
 

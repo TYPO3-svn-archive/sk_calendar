@@ -31,7 +31,7 @@ class tx_skcalendar_listview extends tx_skcalendar_htmlview {
 	function tx_skcalendar_listview($container,$conf) {
 		// calls mothership
 		
-		$this->tx_skcalendar_feengine($container,$conf);
+		$this->tx_skcalendar_htmlview($container,$conf);
 	}
 	
 	function createCalendar() {
@@ -40,6 +40,7 @@ class tx_skcalendar_listview extends tx_skcalendar_htmlview {
 
 	function parseCalendar() {
 		// set enviroment
+		
 		$result_count = sizeof($this->container->result);
 		if ($result_count < $this->conf['list']['limit']) {
 			$this->conf['list']['limit'] = $result_count;
@@ -61,18 +62,15 @@ class tx_skcalendar_listview extends tx_skcalendar_htmlview {
 		// Prepare Array 
 		$clean_arr = array();
 		if (!$this->container->result) $this->container->result = array();
-		if ($this->conf['notch']) $this->container->result = array_slice($this->container->result,$this->conf['notch']+1); // notch up
+		if ($this->conf['notch']) $this->container->result = array_slice($this->container->result,$this->conf['notch']); // notch up
 
 		while ($i<=$this->conf['list']['limit']) {
 			list(,$data) = each($this->container->result);
 			if ($data) {
 			// get basis for sorting
 			$data['organizer'] = $this->getOrganizer($data['organizer'],'name');
-			$data['location'] = $this->getLocation($data['location'],'title');
+			$data['location'] = $this->getLocation($data['location']);
 			$data['category'] = $this->getCategory($data['category'],'title');
-			
-			//  special for linkfactory .dk
-			if ($data['tx_skcalregistration_ovr_organizer']) $data['organizer'] = $data['tx_skcalregistration_ovr_organizer']; 
 			
 			$clean_arr[$data[$sorting] . '_' . $i] = $data;
 			$i++;
@@ -95,34 +93,58 @@ class tx_skcalendar_listview extends tx_skcalendar_htmlview {
 		$sortimg[$sorting] = '<img src="' . t3lib_extMgm::siteRelPath('sk_calendar') . 'pi1/images/sort_' . $sort_order . '.gif" border=0>';
 		
 		// output
-		
+		if ($this->conf['general']['showlinks']) $this->makeLinks();
 		if ($this->conf['general']['showfilters']) $this->makeFilters();
-		$this->content .= '<table cellspacing=0 cellpadding=0 border=0 width=95%><tr valign=top class=list_header><td colspan=9>';
-		$this->content .= $this->make123($result_count);
-		$this->content .= '</td></tr><tr><td>&nbsp;</td></tr>';
-		$this->content .= '<tr valign=top class=list_header>';
+
+		// get 123
+		$temp['wrapit'] = $this->make123($result_count);
+		$this->template->setTempData($temp);
+		$this->template->getSubpart('LIST_VIEW_123');
+		$content .= $this->template->parseTemplate();
+
 		$sortlink['tx_skcalendar_pi1[sorting]'] = $sortlinkpara['date'];
-		$this->content .= '<td><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$sortlink) . '">' . $this->pi_getLL('date') . $sortimg['date'] . '</a></td><td>&nbsp;</td>';
-		$sortlink['tx_skcalendar_pi1[sorting]'] = $sortlinkpara['location'];
-		$this->content .= '<td><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$sortlink) . '">' . $this->pi_getLL('location') . $sortimg['location'] . '</a></td><td>&nbsp;</td>';
+		$temp['sortlink_date'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$sortlink) . '">' . $this->pi_getLL('date') . $sortimg['date'] . '</a>';
 		$sortlink['tx_skcalendar_pi1[sorting]'] = $sortlinkpara['title'];
-		$this->content .= '<td><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$sortlink) . '">' . $this->pi_getLL('title') . $sortimg['title'] . '</a></td><td>&nbsp;</td>';
+		$temp['sortlink_title'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$sortlink) . '">' . $this->pi_getLL('title') . $sortimg['title'] . '</a>';
 		$sortlink['tx_skcalendar_pi1[sorting]'] = $sortlinkpara['organizer'];
-		$this->content .= '<td><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$sortlink) . '">' . $this->pi_getLL('organizer') . $sortimg['organizer'] . '</a></td><td>&nbsp;</td>';
+		$temp['sortlink_organizer'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$sortlink) . '">' . $this->pi_getLL('organizer') . $sortimg['organizer'] . '</a>';
+		$sortlink['tx_skcalendar_pi1[sorting]'] = $sortlinkpara['location'];
+		$temp['sortlink_location'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$sortlink) . '">' . $this->pi_getLL('location') . $sortimg['location'] . '</a>';
 		$sortlink['tx_skcalendar_pi1[sorting]'] = $sortlinkpara['category'];
-		$this->content .= '<td><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$sortlink) . '">' . $this->pi_getLL('category') .$sortimg['category'] .  '</a></td></tr>';
+		$temp['sortlink_category'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$sortlink) . '">' . $this->pi_getLL('category') .$sortimg['category'] .  '</a>';
+
+		$this->template->setTempData($temp);
+		$this->template->getSubpart('LIST_VIEW_SORTLINKS');
+		$content .= $this->template->parseTemplate();
+		
 		
 		if ($clean_arr) { // we do have entries
 		while (list(,$data) = each($clean_arr)) {
-			$this->content .= '<tr valign=top class=list_data><td>'.date('d.m.Y',$data['date']).'</td><td>&nbsp;</td><td>'.$data['location'].'</td><td>&nbsp;</td><td>'.$this->detailLink($data['uid'],$data['title'],$data['color'],$data['date']).'</td><td>&nbsp;</td><td>'.$data['organizer'].'</td><td>&nbsp;</td><td>'.$data['category'].'</td></tr>';
-			}
+				$this->template->setItem($data);
+				$this->template->getSubpart('LIST_VIEW_ITEM');
+				$content .= $this->template->parseTemplate();				
+				}
 			}
 			else { // no entries
-			$this->content .= '<tr valign=top class=list_data><td colspan=9 align=center><br>' . $this->pi_getLL('no_entries') . '</td></tr>';
+				$this->template->getSubpart('LIST_VIEW_NOENTRY');
+				$content .= $this->template->parseTemplate();				
 			}
-		$this->content .= '<tr><td>&nbsp;</td></tr><tr valign=top class=list_header><td colspan=9>';
-		$this->content .= $this->make123($result_count);
-		$this->content .= '</td></tr><tr><td>&nbsp;</td></tr><tr><td colspan=9>' . $this->makeNavigation($next,$this->conf['notch'], $sort_order . $sorting) . '</td><tr></table>';
+			
+		// get 123
+		$temp['wrapit'] = $this->make123($result_count);
+		$this->template->setTempData($temp);
+		$this->template->getSubpart('LIST_VIEW_123');
+		$content .= $this->template->parseTemplate();
+
+		// get Navigation
+		$this->template->setTempData($this->makeNavigation($next,$this->conf['notch'], $sort_order . $sorting));
+		$this->template->getSubpart('LIST_VIEW_NAVIGATION');
+		$temp['wrapit'] = $content . $this->template->parseTemplate();
+
+		// wrap whole thing
+		$this->template->setTempData($temp);
+		$this->template->getSubpart('LIST_VIEW_WHOLEWRAP');
+		$this->content = $this->template->parseTemplate();
 	}
 	
 	function makeNavigation($up,$notch,$sorting) {
@@ -133,12 +155,10 @@ class tx_skcalendar_listview extends tx_skcalendar_htmlview {
 		$back['tx_skcalendar_pi1[notch]'] = $notch-$this->conf['list']['limit'];
 		$next['tx_skcalendar_pi1[sorting]'] = $sorting;
 		$back['tx_skcalendar_pi1[sorting]'] = $sorting;
-		$return = '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left>';
-		if ($notch) $return .= '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"><img src="' . t3lib_extMgm::siteRelPath('sk_calendar') . 'pi1/images/arrow_l.gif" border=0></a>';
-		$return .= '</td><td align=right>';
-		if ($up) $return .= '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"><img src="' . t3lib_extMgm::siteRelPath('sk_calendar') . 'pi1/images/arrow_r.gif" border=0></a>';
-		$return .= '</td></tr></table>';
-		return $return;
+		
+		if ($notch) $navi['backlink'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"><img src="' . t3lib_extMgm::siteRelPath('sk_calendar') . 'pi1/images/arrow_l.gif" border=0></a>';
+		if ($up) $navi['nextlink'] =  '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"><img src="' . t3lib_extMgm::siteRelPath('sk_calendar') . 'pi1/images/arrow_r.gif" border=0></a>';
+		return $navi;
 	}
 	
 	function make123($count,$sorting=False) {
@@ -146,8 +166,13 @@ class tx_skcalendar_listview extends tx_skcalendar_htmlview {
 		$notch = $this->conf['notch'];
 		$link = $this->prepareTypolink();
 		$link['tx_skcalendar_pi1[sorting]'] = $sorting;
+		$from = $notch+1;
+		
+		$to = $notch+$limit;
+		if ($to > $count) $to = $count;
+		if ($count>0) $return = $this->pi_getLL('show') . ': ' . $from . '-' . $to . ' ' . $this->pi_getLL('of') . ' ' . $count;
 		if ($count > $limit) {
-			$return = $this->pi_getLL('page') . ': ';
+			$return .= ' < ';
 			$steps = ceil($count/$limit);
 			for ($i=0; $i<$steps;) {
 				$linknotch = $i*$limit;
@@ -156,6 +181,7 @@ class tx_skcalendar_listview extends tx_skcalendar_htmlview {
 				if ($linknotch != $notch) $return .= '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$link) . '">' . $i . '</a> ';
 				else $return .= $i . ' ';
 			}
+			$return .= ' >';
 		}
 		return $return;
 	}

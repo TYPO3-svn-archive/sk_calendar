@@ -26,13 +26,28 @@ History:
 19.10.2004
 - First release to the Public
 
+28.10.2004 0.1.0
+- First Upload to TER after raising the uploadquota (thanks robert)
+
+09.11.2004 0.1.1
+- Fix display of times
+- change CE to dropdowns rather than checkboxes
+- banned exeptions from normal pages (view only)
+- exeptions did not work when saving & closing
+- minor fixes
+- fix in filter (organizer now work)
+- finish and dutch translation
+
 XX.XX.XXXX
-- Switchable BE-Modes (data from samepage or specified sysfolder)
+- Switchable BE-Modes (data from same page or specified sysfolder)
+- TEMPLATE-SYSTEM (!)
 - Listview
+- Archive
+- Upcoming Events
 - Textsearch events
 - Switch Warnings via TS
 - fix VCE-Editmode
-- minor changes
+- minor fixes
 
 To Do:
 -------------------------------------------------------------------
@@ -41,12 +56,12 @@ To Do:
 - After editing an recurring event system does not automatically return to listview ($backpath?)
 - codeoptimization wherever it is commented in the code
 - Force Category Icons to be 10x10 pixel and .gif or .jpg (I assume this can be done in the $tca)
-- Colorpicker is not picking colors
+- Colorpicker is not picking colors ($tca, again?)
 - Although you can assign usergroups they are ignored in frontend
 - Dates > 100 seem to be a problem
 - Count of the dates only count physical amounts (bug or feature?)
-- templatesystem for sk_calendar
 - Multiple Select
 - yearview should not base on htmlview since it generates a pdf
 - Additional Holidays via TS
 - Why is TStamp of exeptionsdates not decoded? ($TCA Someplace)
+- Get rid of Errors in EM-Overview

@@ -45,9 +45,11 @@ class tx_skcalendar_feengine {
 	var $todate;
 	var $year;
 	var $content;
+	var $myCobj;
 	
 	function tx_skcalendar_feengine ($container,$conf) {
 	$this->conf = $conf;
+	$this->myCobj = t3lib_div::makeInstance('tslib_cObj');
 	
 	$this->container = $container;
 	if (!$conf['general']['target_pid']) $this->conf['general']['target_pid'] = $GLOBALS["TSFE"]->id;
@@ -136,6 +138,7 @@ class tx_skcalendar_feengine {
 	}
 	
 	function pi_getLL($id) {
+		// shouldn't this work with $this->myCobj->pi_getLL($id) also?
 		tslib_pibase::tslib_pibase();
 		tslib_pibase::pi_setPiVarDefaults();
 		tslib_pibase::pi_loadLL();

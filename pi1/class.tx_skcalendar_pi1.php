@@ -43,14 +43,15 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 	function main($content,$conf)	{
 		$this->conf['general']=$conf['general.']; // I have no idea why there are dots all the sudden.
 		$this->conf['box']=$conf['box.'];
+		$this->conf['upcoming']=$conf['upcoming.'];
 		$this->conf['list']=$conf['list.'];
 		$this->conf['month']=$conf['month.'];
 		$this->conf['warning']=$conf['warning.'];
 		$this->conf['userFunc'] = $conf['userFunc'];
-		
+				
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		$pages = $this->pi_getPidList($this->cObj->data['pages'],$this->cObj->data['pages']);
+		$pages = $this->pi_getPidList($this->cObj->data['pages'],$this->cObj->data['recursive']);
 		// meanwhile
 				
 	
@@ -116,12 +117,15 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			$filters['startdate'] = $offset;
 			$filters['enddate'] = $offset + 86400;
 			break;
-
+			
+			case 'upcoming': // same selection like listview.
 			case 'list':
 			if ($filters['monthfilter']) {
 				$filters['startdate'] = $filters['monthfilter'];
 				$offset_temp = date('m-d-Y',$filters['monthfilter']);
-				$filters['enddate'] = mktime(0,0,0,$offset_temp[0],$offset_temp[1]+1,$offset_temp[2]);
+				$offset_temp = explode('-',$offset_temp);
+				$filters['enddate'] = mktime(0,0,0,$offset_temp[0]+1,$offset_temp[1],$offset_temp[2]);
+				$offset = $filters['monthfilter'];
 			}
 			else {
 				$filters['startdate'] = $offset;
@@ -131,9 +135,18 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			break;
 			
 			case 'archive':
-			$filters['startdate'] = 1; // show us everything (0 would disable filter)
-			$offset_temp = date('m-d-Y');
-			$filters['enddate'] = mktime(); // ... until today
+			if ($filters['monthfilter']) {
+				$filters['startdate'] = $filters['monthfilter'];
+				$offset_temp = date('m-d-Y',$filters['monthfilter']);
+				$offset_temp = explode('-',$offset_temp);
+				$filters['enddate'] = mktime(0,0,0,$offset_temp[0]+1,$offset_temp[1],$offset_temp[2]);
+				$offset = $filters['monthfilter'];
+			}
+			else {
+				$filters['startdate'] = 1; // show us everything (0 would disable filter)
+				$offset_temp = date('m-d-Y');
+				$filters['enddate'] = mktime(); // ... until today
+			}
 			break;
 
 
@@ -179,6 +192,10 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 
 			case 'archive';
 			$calendar = new tx_skcalendar_archiveview($selection,$this->conf);
+			break;
+	
+			case 'upcoming';
+			$calendar = new tx_skcalendar_upcomingview($selection,$this->conf);
 			break;
 		}		
 		$calendar->setRange($filters['startdate'],$filters['enddate']);

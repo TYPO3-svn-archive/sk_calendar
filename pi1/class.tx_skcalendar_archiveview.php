@@ -31,17 +31,22 @@ class tx_skcalendar_archiveview extends tx_skcalendar_listview {
 	function tx_skcalendar_archiveview($container,$conf) {
 		// calls mothership
 		
-		$this->tx_skcalendar_feengine($container,$conf);
+		$this->tx_skcalendar_htmlview($container,$conf);
 	}
 	
 	function parseCalendar() {
-		$this->conf['general']['filter_month'] = FALSE; // makes no sense here
-		$this->makeFilters();
+	
+		if ($this->conf['list']['filter_month']) $this->conf['list']['filter_month'] = 'reverse'; // we want 2 years in the past
+		if ($this->conf['general']['showlinks']) $this->makeLinks();
+		$this->makeFilters(); // filters are a must
 		$this->conf['general']['showfilters'] = FALSE; // filters already shown
+		$this->conf['general']['showlinks'] = FALSE; // links already shown
 
-		if ($this->container->filters['sword'] || $this->container->filters['categories'] || $this->container->filters['targetgroups'] || $this->container->filters['organizers'] || $this->container->filters['locations']) parent::parseCalendar();
-		else $this->content .= '<p align=center>' . $this->pi_getLL('archive_make_selection') . '</p>';
-			
+		if ($this->container->filters['sword'] || $this->container->filters['categories'] || $this->container->filters['targetgroups'] || $this->container->filters['organizers'] || $this->container->filters['locations'] || $this->container->filters['monthfilter']) parent::parseCalendar();
+		else {
+			$this->template->getSubpart('ARCHIVE_VIEW_NOSELECTION');
+			$this->content .= $this->template->parseTemplate();
+			}
 	}
 }
 

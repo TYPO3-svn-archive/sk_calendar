@@ -31,53 +31,42 @@ class tx_skcalendar_detailview extends tx_skcalendar_htmlview {
 	function tx_skcalendar_detailview($container,$conf) {
 		$this->showID = $conf['uid'];
 		// calls mothership
-		$this->tx_skcalendar_feengine($container,$conf);
+		$this->tx_skcalendar_htmlview($container,$conf);
 	}
 
 	function parseCalendar() {
-		$act_date = $this->offset;
-		$this->content = '<table cellspacing=0 cellpadding=0 border=0 width=100%>';
-		while ($act_date < $this->todate) {
+	
+	$act_date = $this->offset;
+	
+	
+	// topwrap
+	
+	// show data
+	$this->template->getSubpart('DETAIL_VIEW_MAIN');
+	while ($act_date < $this->todate) {
 		
 			$m = intval(date('m',$act_date));
 			$d = intval(date('d',$act_date));
 			
 			if ($this->calendarArray[$m][$d]['events']) {
-				$this->content .= '<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td>';
-				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
-					
-					if ($data['uid'] == $this->showID) {
-						$this->content .= '<b>' . $data['title'] . '</b><br>';
-						$this->content .= $this->parseTime($data['wholeday'],$data['date'],$data['start_time'],$data['end_time']) .'<br>';
-						if ($data['cost']) $this->content .= $this->pi_getLL('cost') . ': ' . $data['cost'] . ' &euro;<br>';
-						if ($data['description']) $this->content .=$this->pi_getLL('description').':'. $data['description'] . '<br>';
-						if ($data['highlight']) $this->content .= 'Ausgebucht!<br>';
-						if ($data['image']) $this->content .= 'Image: <img src=uploads/tx_skcalendar/ ' . $data['image'] . '<br>';
-						if ($data['pages']) $this->content .= '<a href=?'. $data['pages'] . '>Verwandte Seiten: </a>' . $data['pages'] . '<br>';
-						if ($data['pages']) $this->content .= $this->pi_getLL('further_information') . ': <a href="' . $data['link'] . '" target="new">' . $data['link'] . '</a><br>';
-						if ($data['category']) {
-							$cat = $this->getCategory($data['category']);
-							$this->content .= $this->pi_getLL('category') . ': ' . $cat['name'] . '<br>';
-						}
-						if ($data['organizer']) {
-							$orga = $this->getOrganizer($data['organizer']);
-							$this->content .= $this->pi_getLL('organizer') . ': ' . $orga['name'] . '<br>';
-						}
-						if ($data['targetgroup']) {
-							$target = $this->getTargetgroup($data['targetgroup']);
-							$this->content .= $this->pi_getLL('targetgroup') . ': ' . $target['name'] . '<br>';
-						}						
-						$this->content .= '<div align=right><a href="' . "javascript:history.back()" . '"> << ' . $this->pi_getLL('back') . '</a></div><br><br>';
-
+			
+			while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
+				if ($data['uid'] == $this->showID) {
+					$data['description'] = $this->myCobj->stdWrap($data['description'],$this->conf['general']['rtefield_stdWrap.']);
+					$this->template->setItem($data);
+					$content .= $this->template->parseTemplate();
 					}
 				}
-				$this->content .= '</td></tr></table></td></tr>';
 			}
-
 			$act_date = $act_date+86400;
+			} 
+		
+	// Wrap
+	$temp['wrapit'] = $content;
+	$this->template->setTempData($temp);
+	$this->template->getSubpart('DETAIL_VIEW_WRAP');
+	$this->content .= $this->template->parseTemplate();
 
-		}
-		$this->content .= '<tr><td>&nbsp;</td></tr></table>';
 	}
 }
 

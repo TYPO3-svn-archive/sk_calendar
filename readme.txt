@@ -19,3 +19,5 @@ Insbesondere steht auf meiner Liste:
 Das was funktioniert gibt euch aber einen Eindruck zur Funktionsweise und Administration des Kalenders.
 
 Bitte feedback an skcalendar@sitekick.de
+
+update

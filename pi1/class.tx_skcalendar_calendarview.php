@@ -21,11 +21,11 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_HTMLview.php');
+require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_weekview.php');
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_PDFview.php');
 
 // FE-Engine
-class tx_skcalendar_feEngine {
+class tx_skcalendar_calendarview {
 	var $results;
 	var $calendarArray;
 	var $container;
@@ -33,29 +33,24 @@ class tx_skcalendar_feEngine {
 	var $holidays;
 	var $year;
 	var $content;
-	var $notch;
+	var $offset;
+	var $todate;
+	var $events;
 
 	/**
 	* @return void
 	* @desc init stuff
 	*/
-	function tx_skcalendar_feEngine($container, $type) {
+	function tx_skcalendar_calendarview($container, $type) {
 		$this->container = $container;
 		$this->type = $type;
 		$this->year = date('Y');
 		$this->holidays = array();
 		$this->events = $container->result;
+		if (!$this->events) $this->events = Array();
 		setlocale(LC_TIME, "de_DE"); // should be edited by TS later
-
 	}
 
-	/**
-	* @return void
-	* @desc set the year
-	*/
-	function setYear($year) {
-		$this->year = intval($year);
-	}
 
 	/**
 	* @return void
@@ -132,21 +127,28 @@ class tx_skcalendar_feEngine {
 		}
 	}
 
+	function setOffset($offset=false) {
+		if ($offset) $this->offset = $offset;
+		else $this->offset = date('m-d-Y');
+		
+		$this->year = intval(strrev(substr(strrev($this->offset),0,4))); // :)
+		if (!$this->todate) $this->todate = $this->offset; // just to be sure
+		}
+	/**
+	* @return string
+	* @desc calculate enddate dummyfunction
+	*/
+	function makeToDate($offset) {
+		return $offset;
+		}
+
 	/**
 	* @return void
 	* @desc create calendararray
 	*/
-	function createCalendar ($fromdate=false,$todate) { //Dates have form 'month-day'
-	if (!$fromdate) $fromdate = date('m-d');
-	// one never knows
-	if ($fromdate >$todate) {
-		$temp = $todate;
-		$todate = $fromdate;
-		$fromdate = $temp;
-		unset ($temp);
-	}
-	$fromdate = explode('-',$fromdate);
-	$todate = explode('-',$todate);
+	function createCalendar () { 
+	$fromdate = explode('-',$this->offset);
+	$todate = explode('-',$this->todate);
 	// forming the basic calendar array with the form $calendar[month][day]
 	for ($temp=intval($fromdate[0]); $temp<=(intval($todate[0])); $temp++)
 	{

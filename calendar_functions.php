@@ -104,4 +104,26 @@ function addToExeptions($exeptions, $exeption)
 	return $exept_string;
 }
 
+function filterRange($events,$filters=false) {
+	reset ($events);
+	if ($filters['startdate']) {
+	$offset = explode('-',$filters['startdate']);
+	$offset = mktime(0,0,0,$offset[0],$offset[1],$offset[2]);
+	while (list(,$data) = each ($events)) {
+		if ($data['date'] > $offset) $event_arr[] = $data;
+		}
+		
+		$events = $event_arr;
+		}
+	if ($filters['enddate']) {
+		$offset = explode('-',$filters['enddate']);
+	$offset = mktime(0,0,0,$offset[0],$offset[1],$offset[2]);
+	while (list(,$data) = each ($events)) {
+		if ($data['date'] < $offset) $event_arr[] = $data;
+		}
+		$events = $event_arr;
+		}
+	return $events;
+	}
+
 ?>

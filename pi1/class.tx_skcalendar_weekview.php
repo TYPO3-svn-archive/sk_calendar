@@ -25,17 +25,15 @@
 
 // Manage HTML-View of Data
 
-class tx_skcalendar_HTMLview extends tx_skcalendar_feEngine {
+class tx_skcalendar_weekview extends tx_skcalendar_calendarView {
 	
-	function tx_skcalendar_HTMLview($container,$type,$conf) {
+	function tx_skcalendar_weekview($container,$type,$conf) {
 		// calls mothership
-		$this->tx_skcalendar_feEngine($container,$type,$conf);	
+		$this->tx_skcalendar_calendarView($container,$type,$conf);	
 	}
 
 	function parseCalendar() {
 		reset ($this->events);
-		switch ($this->type) {
-			case 'list':			
 				if (!$this->conf['templateFile']) $this->conf['templateFile'] = 'typo3conf/ext/sk_calendar/pi1/template.tmpl';
 				//$this->listTemplateCode = $this->cObj->fileResource($this->conf["templateFile"]);
 				//$tmpl_listwrap = $this->cObj->getSubpart($this->listTemplateCode, "###LISTWRAP###");
@@ -43,31 +41,12 @@ class tx_skcalendar_HTMLview extends tx_skcalendar_feEngine {
 				//$tmpl_detail =  $this->cObj->getSubpart($this->listTemplateCode, "###DETAIL###");
 				$this->content = '<b>Listview:</b><br>';
 				while (list(,$data) = each($this->events)) {
-					$this->content .= $data['uid'] . '<br>';
+					$this->content .= date('d-m-Y',$data['date']) . ' - ' . $data['title'] . '<br>';
 				}
+				
 				/*$this->content = '<form action="'.$this->pi_getPageLink($GLOBALS["TSFE"]->id).'" method="POST"><input type="hidden" name="no_cache" value="1">';
 				$this->content .= '<input type="submit" name="notch" value="d+"/>'
 				. '<input type="submit" name="notch" value="d-"/>'
 				. '</form>';*/
-			break;
-			
-			case 'detail':
-			$this->content = '<b>Detail view:</b><br>';
-			break;
-			
-			case 'day':
-			$this->content = '<b>Daily view:</b><br>';
-			break;
-			
-			case 'month':
-			$this->content = '<b>Monthly view:</b><br>';
-			
-			case 'semiyear':
-			$this->content = '<b>Semiyear view:</b><br>';
-			
-			default:
-			$this->content = 'HTMLview: Type is not supported';
-			break;
-		}
 	}
 }

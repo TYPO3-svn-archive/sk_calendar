@@ -29,14 +29,13 @@
 
 
 require_once(PATH_tslib."class.tslib_pibase.php");
-require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_feEngine.php');
+require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_calendarview.php');
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_selection.php');
 
 class tx_skcalendar_pi1 extends tslib_pibase {
 	var $prefixId = "tx_skcalendar_pi1";		// Same as class name
 	var $scriptRelPath = "pi1/class.tx_skcalendar_pi1.php";	// Path to this script relative to the extension dir.
 	var $extKey = "sk_calendar";	// The extension key.
-	var $notch; // move between days/weeks/months/years
 	
 	/**
 	 * This is only an example output of the data, so other ways of displaying data will be developed on demand.
@@ -45,9 +44,10 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		if (!$GLOBALS['HTTP_POST_VARS']['fromdate']) $fromdate = '01-01';
-		if (!$GLOBALS['HTTP_POST_VARS']['todate']) $todate = '12-31';
-		debug($notch);
+		if ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']) $offset = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset'];
+		elseif ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']) $offset = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset'];
+		if (!$offset) $offset = '01-01-' . date('Y');
+		
 		// prepare typolinks
 		$this->allowCaching = 0;
 		$link_conf = $this->typolink_conf;
@@ -57,13 +57,17 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$link_conf["useCacheHash"]=$this->allowCaching;
 		$link_conf["no_cache"]=!$this->allowCaching;
 		
+		// prepare filters
+		$filters['startdate'] = $offset;
+		
 		$selection = new tx_skcalendar_internal();
+		$selection->setFilters($filters);
 		$selection->prepareQuery();
 		$selection->getResults();
 		
-		$calendar = new tx_skcalendar_HTMLview($selection,'list',$conf);
-		$calendar->createHolidays('DE');
-		$calendar->createCalendar($fromdate,$todate);
+		$calendar = new tx_skcalendar_weekview($selection,'list',$conf);
+		$calendar->setOffset($offset);
+		$calendar->createCalendar($offset);
 		$calendar->parseCalendar();
 		
 	return $this->pi_wrapInBaseClass($calendar->content);

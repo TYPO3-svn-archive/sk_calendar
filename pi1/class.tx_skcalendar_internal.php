@@ -82,13 +82,6 @@ class tx_skcalendar_internal extends tx_skcalendar_selection {
 		parent::getResults();
 	}
 
-	/**
-	* @return void
-	* @desc Alters the result Array by adding e.g. recurring events
-	*/
-	function postprocessQuery() {
-		$this->result = addRecurringEvents($this->result);
-	}
 }
 
 

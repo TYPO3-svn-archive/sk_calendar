@@ -28,7 +28,7 @@ define('FPDF_CACHE',t3lib_extMgm::extPath('sk_calendar').'fpdf152/cache/');//Für
 
 // Manage HTML-View of Data
 
-class tx_skcalendar_PDFview extends tx_skcalendar_feEngine {
+class tx_skcalendar_PDFview extends tx_skcalendar_calendarView {
 	
 	function tx_skcalendar_PDFview($container,$type=false) {
 		// calls mothership

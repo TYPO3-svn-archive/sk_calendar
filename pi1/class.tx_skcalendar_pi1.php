@@ -83,6 +83,8 @@ else
 		
 		$calendar->setCalendar($offset);
 		$calendar->queryCalendar();
+		
+		if ($calendar->events) {
 		while (list(,$event) = each ($calendar->events)) 
 		{
 			$event = $calendar->decodeEvent($event);
@@ -102,7 +104,8 @@ else
 			$row = $this->cObj->substituteMarkerArrayCached($tmpl_row,$markerArray,array(),array());
 			$cache['###LIST###'] .= $row;
 		}
-		if (!$cache['###LIST###']) $cache['###LIST###'] = ' '; // in case there are no events
+		}
+		else $cache['###LIST###'] = ' '; // in case there are no events
 		// wrapit
 		$content = $this->cObj->substituteMarkerArrayCached($tmpl_listwrap,$cache,array(),array());
 	}

@@ -103,7 +103,7 @@ CREATE TABLE tx_skcalendar_events (
 	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	fe_group int(11) DEFAULT '0' NOT NULL,
 	title varchar(50) DEFAULT '' NOT NULL,
-	date int(11) DEFAULT '' NOT NULL,
+	date int(11) DEFAULT '0' NOT NULL,
 	start_time varchar(5) DEFAULT '' NOT NULL,
 	end_time varchar(5) DEFAULT '' NOT NULL,
 	wholeday tinyint(3) unsigned DEFAULT '0' NOT NULL,

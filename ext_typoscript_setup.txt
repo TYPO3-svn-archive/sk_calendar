@@ -11,6 +11,7 @@ plugin.tx_skcalendar_pi1.general.filter_cat = {$plugin.tx_skcalendar_pi1.general
 plugin.tx_skcalendar_pi1.general.filter_orga = {$plugin.tx_skcalendar_pi1.general.filter_orga}
 plugin.tx_skcalendar_pi1.general.filter_loc = {$plugin.tx_skcalendar_pi1.general.filter_loc}
 plugin.tx_skcalendar_pi1.general.filter_target = {$plugin.tx_skcalendar_pi1.general.filter_target}
+plugin.tx_skcalendar_pi1.list.filter_month = {$plugin.tx_skcalendar_pi1.general.filter_month}
 plugin.tx_skcalendar_pi1.warning.filter = {$plugin.tx_skcalendar_pi1.warning.filter}
 
 plugin.tx_skcalendar_pi1 {

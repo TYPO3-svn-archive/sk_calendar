@@ -21,7 +21,10 @@ plugin.tx_skcalendar_pi1.general.showlinks = 1
 #cat=plugin.tx_skcalendar/enable/c; type=options[yes=1, no=0]; label=Show Filters: Show filters for Categories, Targetgroups, etc.
 plugin.tx_skcalendar_pi1.general.showfilters = 1
 
-#cat=plugin.tx_skcalendar/enable/d; type=options[yes=1, no=0]; label=Filter Warning: Show warning if no dropdownfilters are present.
+#cat=plugin.tx_skcalendar/enable/d; type=options[yes=1, no=0]; label=Show Monthdropdown: Show dropdown for the next 2 Years in Filters of Listview (filters must be on)
+plugin.tx_skcalendar_pi1.list.filter_month = 1
+
+#cat=plugin.tx_skcalendar/enable/e; type=options[yes=1, no=0]; label=Filter Warning: Show warning if no dropdownfilters are present.
 plugin.tx_skcalendar_pi1.warning.filter = 1
 
 #cat=plugin.tx_skcalendar/other/d; type=int+; label=Targetpage: Page to Target the Detailview.

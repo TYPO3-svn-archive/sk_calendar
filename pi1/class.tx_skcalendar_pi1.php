@@ -74,6 +74,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		if ($this->piVars['categories']) $filters['categories'][0] = intval($this->piVars['categories']);
 		if ($this->piVars['locations']) $filters['locations'][0] = intval($this->piVars['locations']);
 		if ($this->piVars['organizers']) $filters['organizers'][0] = intval($this->piVars['organizers']);
+		if ($this->piVars['monthfilter']) $filters['monthfilter'] = intval($this->piVars['monthfilter']); // month filters in Listview
 		if ($pages) $filters['pid'] = $pages; 
 		else $filters['pid'] = $GLOBALS["TSFE"]->id; // same page if no pid is given
 		
@@ -117,9 +118,16 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			break;
 
 			case 'list':
-			$filters['startdate'] = $offset;
-			$offset_temp = date('m-d-Y',$offset);
-			$filters['enddate'] = mktime(0,0,0,$offset_temp[0],$offset_temp[1],$offset_temp[2]+5); // 5 years should result enough entries for the list. Cannot select unlimited because of infinite recurring events
+			if ($filters['monthfilter']) {
+				$filters['startdate'] = $filters['monthfilter'];
+				$offset_temp = date('m-d-Y',$filters['monthfilter']);
+				$filters['enddate'] = mktime(0,0,0,$offset_temp[0],$offset_temp[1]+1,$offset_temp[2]);
+			}
+			else {
+				$filters['startdate'] = $offset;
+				$offset_temp = date('m-d-Y',$offset);
+				$filters['enddate'] = mktime(0,0,0,$offset_temp[0],$offset_temp[1],$offset_temp[2]+5); // 5 years should result enough entries for the list. Cannot select unlimited because of possible infinite recurring events
+			}
 			break;
 			
 			case 'archive':

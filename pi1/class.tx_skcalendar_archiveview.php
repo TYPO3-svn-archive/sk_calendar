@@ -35,6 +35,7 @@ class tx_skcalendar_archiveview extends tx_skcalendar_listview {
 	}
 	
 	function parseCalendar() {
+		$this->conf['general']['filter_month'] = FALSE; // makes no sense here
 		$this->makeFilters();
 		$this->conf['general']['showfilters'] = FALSE; // filters already shown
 

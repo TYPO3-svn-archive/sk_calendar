@@ -153,16 +153,19 @@ class tx_skcalendar_feengine {
 		else return $this->categories[$catid];
 	}
 
-	function getLocation($locid) {
-		return $this->locations[$locid];
+	function getLocation($locid,$field=FALSE) {
+		if ($field) return $this->locations[$locid][$field];
+		else return $this->locations[$locid];
 	}
 
-	function getOrganizer($orga) {
-		return $this->organizers[$orga];
+	function getOrganizer($orga,$field=FALSE) {
+		if ($field) return $this->organizers[$orga][$field];
+		else return $this->organizers[$orga];
 	}
 
-	function getTargetgroup($target) {
-		return $this->targetgroups[$target];
+	function getTargetgroup($target,$field=FALSE) {
+		if ($field) return $this->targetgroups[$target][$field];
+		else return $this->targetgroups[$target];
 	}
 
 

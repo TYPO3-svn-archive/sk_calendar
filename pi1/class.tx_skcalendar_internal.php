@@ -81,28 +81,17 @@ var $targetgroups = array();
 		}
 	
 	// retrieve data
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,color,icon','tx_skcalendar_category','NOT deleted AND NOT hidden AND pid IN ('. $dataSource . ')','','title');
-	while (list($id,$name,$color,$icon) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->categories[$id] = array(
-	'id' => $id,
-	'name' => $name,
-	'color' => $color,
-	'icon' => $icon
-	);
-	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title','tx_skcalendar_location','NOT deleted AND NOT hidden AND pid IN ('. $dataSource . ')','','title');
-	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->locations[$id] = array(
-	'id' => $id,
-	'name' => $name
-	);
-	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,name','tx_skcalendar_organizer','NOT deleted AND NOT hidden AND pid IN ('. $dataSource . ')','','name');
-	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->organizers[$id] = array(
-	'id' => $id,
-	'name' => $name
-	);
-	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title','tx_skcalendar_targetgroup','NOT deleted AND NOT hidden AND pid IN ('. $dataSource . ')','','title');
-	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->targetgroups[$id] = array(
-	'id' => $id,
-	'name' => $name
-	);
+	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,color,icon','tx_skcalendar_category','NOT deleted AND NOT hidden AND pid IN ('. $dataSource . ')','','title');
+	while ($data = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) $this->categories[$data['uid']] = $data;
+	
+	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,link,street,zip,city','tx_skcalendar_location','NOT deleted AND NOT hidden AND pid IN ('. $dataSource . ')','','title');
+	while ($data = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) $this->locations[$data['uid']] = $data;
+	
+	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,name,link,logo,phone,email','tx_skcalendar_organizer','NOT deleted AND NOT hidden AND pid IN ('. $dataSource . ')','','name');
+	while ($data = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) $this->organizers[$data['uid']] = $data;
+	
+	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,icon','tx_skcalendar_targetgroup','NOT deleted AND NOT hidden AND pid IN ('. $dataSource . ')','','title');
+	while ($data = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) $this->targetgroups[$data['uid']] = $data;
 }
 
 

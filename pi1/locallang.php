@@ -7,6 +7,8 @@
 
 $LOCAL_LANG = Array (
 	"default" => Array (
+		"choose_month" => "Choose month",
+		"all_month" => "Show all months",
 		"other_views" => "Other views",
 		"month_view" => "monthly view",
 		"week_view" => "Weekly view",
@@ -44,7 +46,7 @@ $LOCAL_LANG = Array (
 		"pentacost" => "Pentacost",
 		"pentacostmo" => "Pentacost Monday",
 		"mariaehf" => "Mariahimmelfahrt",
-		"allerheilig" => "Allerheiligen",
+		"allerheilig" => "All hallows",
 		"christmas26" => "2. Weihnachtsf.",
 		"christihf" => "Christ. Himmelf.",
 		"fronleich" => "Fronleichnam",
@@ -63,11 +65,14 @@ $LOCAL_LANG = Array (
 		"choose_org" => "Choose organizer",
 		"choose_tar" => "Choose targetgroup",
 		"archive_make_selection" => "Please specify your search",
-
+		"page" => "Page",
 		),
 	"dk" => Array (
 	),
 	"de" => Array (
+		"choose_month" => "Monat wählen",
+		"all_month" => "alle Monate anzeigen",
+		"page" => "Seite",
 		"other_views" => "Alternative Ansichten",
 		"month_view" => "Monatsansicht",
 		"week_view" => "Wochenansicht",

@@ -99,7 +99,7 @@ return $return;
 				if (count($this->categories)>1) {
 					$cat_sel[$this->container->filters['categories'][0]] = ' selected';
 					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_cat') . '</td><td><select name="tx_skcalendar_pi1[categories]"><option value="">' . $this->pi_getLL('all_cat') . '</option>';
-					while (list(,$data) = each ($this->categories)) $this->content .= '<option value="' . $data['id'] . '"'. $cat_sel [$data['id']] . '>' . $data['name'] . '</option>';
+					while (list(,$data) = each ($this->categories)) $this->content .= '<option value="' . $data['uid'] . '"'. $cat_sel [$data['uid']] . '>' . $data['title'] . '</option>';
 					$this->content .= '</select></td></tr>';
 					}
 
@@ -107,30 +107,42 @@ return $return;
 				if (count($this->locations)>1) {
 					$loc_sel[$this->container->filters['locations'][0]] = ' selected';
 					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_loc') . '</td><td><select name="tx_skcalendar_pi1[locations]"><option value="">' . $this->pi_getLL('all_location') . '</option>';
-					while (list(,$data) = each ($this->locations)) $this->content .= '<option value="' . $data['id'] . '"'. $loc_sel [$data['id']] . '>' . $data['name'] . '</option>';
+					while (list(,$data) = each ($this->locations)) $this->content .= '<option value="' . $data['id'] . '"'. $loc_sel [$data['uid']] . '>' . $data['title'] . '</option>';
 					$this->content .= '</select></td></tr>';
 				}
 				reset ($this->organizers);
 				if (count($this->organizers)>1) {
 					$org_sel[$this->container->filters['organizers'][0]] = ' selected';
 					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_org') . '</td><td><select name="tx_skcalendar_pi1[organizers]"><option value="">' . $this->pi_getLL('all_organizer') . '</option>';
-					while (list(,$data) = each ($this->organizers)) $this->content .= '<option value="' . $data['id'] . '"'. $org_sel [$data['id']] . '>' . $data['name'] . '</option>';
+					while (list(,$data) = each ($this->organizers)) $this->content .= '<option value="' . $data['id'] . '"'. $org_sel [$data['uid']] . '>' . $data['title'] . '</option>';
 					$this->content .= '</select></td></tr>';
 				}
 				reset ($this->targetgroups);
 				if (count($this->targetgroups)>1) {
 					$tar_sel[$this->container->filters['targetgroups'][0]] = ' selected';
 					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_tar') . '</td><td><select name="tx_skcalendar_pi1[targetgroups]"><option value="">' . $this->pi_getLL('all_targetgroup') . '</option>';
-					while (list(,$data) = each ($this->targetgroups)) $this->content .= '<option value="' . $data['id'] . '"'. $tar_sel [$data['id']] . '>' . $data['name'] . '</option>';
+					while (list(,$data) = each ($this->targetgroups)) $this->content .= '<option value="' . $data['id'] . '"'. $tar_sel [$data['uid']] . '>' . $data['title'] . '</option>';
 					$this->content .= '</select></td></tr>';
 				}
-				$this->content .= '</table>';
-				// close form
+				
 				
 			}
-			elseif ($this->conf['warning']['filter']) $this->content .= '<tr valign=top><td>' . $this->pi_getLL('filter_error') . '</td></tr></table>';
+			elseif ($this->conf['warning']['filter']) $this->content .= '<tr valign=top><td>' . $this->pi_getLL('filter_error') . '</td></tr>';
+			if (!$this->conf['list']['filter_month']) {
+					$month_sel[$this->offset] = ' selected';
+					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_month') . '</td><td><select name="tx_skcalendar_pi1[monthfilter]"><option value="">' . $this->pi_getLL('all_month') . '</option>';
+					$act_date = date('m-Y');
+					$act_date = explode('-',$act_date);
+					
+					while ($m < 24) {
+						$newoffset = mktime(0,0,0,$act_date[0]+$m,1,$act_date[1]);
+						$this->content .= '<option value="' . $newoffset . '"'. $month_sel[$newoffset] . '>' . strftime('%B %Y',$newoffset) . '</option>';
+						$m++;
+					}
+					$this->content .= '</select></td></tr>';
+				}
 
-			$this->content .= '<br><input type=submit value="' . $this->pi_getLL('do_filter') . '"></form>';
+			$this->content .= '</table><br><input type=submit value="' . $this->pi_getLL('do_filter') . '"></form>';
 
 
 		}

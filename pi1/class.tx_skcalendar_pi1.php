@@ -46,7 +46,6 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 		if ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']) $offset = intval($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']);
 		elseif ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']) $offset = intval($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']);
-		if (!$this->conf['type']) $this->conf['type'] = 'box';
 		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['detail']) $this->conf['type'] = 'detail';
 
 		switch ($this->conf['type']) {

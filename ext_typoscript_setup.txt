@@ -2,3 +2,4 @@ plugin.tx_skcalendar >
 
 #cat=tx_skcalendar//test; type=options[,1,2]; label=Testentry: This does nothing whatsoever.
 plugin.tx_skcalendar_pi1.range = 604800
+plugin.tx_skcalendar_pi1.type = week

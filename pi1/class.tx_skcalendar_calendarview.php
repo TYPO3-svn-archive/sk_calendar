@@ -29,10 +29,10 @@ require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_month
 
 // FE-Engine
 class tx_skcalendar_calendarview {
-	var $categories;
-	var $targetgroups;
-	var $organizers;
-	var $locations;
+	var $categories = array();
+	var $targetgroups = array();
+	var $organizers = array();
+	var $locations = array();
 	var $results;
 	var $calendarArray;
 	var $container;
@@ -299,3 +299,4 @@ if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_cale
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_calendarview.php"]);
 }
 
+?>

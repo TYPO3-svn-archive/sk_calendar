@@ -102,7 +102,8 @@ class tx_skcalendar_selection {
 		// mutisort for array is needed
 		// sorting of daily events based on start_time
  		$mydata = array();
- 		$mydata = $this->result;
+ 		$mystart = array();
+		$mydata = $this->result;
  		foreach ($mydata as $key => $row) {
     		$mystart[$key]  = $row['start_time'];
  		}
@@ -110,7 +111,6 @@ class tx_skcalendar_selection {
  
  		$this->result = $mydata;
 		 unset ($mydata);
-		}
 
 		}
 }

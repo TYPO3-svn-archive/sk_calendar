@@ -397,7 +397,7 @@ $TCA["tx_skcalendar_events"] = Array (
 				"type" => "input",
 				"size" => "8",
 				"max" => "20",
-				"eval" => "date",
+				"eval" => "required,date",
 				"checkbox" => "0",
 				"default" => "0"
 			)
@@ -723,24 +723,26 @@ $TCA["tx_skcalendar_events"] = Array (
 	)
 );
 
-function user_time_input($PA)
-{
-	/*$checked[1] = ' checked';
-	$id = $PA['row']['uid'];
-	$out = "<table cellpadding=0 cellspacing=0 border=0><tr valign=middle><td><input type=\"text\" name=\"data[tx_inputcalendar_events][$id][start_time]_hr\" value=\"\" style=\"width:48px;\" maxlength=\"5\" onchange=\"typo3FormFieldGet('data[tx_inputcalendar_events][$id][start_time]','required,trim','',0,'');TBE_EDITOR_fieldChanged('tx_inputcalendar_events','$id','start_time','data[tx_inputcalendar_events][$id][start_time]');\" /><input type=\"hidden\" name=\"data[tx_inputcalendar_events][$id][start_time]\" value=\"".$PA['row']['start_time']."\" /></td><td> - <input type=\"text\" name=\"data[tx_inputcalendar_events][$id][end_time]_hr\" value=\"\" style=\"width:48px;\" maxlength=\"5\" onchange=\"typo3FormFieldGet('data[tx_inputcalendar_events][2][end_time]','trim','',0,'');TBE_EDITOR_fieldChanged('tx_inputcalendar_events','2','end_time','data[tx_inputcalendar_events][2][end_time]');\" /><input type=\"hidden\" name=\"data[tx_inputcalendar_events][$id][end_time]\" value=\"".$PA['row']['end_time']."\" /></td><td><input type=\"checkbox\" value=\"1\" name=\"data[tx_inputcalendar_events][$id][wholeday]_0\" onclick=\"document.editform['data[tx_inputcalendar_events][$id][wholeday]'].value=this.checked?(document.editform['data[tx_inputcalendar_events][$id][wholeday]'].value|1):(document.editform['data[tx_inputcalendar_events][$id][wholeday]'].value&amp;0);TBE_EDITOR_fieldChanged('tx_inputcalendar_events','$id','wholeday','data[tx_inputcalendar_events][$id][wholeday]');\" ".$checked[$PA['row']['wholeday']]." /><input type=\"hidden\" name=\"data[tx_inputcalendar_events][$id][wholeday]\" value=\"".$PA['row']['wholeday']."\" /></td><td>&nbsp;Wholeday Event</td></tr></table>"; */
-$out = "Hallo Welt";
-return $out;
-	
-}
-
-function user_exeption_handling()
+function user_exeption_handling($PA)
 {
 	if (!$PA['row']['exeptions'] || strchr($PA['row']['exeptions'],'_')) $out = "No exeptions";
 	else {
 		$out = "The following exeptions apply: ";
+		$exeptions = explode(',',$PA['row']['exeptions']);
+		while (list($void, $exeption) = each ($exeptions))
+		{
+			if ($comma) $out .= ', '; // don't comma first entry
+			$comma = 1;
+			$exeption = trim($exeption);
+			$exeption = date('Y-m-d',$exeption);
+			$out .= $exeption;
+		}
+		if ($exept_arr) 
 		$out .= $PA['row']['exeptions'];
 		// there will be posibility to edit the exeption panel in the near future
 	}
+	// hidden field
+	$out .= '<input type="hidden" name="data[tx_skcalendar_events]['. $PA['row']['uid'] .'][exeptions]" value="'.$PA['row']['exeptions'].'">';
 	return $out;
 }
 ?>

@@ -14,16 +14,17 @@ class ux_sc_alt_doc extends SC_alt_doc
 	
 	function processData() {
 	$table = 'tx_skcalendar_events';
-	if ($this->editconf[$table]) $key=array_keys($this->editconf[$table]);
-	$data = t3lib_div::_GP('data');
-	$exeptdate = $data[$table][$key[0]]['date'];
+	$data_arr = t3lib_div::_GP('data');
+	list(,$data)  = each ($data_arr[$table]); // get first entry
+	$exeptdate = $data['date'];
+	
 	
 	// should we write an exeption?
-	if (strpos($data[$table][$key[0]]['exeptions'],'_to_')) $uid = substr($data[$table][$key[0]]['exeptions'],strpos($data[$table][$key[0]]['exeptions'],'exept_to_')+9); // get the ID
+	if (strpos($data['exeptions'],'_to_')) $uid = substr($data['exeptions'],strpos($data['exeptions'],'exept_to_')+9); // get the ID
+
 	if ($uid) {
 		// get data
 		$record = t3lib_BEfunc::getRecord($table,$uid);
-		
 		// write exeption
 		$updatefields['exeptions'] = addToExeptions($record['exeptions'],$exeptdate);
 		$where = "uid='$uid'";
@@ -65,6 +66,7 @@ class ux_sc_alt_doc extends SC_alt_doc
 		$LOCAL_LANG = array_merge($LOCAL_LANG, $aux_lang);
 		// end Q&D
 		list($uid, $action) = each($this->editconf['tx_skcalendar_events']);
+		
 		$suffix = stristr($uid,'_');
 		$exeptdate = substr($suffix,3);
 		$suffix = substr($suffix,0,3);

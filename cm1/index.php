@@ -118,6 +118,7 @@ class tx_skcalendar_cm1 extends t3lib_SCbase {
 	require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_selection.php');
 	if($GLOBALS["HTTP_GET_VARS"]['offset']) $offset = $GLOBALS["HTTP_GET_VARS"]['offset'];
 	else $offset=mktime();
+	$this->conf['offset'] = $offset;
 	
 	$offset_y = date('Y',$offset);
 	$offset_m = date('m',$offset);

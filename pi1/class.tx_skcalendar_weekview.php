@@ -66,7 +66,7 @@ class tx_skcalendar_weekview extends tx_skcalendar_htmlview {
 		// wrap whole thing
 		$this->template->setTempData($temp);
 		$this->template->getSubpart('WEEK_VIEW_WHOLEWRAP');
-		$this->content = $this->template->parseTemplate();
+		$this->content .= $this->template->parseTemplate();
 	}
 
 	function makeNavigation($span) {

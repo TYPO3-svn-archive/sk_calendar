@@ -2,7 +2,15 @@
 include_once('calendar_functions.php');
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_feengine.php');
 
-class tx_skcalendar_vceedit extends tx_skcalendar_htmlview {
+class tx_skcalendar_vceedit  extends tx_skcalendar_htmlview   {
+
+	function tx_skcalendar_vceedit($container,$conf) {
+	// constructor Class
+	$this->container = $container;
+	$this->events = $container->result;
+	if (!$this->events) $this->events = Array();
+
+	}
 
 	function parseCalendar()
 	{
@@ -74,15 +82,15 @@ return $links;
 			{
 				if (!$event['category']) $event['category'] = '../images/cat_fallback.gif';
 				else {
-				$event['category'] = $this->getCategory($event['category']);
-				$event['category'] = '../../../../uploads/tx_skcalendar/' . $event['category']['icon'];
+				$event['category'] = $this->getCategory($event['category'],'icon');
+				$event['category'] = '../../../../uploads/tx_skcalendar/' . $event['category'];
 				}
 				
 				$content .= '<td>';
 				$params = '&edit[tx_skcalendar_events][' . $event['uid'] . ']=edit';
 				$backPath = '../../../../typo3/';
 				$requestUri=substr(t3lib_extMgm::extPath("sk_calendar"),strlen(PATH_site)).'cm1/index.php';
-				$content .= '<a href=# onclick="' . t3lib_BEfunc::editOnClick($params,$backPath) . '"><img src="' . $event['category'] . '" border=0 width=10></a><br></td>';
+				$content .= '<a href=# onclick="' . t3lib_BEfunc::editOnClick($params,$backPath) . '"><img src="' . $event['category'] . '" border=0 width=10 alt="' . $event['title'] . '"></a><br></td>';
 			}
 			$content .= '</tr></table>';
 		}

@@ -1,6 +1,7 @@
 <?php
 if (!defined ("TYPO3_MODE")) 	die ("Access denied.");
 
+
 if (TYPO3_MODE=="BE")	{
 	$GLOBALS["TBE_MODULES_EXT"]["xMOD_alt_clickmenu"]["extendCMclasses"][]=array(
 		"name" => "tx_skcalendar_cm1",
@@ -106,7 +107,7 @@ $TCA["tx_skcalendar_events"] = Array (
 		"default_sortby" => "ORDER BY date",	
 		"delete" => "deleted",	
 		"enablecolumns" => Array (		
-			"disabled" => "hidden",	
+			//"disabled" => "hidden",	no use...
 			"fe_group" => "fe_group",
 		),
 		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
@@ -122,7 +123,7 @@ $TCA["tx_skcalendar_events"] = Array (
 			),
 	),
 	"feInterface" => Array (
-		"fe_admin_fieldList" => "hidden, fe_group, title, date, start_time, end_time, wholeday, link, cost, description, image, highlight, fe_owner, pages, exeptions, recurring, recurr_until, category, organizer, targetgroup, location",
+		"fe_admin_fieldList" => "fe_group, title, date, start_time, end_time, wholeday, link, cost, description, image, highlight, fe_owner, pages, exeptions, recurring, recurr_until, category, organizer, targetgroup, location",
 	)
 );
 
@@ -146,6 +147,8 @@ $TCA["tx_skcalendar_exeptions"] = Array (
 
 t3lib_div::loadTCA("tt_content");
 $TCA["tt_content"]["types"]["list"]["subtypes_excludelist"][$_EXTKEY."_pi1"]="layout,select_key";
+$TCA['tt_content']['types']['list']['subtypes_addlist'][$_EXTKEY.'_pi1']='pi_flexform';
+t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi1', 'FILE:EXT:sk_calendar/flexform_ds.xml');
 
 
 t3lib_extMgm::addPlugin(Array("LLL:EXT:sk_calendar/locallang_db.php:tt_content.list_type", $_EXTKEY."_pi1"),"list_type");

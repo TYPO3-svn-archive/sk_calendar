@@ -1,21 +1,5 @@
 plugin.tx_skcalendar >
 
-plugin.tx_skcalendar_pi1.box.range = {$plugin.tx_skcalendar_pi1.box.range}
-plugin.tx_skcalendar_pi1.upcoming.range = {$plugin.tx_skcalendar_pi1.upcoming.range}
-plugin.tx_skcalendar_pi1.list.limit = {$plugin.tx_skcalendar_pi1.list.limit}
-plugin.tx_skcalendar_pi1.month.iconmode = {$plugin.tx_skcalendar_pi1.month.iconmode}
-plugin.tx_skcalendar_pi1.general.view = {$plugin.tx_skcalendar_pi1.general.view}
-plugin.tx_skcalendar_pi1.general.htmltemplate = {$plugin.tx_skcalendar_pi1.general.htmltemplate}
-plugin.tx_skcalendar_pi1.general.pdftemplate = {$plugin.tx_skcalendar_pi1.general.pdftemplate}
-plugin.tx_skcalendar_pi1.general.showlinks = {$plugin.tx_skcalendar_pi1.general.showlinks}
-plugin.tx_skcalendar_pi1.general.showfilters = {$plugin.tx_skcalendar_pi1.general.showfilters}
-plugin.tx_skcalendar_pi1.general.target_pid = {$plugin.tx_skcalendar_pi1.general.target_pid}
-plugin.tx_skcalendar_pi1.general.filter_cat = {$plugin.tx_skcalendar_pi1.general.filter_cat}
-plugin.tx_skcalendar_pi1.general.filter_orga = {$plugin.tx_skcalendar_pi1.general.filter_orga}
-plugin.tx_skcalendar_pi1.general.filter_loc = {$plugin.tx_skcalendar_pi1.general.filter_loc}
-plugin.tx_skcalendar_pi1.general.filter_target = {$plugin.tx_skcalendar_pi1.general.filter_target}
-plugin.tx_skcalendar_pi1.list.filter_month = {$plugin.tx_skcalendar_pi1.list.filter_month}
-plugin.tx_skcalendar_pi1.warning.filter = {$plugin.tx_skcalendar_pi1.warning.filter}
 plugin.tx_skcalendar_pi1.general.rtefield_stdWrap.parseFunc < tt_content.text.20.parseFunc
 
 plugin.tx_skcalendar_pi1 {

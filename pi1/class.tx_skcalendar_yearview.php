@@ -22,11 +22,11 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 //INIT
-include_once(t3lib_extMgm::extPath('sk_calendar').'fpdf152/fpdf.php');
-define('FPDF_FONTPATH',t3lib_extMgm::extPath('sk_calendar').'fpdf152/font/');//FŸr FPDF
-define('FPDF_CACHE',t3lib_extMgm::extPath('sk_calendar').'fpdf152/cache/');//FŸr FPDF
+include_once(t3lib_extMgm::extPath('sk_calendar').'fpdf152/fpdi.php');
+define('FPDF_FONTPATH',t3lib_extMgm::extPath('sk_calendar').'fpdf152/font/');//Für FPDF
+define('FPDF_CACHE',t3lib_extMgm::extPath('sk_calendar').'fpdf152/cache/');//Für FPDF
 
-// Manage HTML-View of Data
+// Manage PDF-View of Data
 
 class tx_skcalendar_yearview extends tx_skcalendar_htmlview {
 
@@ -40,15 +40,17 @@ class tx_skcalendar_yearview extends tx_skcalendar_htmlview {
 		reset ($this->events);
 		$offset = 1;
 		
-		$pdf=new FPDF('L', 'mm', 'A4');
+		$pdf=new fpdi('L', 'mm', 'A4');
+		
+		// Include Template
+		$pagecount = $pdf->setSourceFile($this->conf['general']['pdftemplate']);
+		$tplidx = $pdf->ImportPage(1);
 		$pdf->Open();
 		$pdf->SetAutoPageBreak(0);
 
 		$pdf->AddPage();
-
-		// include PDF_template
-		include(t3lib_extMgm::extPath('sk_calendar').'/pi1/pdf_template/pdf_example_template.php');
-
+		$pdf->useTemplate($tplidx);
+		
 		//Generate Months
 		$pdf->SetFont('Arial','B',8);
 		$xcoord = 7; // horizontaler Offset
@@ -117,10 +119,8 @@ class tx_skcalendar_yearview extends tx_skcalendar_htmlview {
 		// Seite 2
 		$offset=7;
 		$pdf->AddPage();
-
-		// include PDF_template
-		include(t3lib_extMgm::extPath('sk_calendar').'/pi1/pdf_template/pdf_example_template.php');
-
+		$pdf->useTemplate($tplidx);
+		
 		// months
 		$pdf->SetFont('Arial','B',8);
 		$pdf->SetTextColor(0,0,0);
@@ -193,7 +193,7 @@ class tx_skcalendar_yearview extends tx_skcalendar_htmlview {
 		$path = FPDF_CACHE;
 		$path .= $file;
 
-		$pdf->Output($path, 'F');
+		$pdf->Output($path, 'I');
 		$this->content = $this->pi_getLL('pdf_generated') . ' ' . $this->pi_getLL('dl_pdf') . ' <a href="' . t3lib_extMgm::extRelPath('sk_calendar') . 'fpdf152/cache/' . $file . '">' . $this->pi_getLL('here') . '</a>.';
 		header ('Location: ' . t3lib_extMgm::extRelPath('sk_calendar') . 'fpdf152/cache/' . $file); // This has proven to be best behind paranoid firewalls,
 	}

@@ -48,11 +48,21 @@ var $snippet;
 	}
 			
 	function templatefunc_e_start_time () {
-		if ($this->data['e_start_time']) $this->snippet =  gmstrftime('%H:%M',$this->data['e_start_time']) . ' ';
+		if ($this->data['e_start_time']) {
+			$hours = floor($this->data['e_start_time']/3600);
+			$minutes = ($this->data['e_start_time']%3600)/60; // modulus
+			if ($minutes < 10) $minutes = '0' . $minutes;
+			$this->snippet =  $hours . ':' . $minutes . ' ';
+		}
 		}
 		
 	function templatefunc_e_end_time () {
-			if ($data['e_end_time']) $this->snippet =  '- ' . gmstrftime('%H:%M',$this->data['e_end_time']);
+		if ($this->data['e_end_time']) {
+			$hours = floor($this->data['e_end_time']/3600);
+			$minutes = ($this->data['e_end_time']%3600)/60; // modulus
+			if ($minutes < 10) $minutes = '0' . $minutes;
+			$this->snippet =  '- ' . $hours . ':' . $minutes;
+			}
 		}
 		
 	function templatefunc_backlink() {

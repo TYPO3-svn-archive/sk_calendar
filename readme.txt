@@ -38,9 +38,10 @@ History:
 - fix in filter (organizer now work)
 - finish and dutch translation
 
-XX.XX.XXXX
+18.01.2004
 - Switchable BE-Modes (data from same page or specified sysfolder)
-- TEMPLATE-SYSTEM (!)
+- smart TEMPLATE-SYSTEM (!)
+- Flexforms
 - Listview
 - Archive
 - Upcoming Events
@@ -65,3 +66,4 @@ To Do:
 - Additional Holidays via TS
 - Why is TStamp of exeptionsdates not decoded? ($TCA Someplace)
 - Get rid of Errors in EM-Overview
+- DBAL-Functions rather than MYSQL-Calls (sorry for that)

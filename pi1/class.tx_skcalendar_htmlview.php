@@ -42,7 +42,13 @@ class tx_skcalendar_htmlview extends tx_skcalendar_feengine {
 	function tx_skcalendar_htmlview($container,$conf) {
 		//call mothership
 		$this->tx_skcalendar_feengine($container,$conf);
-		$this->template = new tx_skcalendar_defaultTF;
+		$overrideTF = t3lib_div::getFileAbsFileName('uploads/tx_skcalendar/' . $this->conf['general']['overrideTF']);
+		if (file_exists($overrideTF)) {
+			include_once($overrideTF);
+			}
+		if (class_exists(tx_skcalendar_overrideTF)) $this->template = new tx_skcalendar_overrideTF;	
+		else $this->template = new tx_skcalendar_defaultTF;
+		
 		$this->template->setContainer($container);
 		$this->template->setCode($this->myCobj->fileResource($this->conf['general']['htmltemplate']));
 		
@@ -75,7 +81,7 @@ return $return;
 	}
 
 	function makeLinks() {
-		$link_arr = array ('week' => $this->pi_getLL('week_view'), 'month' =>  $this->pi_getLL('month_view'), 'list' =>  $this->pi_getLL('list_view'), 'year' => $this->pi_getLL('pdf_view'));
+		$link_arr = array ('week' => $this->pi_getLL('week_view'), 'month' =>  $this->pi_getLL('month_view'), 'list' =>  $this->pi_getLL('list_view'), 'year' => $this->pi_getLL('year_view'));
 
 		$this->content .= '<table cellspacing=0 cellpadding=0 width=100%><tr><td colspan=4><b>' . $this->pi_getLL('other_views') . '</b></td></tr><tr valign=top>';
 		$link= $this->prepareTypolink();
@@ -100,7 +106,7 @@ return $return;
 	}
 
 		function makeFilters() {
-		$this->content .= '<br><form action="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target']) . '" method="post"><input type=hidden name=tx_skcalendar_pi1[view] value=' . $this->view . '><input type=hidden name=no_cache value=1><input type=hidden name=tx_skcalendar_pi1[offset] value=' . $this->offset . '><b>' . $this->pi_getLL('filter_view') . '</b></br>';
+		$this->content .= '<br><form action="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id) . '" method="post"><input type=hidden name=tx_skcalendar_pi1[view] value=' . $this->view . '><input type=hidden name=no_cache value=1><input type=hidden name=tx_skcalendar_pi1[offset] value=' . $this->offset . '><b>' . $this->pi_getLL('filter_view') . '</b></br>';
 		$this->content .= '<table class=calendar_sword><tr valign=middle><td>' . $this->pi_getLL('searchword') . '</td><td><input type=text name=tx_skcalendar_pi1[sword] value="' . $this->container->filters['sword'] . '"></td></tr><tr></table>';
 			$this->content .= '<table class=calendar_filters>';
 			// dropdowns
@@ -121,21 +127,21 @@ return $return;
 				if (count($this->locations)>1) {
 					$loc_sel[$this->container->filters['locations'][0]] = ' selected';
 					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_loc') . '</td><td><select name="tx_skcalendar_pi1[locations]"><option value="">' . $this->pi_getLL('all_location') . '</option>';
-					while (list(,$data) = each ($this->locations)) $this->content .= '<option value="' . $data['id'] . '"'. $loc_sel [$data['uid']] . '>' . $data['title'] . '</option>';
+					while (list(,$data) = each ($this->locations)) $this->content .= '<option value="' . $data['uid'] . '"'. $loc_sel[$data['uid']] . '>' . $data['title'] . '</option>';
 					$this->content .= '</select></td></tr>';
 				}
 				reset ($this->organizers);
 				if (count($this->organizers)>1) {
 					$org_sel[$this->container->filters['organizers'][0]] = ' selected';
 					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_org') . '</td><td><select name="tx_skcalendar_pi1[organizers]"><option value="">' . $this->pi_getLL('all_organizer') . '</option>';
-					while (list(,$data) = each ($this->organizers)) $this->content .= '<option value="' . $data['id'] . '"'. $org_sel [$data['uid']] . '>' . $data['name'] . '</option>';
+					while (list(,$data) = each ($this->organizers)) $this->content .= '<option value="' . $data['uid'] . '"'. $org_sel[$data['uid']] . '>' . $data['name'] . '</option>';
 					$this->content .= '</select></td></tr>';
 				}
 				reset ($this->targetgroups);
 				if (count($this->targetgroups)>1) {
 					$tar_sel[$this->container->filters['targetgroups'][0]] = ' selected';
 					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_tar') . '</td><td><select name="tx_skcalendar_pi1[targetgroups]"><option value="">' . $this->pi_getLL('all_targetgroup') . '</option>';
-					while (list(,$data) = each ($this->targetgroups)) $this->content .= '<option value="' . $data['id'] . '"'. $tar_sel [$data['uid']] . '>' . $data['title'] . '</option>';
+					while (list(,$data) = each ($this->targetgroups)) $this->content .= '<option value="' . $data['uid'] . '"'. $tar_sel[$data['uid']] . '>' . $data['title'] . '</option>';
 					$this->content .= '</select></td></tr>';
 				}
 				
@@ -145,7 +151,7 @@ return $return;
 			if ($this->conf['list']['filter_month']) {
 						
 					$month_sel[$this->offset] = ' selected';
-					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_month') . '</td><td><select name="tx_skcalendar_pi1[monthfilter]"><option value="">' . $this->pi_getLL('all_month') . '</option>';
+					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_month') . '</td><td><select name="tx_skcalendar_pi1[monthfilter]"><option value="1">' . $this->pi_getLL('all_month') . '</option>';
 					$act_date = date('m-Y');
 					$act_date = explode('-',$act_date);
 					

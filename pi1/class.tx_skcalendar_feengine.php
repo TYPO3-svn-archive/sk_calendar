@@ -100,6 +100,7 @@ class tx_skcalendar_feengine {
 		);
 
 		if (!function_exists('easter_date')) $easter = $easter_arr[$this->year];
+		
 		else $easter = easter_date($this->year);
 		$this->holidays['easter'] = date("j.n.", $easter);
 		$this->holidays['easterfr'] = date("j.n.", $easter-172800);

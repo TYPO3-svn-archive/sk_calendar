@@ -72,29 +72,34 @@ class tx_skcalendar_te extends tx_skcalendar_htmlview{
 	}
 	
 	function setItem($data) {
+		
 		while (list($key,$value) = each($data)) {
 			$this->data['e_'.$key] = $value; // e as event
 			}
 		if ($data['category']) {
 			$temp = $this->getCategory($data['category']);
+			if (!$temp) $temp = array();
 			while (list($key,$value) = each($temp)) {
 			$this->data['c_'.$key] = $value; // c as category
 			}
 			}
 		if ($data['organizer']) {
 			$temp = $this->getOrganizer($data['organizer']);
+			if (!$temp) $temp = array();
 			while (list($key,$value) = each($temp)) {
 			$this->data['o_'.$key] = $value; // o as organizer
 			}
 			}
 		if ($data['targetgroup']) {
 			$temp = $this->getTargetgroup($data['targetgroup']);
+			if (!$temp) $temp = array();
 			while (list($key,$value) = each($temp)) {
 			$this->data['t_'.$key] = $value; // t as Targetgroup
 			}
 			}
 		if ($data['location']) {
 			$temp = $this->getLocation($data['location']);
+			if (!$temp) $temp = array();
 			while (list($key,$value) = each($temp)) {
 			$this->data['l_'.$key] = $value; // l as Location
 			}
@@ -117,6 +122,7 @@ class tx_skcalendar_te extends tx_skcalendar_htmlview{
 			}
 		$return = $this->my_cObj->substituteMarkerArrayCached($this->subcode, $this->marker_array);
 		unset($this->tempData);
+		unset($this->data);
 		return $return;
 	}
 	

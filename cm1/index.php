@@ -114,7 +114,6 @@ class tx_skcalendar_cm1 extends t3lib_SCbase {
 	function moduleContent()	{
 	global $LANG;
 	
-	require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_feengine.php');
 	require_once(t3lib_extMgm::extPath('sk_calendar').'class.tx_skcalendar_vceedit.php');
 	require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_selection.php');
 	if($GLOBALS["HTTP_GET_VARS"]['offset']) $offset = $GLOBALS["HTTP_GET_VARS"]['offset'];
@@ -132,52 +131,14 @@ class tx_skcalendar_cm1 extends t3lib_SCbase {
 	$selection = new tx_skcalendar_internal();
 	$selection->setFilters($filters);
 	$selection->getResults();
-	
+		
 	$calendar = new tx_skcalendar_vceedit($selection,$this->conf);
 	$calendar->createHolidays('de');
 	$calendar->setRange($filters['startdate'],$filters['enddate']);
 	$calendar->createCalendar();
 	$content = $calendar->parseCalendar();
 
-	/*
-	
-	
-		switch((string)$this->MOD_SETTINGS["function"])	{
-			case 1:
-			include_once('../class.skcalendar.php');
-			$editcal = new htmlView();
-			$editcal->setCalendar();
-			$editcal->setYear(2004);
-			$editcal->makeHolidays();
-			$editcal->queryCalendar();
-			$editcal->setOffset(7);
-			$editcal->makeCalendarArray();
-			
-			$content = $editcal->parseCalendar();
-			
-			
-			
-			
-				/*$content="<div align=center><strong>Hello World!</strong></div><BR>
-					The 'Kickstarter' has made this module automatically, it contains a default framework for a backend module but apart from it does nothing useful until you open the script '".substr(t3lib_extMgm::extPath("sk_calendar"),strlen(PATH_site))."cm1/index.php' and edit it!
-					<HR>
-					<BR>This is the GET/POST vars sent to the script:<BR>".
-					"GET:".t3lib_div::view_array($GLOBALS["HTTP_GET_VARS"])."<BR>".
-					"POST:".t3lib_div::view_array($GLOBALS["HTTP_POST_VARS"])."<BR>".
-					""; 		$this->content.=$this->doc->section($LANG->getLL("ovr_cm1"),$content,0,1);
-			break;
-			case 2:
-				$content="<div align=center><strong>Menu item #2...</strong></div>";
-				$this->content.=$this->doc->section("Message #2:",$content,0,1);
-			break;
-			case 3:
-				$content="<div align=center><strong>Menu item #3...</strong></div>";
-				$this->content.=$this->doc->section("Message #3:",$content,0,1);
-			break;
-		} 
-		
-		*/
-		$this->content.=$this->doc->section($LANG->getLL("ovr_cm1"),$content,0,1);
+	$this->content.=$this->doc->section($LANG->getLL("ovr_cm1"),$content,0,1);
 	}
 }
 

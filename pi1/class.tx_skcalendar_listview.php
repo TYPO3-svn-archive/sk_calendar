@@ -67,12 +67,27 @@ class tx_skcalendar_listview extends tx_skcalendar_htmlview {
 		while ($i<=$this->conf['list']['limit']) {
 			list(,$data) = each($this->container->result);
 			if ($data) {
+		
 			// get basis for sorting
-			$data['organizer'] = $this->getOrganizer($data['organizer'],'name');
-			$data['location'] = $this->getLocation($data['location']);
-			$data['category'] = $this->getCategory($data['category'],'title');
+			switch ($sorting) {
+				case 'date':
+					$prefix = $data['date'];
+					break;
+					
+				case 'location':
+					$prefix = $this->getLocation($data['location'],'title');
+					break;
+				
+				case 'organizer':
+					$prefix = $this->getOrganizer($data['organizer'],'name');
+					break;
+				
+				case 'category':
+					$prefix = $this->getCategory($data['category'],'title');
+					break;
+			}
 			
-			$clean_arr[$data[$sorting] . '_' . $i] = $data;
+			$clean_arr[$prefix . '_' . $i] = $data;
 			$i++;
 			}
 			else $i=$this->conf['list']['limit']+1; // bail out
@@ -144,7 +159,7 @@ class tx_skcalendar_listview extends tx_skcalendar_htmlview {
 		// wrap whole thing
 		$this->template->setTempData($temp);
 		$this->template->getSubpart('LIST_VIEW_WHOLEWRAP');
-		$this->content = $this->template->parseTemplate();
+		$this->content .= $this->template->parseTemplate();
 	}
 	
 	function makeNavigation($up,$notch,$sorting) {

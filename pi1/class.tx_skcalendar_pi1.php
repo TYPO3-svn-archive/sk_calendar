@@ -41,20 +41,55 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 	* This is only an example output of the data, so other ways of displaying data will be developed on demand.
 	*/
 	function main($content,$conf)	{
-		$this->conf['general']=$conf['general.']; // I have no idea why there are dots all the sudden.
-		$this->conf['box']=$conf['box.'];
-		$this->conf['upcoming']=$conf['upcoming.'];
-		$this->conf['list']=$conf['list.'];
-		$this->conf['month']=$conf['month.'];
-		$this->conf['warning']=$conf['warning.'];
+		$this->pi_initPIflexForm();
+		$this->conf = ARRAY(
+			'general' => array(
+				'showlinks' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showlinks','sDEF'),
+				'view' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'default_view','sDEF'),
+				'htmltemplate' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'html_template','sDEF'),
+				'pdftemplate' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'pdf_template','sDEF'),
+				'overrideTF' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'overrideTF','sDEF'),
+				'showfilters' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showfilters','sDEF'),
+				),
+			'box' => array(
+				'range' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'boxrange','s_view'),
+				),
+			'upcoming' => array(
+				'range' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'upcomingrange','s_view'),
+				),
+			'list' => array(
+				'limit' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'listrange','s_view'),
+				'filter_month' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'listmonths','s_view'),
+				),
+			'warning' => array(
+				'filters' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'filters','s_warning'),
+				),
+		);
+		
+		// defaultvalues
+		if (!$this->conf['box']['range']) $this->conf['box']['range'] = 7;
+		if (!$this->conf['upcoming']['range']) $this->conf['upcoming']['range'] = 10;
+		if (!$this->conf['list']['limit']) $this->conf['list']['limit'] = 20;
+		if (!$this->conf['general']['htmltemplate']) $this->conf['general']['htmltemplate'] = 'EXT:sk_calendar/pi1/html_template.html';
+		if (!$this->conf['general']['pdftemplate']) $this->conf['general']['pdftemplate'] = t3lib_div::getFileAbsFileName('EXT:sk_calendar/pi1/pdf_template.pdf');
+		else $this->conf['general']['pdftemplate'] = t3lib_div::getFileAbsFileName('uploads/tx_skcalendar/' . $this->conf['general']['pdftemplate']);
+		if (!$this->conf['general']['overrideTF']) $this->conf['general']['overrideTF'] = 0; // needs to be otherwise directory will be included (results in an error)
+		
+		// switch around for no default values in FF are possible (yet).
+		if ($this->conf['general']['showfilters']) $this->conf['general']['showfilters'] = 0;
+		else $this->conf['general']['showfilters'] =1;
+		if ($this->conf['general']['showlinks']) $this->conf['general']['showlinks'] = 0;
+		else $this->conf['general']['showlinks'] =1;		
+		if ($this->conf['warning']['filters']) $this->conf['warning']['filters'] = 0;
+		else $this->conf['warning']['filters'] =1;				
+
 		$this->conf['userFunc'] = $conf['userFunc'];
 				
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
 		$pages = $this->pi_getPidList($this->cObj->data['pages'],$this->cObj->data['recursive']);
-		// meanwhile
-				
-	
+		if (!$pages) $pages = $GLOBALS["TSFE"]->id;
+			
 		// view & Offset
 		$offset = intval($this->piVars['offset']);
 		if (!$offset) $offset = mktime(0,0,0);
@@ -63,7 +98,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$this->conf['notch'] = $this->piVars['notch']; // listview
 		$this->conf['sorting'] = $this->piVars['sorting']; // listview
 		
-		// read TS
+		// read config
 		if ($this->conf['general']['filter_cat']) $filters['categories'][0] = intval($this->conf['general']['filter_cat']);
 		if ($this->conf['general']['filter_target']) $filters['targetgroups'][0] = intval($this->conf['general']['filter_target']);
 		if ($this->conf['general']['filter_loc']) $filters['locations'][0] = intval($this->conf['general']['filter_loc']);
@@ -196,6 +231,11 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 	
 			case 'upcoming';
 			$calendar = new tx_skcalendar_upcomingview($selection,$this->conf);
+			break;
+			
+			default:
+			$calendar = new tx_skcalendar_monthview($selection,$this->conf);
+			$calendar->createHolidays('de');
 			break;
 		}		
 		$calendar->setRange($filters['startdate'],$filters['enddate']);

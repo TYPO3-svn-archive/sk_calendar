@@ -38,7 +38,7 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 		
 		if ($this->conf['general']['showlinks']) $this->makeLinks();
 		if ($this->conf['general']['showfilters']) $this->makeFilters();
-				
+		
 		$d = date('w',mktime(0,0,0,$month,1,$this->year));
 		if ($d == 0) $d=7;
 		$d=$d-(($d-1)*2);
@@ -96,7 +96,7 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 		// wrap whole thing
 		$this->template->setTempData($temp);
 		$this->template->getSubpart('MONTH_VIEW_WHOLEWRAP');
-		$this->content = $this->template->parseTemplate();
+		$this->content .= $this->template->parseTemplate();
 	}
 
 	function makeNavigation() {

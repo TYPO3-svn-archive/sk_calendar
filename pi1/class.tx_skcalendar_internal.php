@@ -64,7 +64,7 @@ var $targetgroups = array();
 			while (list($id, $value) = each ($this->filters['organizers'])) $this->query .= ',' . $value;
 			$this->query .= ') ';
 		}
-		if ($this->filters['sword']) $this->query .= 'AND (title LIKE \'%' . $this->filters['sword'] . '%\' OR description LIKE \'%' . $this->filters['sword'] . '%\' OR tx_skcalregistration_registration_msg LIKE \'%' . $this->filters['sword'] . '%\')';
+		if ($this->filters['sword']) $this->query .= 'AND (title LIKE \'%' . $this->filters['sword'] . '%\' OR description LIKE \'%' . $this->filters['sword'] . '%\')';
 		$this->query  .= ' AND pid IN (' . $this->filters['pid'] . ')';
 				
 		parent::prepareQuery();

@@ -1,0 +1,179 @@
+<T3DataStructure>
+  <sheets>
+	<sDEF>
+	  <ROOT>
+		<TCEforms>
+			<sheetTitle>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.sheet_general</sheetTitle>
+		</TCEforms>
+		<type>array</type>
+		<el>
+			<default_view>
+				<TCEforms>
+				<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_defaultview</label>
+				<config>
+					<type>select</type>
+					<items type="array">
+					<numIndex index="0" type="array">
+						<numIndex index="0">LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_view.month</numIndex>
+						<numIndex index="1">month</numIndex>
+					</numIndex>
+					<numIndex index="1" type="array">
+						<numIndex index="0">LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_view.week</numIndex>
+						<numIndex index="1">week</numIndex>
+					</numIndex>
+					<numIndex index="2" type="array">
+						<numIndex index="0">LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_view.list</numIndex>
+						<numIndex index="1">list</numIndex>
+					</numIndex>
+					<numIndex index="3" type="array">
+						<numIndex index="0">LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_view.archive</numIndex>
+						<numIndex index="1">archive</numIndex>
+					</numIndex>
+					<numIndex index="4" type="array">
+						<numIndex index="0">LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_view.box</numIndex>
+						<numIndex index="1">box</numIndex>
+					</numIndex>
+					<numIndex index="5" type="array">
+						<numIndex index="0">LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_view.upcoming</numIndex>
+						<numIndex index="1">upcoming</numIndex>
+					</numIndex>
+					
+					</items>
+					<default>
+					LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_view.month
+					</default>
+					</config>
+				</TCEforms>
+			</default_view>
+			<showlinks>
+				<TCEforms>
+				<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_showlinks</label>
+				<config>
+					<type>check</type>
+				</config>
+				</TCEforms>
+			</showlinks>
+			<showfilters>
+				<TCEforms>
+				<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_showfilters</label>
+				<config>
+					<type>check</type>
+					<default>1</default>
+				</config>
+				</TCEforms>
+			</showfilters>
+			<detail_pid>
+			<TCEforms>
+			<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_detailpid</label>
+			<config>
+				<type>group</type>
+				<internal_type>db</internal_type>
+				<allowed>pages</allowed>
+				<size>1</size>
+				<maxitems>1</maxitems>
+				<minitems>0</minitems>
+				<selectedListStyle>Width: 180px</selectedListStyle>
+			</config></TCEforms>
+			</detail_pid>
+			<html_template>
+			<TCEforms>
+			<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_htmltemplate</label>
+			<config>
+				<type>group</type>
+				<internal_type>file</internal_type>
+				<allowed>tmpl,html</allowed>
+				<max_size>100</max_size>
+				<size>1</size>
+				<uploadfolder>uploads/tx_skcalendar</uploadfolder>
+			</config></TCEforms>
+			</html_template>
+				<pdf_template>
+			<TCEforms>
+			<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_pdftemplate</label>
+			<config>
+				<type>group</type>
+				<internal_type>file</internal_type>
+				<allowed>pdf</allowed>
+				<max_size>100</max_size>
+				<size>1</size>
+				<uploadfolder>uploads/tx_skcalendar</uploadfolder>
+			</config></TCEforms>
+			</pdf_template>
+						<overrideTF>
+									<TCEforms>
+			<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.general_overrideTF</label>
+			<config>
+				<type>group</type>
+				<internal_type>file</internal_type>
+				<allowed>php</allowed>
+				<max_size>100</max_size>
+				<size>1</size>
+				<uploadfolder>uploads/tx_skcalendar</uploadfolder>
+			</config></TCEforms>
+			</overrideTF>
+				</el>
+	  </ROOT>
+	  
+    </sDEF>
+    <s_view>
+	  <ROOT>
+		<TCEforms>
+			<sheetTitle>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.sheet_view</sheetTitle>
+		</TCEforms>
+		<type>array</type>
+		<el>
+		<boxrange>
+		<TCEforms>
+		<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.view_boxrange</label>
+		<config>
+		<type>input</type>
+		<eval>num</eval>
+		<size>3</size>
+		</config>	</TCEforms></boxrange>
+			<upcomingrange>
+		<TCEforms>
+		<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.view_upcomingrange</label>
+		<config>
+		<type>input</type>
+		<eval>num</eval>
+		<size>3</size>
+		</config>	</TCEforms></upcomingrange>
+	
+				<listrange>
+		<TCEforms>
+		<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.view_listrange</label>
+		<config>
+		<type>input</type>
+		<eval>num</eval>
+		<size>3</size>
+		</config>	</TCEforms></listrange>
+				<listmonths>
+				<TCEforms>
+				<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.view_listmonths</label>
+				<config>
+					<type>check</type>
+				</config>
+				</TCEforms>
+			</listmonths>
+</el>  </ROOT>
+    </s_view>
+    <s_warning>
+	  <ROOT>
+		<TCEforms>
+			<sheetTitle>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.sheet_warning</sheetTitle>
+		</TCEforms>
+		<type>array</type>
+		<el>
+				<filters>
+				<TCEforms>
+				<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.warning_filters</label>
+				<config>
+					<type>check</type>
+				</config>
+				</TCEforms>
+			</filters>
+	</el>
+	  </ROOT>
+    </s_warning>
+  </sheets>
+</T3DataStructure>

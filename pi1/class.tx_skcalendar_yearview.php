@@ -193,7 +193,7 @@ class tx_skcalendar_yearview extends tx_skcalendar_htmlview {
 		$path = FPDF_CACHE;
 		$path .= $file;
 
-		$pdf->Output($path, 'I');
+		$pdf->Output($path, 'F');
 		$this->content = $this->pi_getLL('pdf_generated') . ' ' . $this->pi_getLL('dl_pdf') . ' <a href="' . t3lib_extMgm::extRelPath('sk_calendar') . 'fpdf152/cache/' . $file . '">' . $this->pi_getLL('here') . '</a>.';
 		header ('Location: ' . t3lib_extMgm::extRelPath('sk_calendar') . 'fpdf152/cache/' . $file); // This has proven to be best behind paranoid firewalls,
 	}

@@ -109,6 +109,7 @@ var $targetgroups = array();
 				$this->result[] = $event;
 
 			}
+			
 			$this->postprocessQuery();
 			
 		}

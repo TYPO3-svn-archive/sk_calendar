@@ -141,9 +141,9 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			break;
 
 			case 'year':
-			$offset = date('Y',$offset);
-			$start = mktime(0,0,0,1,1,$offset);
-			$end = mktime(23,59,59,12,31,$offset);
+			$offset_temp = date('Y',$offset);
+			$start = mktime(0,0,0,1,1,$offset_temp);
+			$end = mktime(23,59,59,12,31,$offset_temp);
 			$filters['startdate'] = $start;
 			$filters['enddate'] = $end;
 			break;
@@ -165,6 +165,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			else {
 				$filters['startdate'] = $offset;
 				$offset_temp = date('m-d-Y',$offset);
+				$offset_temp = explode('-',$offset_temp);
 				$filters['enddate'] = mktime(0,0,0,$offset_temp[0],$offset_temp[1],$offset_temp[2]+5); // 5 years should result enough entries for the list. Cannot select unlimited because of possible infinite recurring events
 			}
 			break;
@@ -192,7 +193,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$selection = new tx_skcalendar_internal();
 		$selection->setFilters($filters);
 		$selection->getResults();
-
+		
 		switch ($this->conf['general']['view']) {
 			case 'week':
 			$calendar = new tx_skcalendar_weekview($selection,$this->conf);

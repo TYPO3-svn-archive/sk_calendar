@@ -59,6 +59,7 @@ class fe_engine {
 	$this->organizers = $container->organizers;
 	$this->targetgroups = $container->targetgroups;
 	$this->offset = $conf['offset'];
+	$this->year = date('Y',$this->offset);
 }
 
 	function createHolidays ($lang) {
@@ -161,7 +162,6 @@ class fe_engine {
 	function setRange($offset,$todate) {
 		$this->fromdate = $offset;
 		$this->todate = $todate;
-		$this->year = date('Y',$offset);
 	}
 }
 ?>

@@ -35,7 +35,7 @@ var $targetgroups = array();
 	* @desc Prepares the query in this case builds the SQL-Statement
 	*/
 	function prepareQuery () {
-		$this->query = "SELECT * FROM tx_skcalendar_events WHERE NOT deleted AND NOT hidden";
+		$this->query = "SELECT * FROM tx_skcalendar_events WHERE NOT deleted AND NOT hidden ";
 		if (is_array($this->filters['targetgroups']))
 		{
 			$this->query .= 'AND targetgroup in (' . $this->filters['targetgroups'][0];
@@ -52,7 +52,7 @@ var $targetgroups = array();
 		}
 		if (is_array($this->filters['locations']))
 		{
-			$this->query .= 'AND category in (' . $this->filters['locations'][0];
+			$this->query .= 'AND location in (' . $this->filters['locations'][0];
 			next ($this->filters['locations']);
 			while (list($id, $value) = each ($this->filters['locations'])) $this->query .= ',' . $value;
 			$this->query .= ') ';
@@ -70,14 +70,28 @@ var $targetgroups = array();
 	
 		function getAddInfo () {
 	// retrieve data
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,color','tx_skcalendar_category','NOT deleted AND NOT hidden','','title');
-	while (list($id,$name,$color) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->categories[$id] = array($id,$name,$color);
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,color,icon','tx_skcalendar_category','NOT deleted AND NOT hidden','','title');
+	while (list($id,$name,$color,$icon) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->categories[$id] = array(
+	'id' => $id,
+	'name' => $name,
+	'color' => $color,
+	'icon' => $icon
+	);
 	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title','tx_skcalendar_location','NOT deleted AND NOT hidden','','title');
-	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->locations[$id] = array($id,$name);
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->locations[$id] = array(
+	'id' => $id,
+	'name' => $name
+	);
 	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,name','tx_skcalendar_organizer','NOT deleted AND NOT hidden','','name');
-	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->organizers[$id] = array($id,$name);
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->organizers[$id] = array(
+	'id' => $id,
+	'name' => $name
+	);
 	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title','tx_skcalendar_targetgroup','NOT deleted AND NOT hidden','','title');
-	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->targetgroups[$id] = array($id,$name);
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->targetgroups[$id] = array(
+	'id' => $id,
+	'name' => $name
+	);
 }
 
 
@@ -91,7 +105,7 @@ var $targetgroups = array();
 		if ($result) {
 			while ($event = mysql_fetch_array($result,MYSQL_ASSOC))
 			{
-				$event['color'] = $this->categories[$event['category']][2]; // put some color into the event
+				$event['color'] = $this->categories[$event['category']]['color']; // put some color into the event
 				$this->result[] = $event;
 
 			}

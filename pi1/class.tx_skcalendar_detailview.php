@@ -47,21 +47,16 @@ class tx_skcalendar_detailview extends tx_skcalendar_htmlview {
 					
 					if ($data['uid'] == $this->showID) {
 						$this->content .= '<b>' . $data['title'] . '</b><br>';
-						if (!$data['wholeday'] && $data['starttime'] && $data['endtime']) {
-							$start = $data['date'] + $data['starttime'];
-							$end = $data['date'] + $data['endtime'];
-							$this->content .= 'Zeit: ' . strftime('%A, %d.%m %Y',$start) . ' - ' . strftime('%M:%H',$start) . ' bis ' . strftime('%M:%H',$end) . ' Uhr<br>';
-						}
-						else $this->content .= $this->pi_getLL('date') . ': ' . strftime('%A, %d.%m %Y',$data['date']) . '<br>';
+						$this->content .= $this->parseTime($data['wholeday'],$data['date'],$data['start_time'],$data['end_time']);
 						if ($data['cost']) $this->content .= $this->pi_getLL('cost') . ': ' . $data['cost'] . ' &euro;<br>';
-						if ($data['description']) $this->content .= '<br>' . $data['description'] . '<br>';
-						if ($data['highlight']) $this->content .= 'Highlight!<br>';
-						if ($data['image']) $this->content .= 'Image: ' . $data['image'] . '<br>';
-						if ($data['pages']) $this->content .= 'pages: ' . $data['pages'] . '<br>';
+						if ($data['description']) $this->content .=$this->pi_getLL('description').':'. $data['description'] . '<br>';
+						if ($data['highlight']) $this->content .= 'Ausgebucht!<br>';
+						if ($data['image']) $this->content .= 'Image: <img src=uploads/tx_skcalendar/ ' . $data['image'] . '<br>';
+						if ($data['pages']) $this->content .= '<a href=?'. $data['pages'] . '>Verwandte Seiten: </a>' . $data['pages'] . '<br>';
 						if ($data['pages']) $this->content .= $this->pi_getLL('further_information') . ': <a href="' . $data['link'] . '" target="new">' . $data['link'] . '</a><br>';
 						if ($data['category']) {
 							$cat = $this->getCategory($data['category']);
-							$this->content .= $this->pi_getLL('category') . ': ' . $cat['title'] . '<br>';
+							$this->content .= $this->pi_getLL('category') . ': ' . $cat['name'] . '<br>';
 						}
 						if ($data['organizer']) {
 							$orga = $this->getOrganizer($data['organizer']);
@@ -69,7 +64,7 @@ class tx_skcalendar_detailview extends tx_skcalendar_htmlview {
 						}
 						if ($data['targetgroup']) {
 							$target = $this->getTargetgroup($data['targetgroup']);
-							$this->content .= $this->pi_getLL('targetgroup') . ': ' . $target['title'] . '<br>';
+							$this->content .= $this->pi_getLL('targetgroup') . ': ' . $target['name'] . '<br>';
 						}						
 						$this->content .= '<div align=right><a href="' . "javascript:history.back()" . '"> << ' . $this->pi_getLL('back') . '</a></div><br><br>';
 

@@ -35,7 +35,7 @@ class tx_skcalendar_boxview extends tx_skcalendar_htmlview {
 
 	function parseCalendar() {
 		$act_date = $this->offset;
-		$this->content = '<table cellspacing=0 cellpadding=0 border=0 width=100%>';
+		$this->content = '<table cellspacing=0 cellpadding=0 border=1 width=95%>';
 		while ($act_date < $this->todate) {
 			$m = intval(date('m',$act_date));
 			$d = intval(date('d',$act_date));
@@ -43,14 +43,14 @@ class tx_skcalendar_boxview extends tx_skcalendar_htmlview {
 			if ($this->calendarArray[$m][$d]['events']) {
 				$this->content .= '<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td>' . strftime('%A, %d.%m %Y',$act_date) . '<br>';
 				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
-					$next['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$m,$d,$this->year);
-					$next['tx_skcalendar_pi1[view]']= 'detail';
-					$next['tx_skcalendar_pi1[uid]']= $data['uid'];
-					$next['no_cache'] = 1;
-					$this->content .= '<font color="' . $data['color'] . '">'.  $data['title'] . '</font><br>' . $data['description'] . '<br><div align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target'],$next) . '"> >> ' . $this->pi_getLL('more') . '</a></div><br><br>';
+					$time = $this->parseTime($data['wholeday'],$data['date'],$data['start_time'],$data['end_time']);
+					
+					$this->content .= '<table cellspacing=0 cellpadding=0><tr valign=top><td width=30%><font color="' . $data['color'] . '">'.  $data['title'] . '</font><br>' . $time . '</td><td>' . $data['description'] . '</td></tr></table>';
+					
 				}
 				$this->content .= '</td></tr></table></td></tr>';
 			}
+			
 
 			$act_date = $act_date+86400;
 

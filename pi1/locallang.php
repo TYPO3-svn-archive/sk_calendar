@@ -49,6 +49,11 @@ $LOCAL_LANG = Array (
 		"fronleich" => "Fronleichnam",
 		"pdf_generated" => "Der Kalender wurde erzeugt und der Download wird gestartet.",
 		"dl_pdf" => "Sollte der Download nicht funktionieren klicken Sie bitte ",
+		"the" => "den aus locallang",
+		"description"=>"Beschreibung",
+		"begin" => "Beginn",
+		"clock" => "Uhr",
+		"until" => "bis",
 ),
 	"dk" => Array (
 	),
@@ -95,6 +100,10 @@ $LOCAL_LANG = Array (
 		"fronleich" => "Fronleichnam",
 		"pdf_generated" => "Der Kalender wurde erzeugt und der Download wird gestartet.",
 		"dl_pdf" => "Sollte der Download nicht funktionieren klicken Sie bitte ",
+		"description"=>"Beschreibung",
+		"begin" => "Beginn",
+		"clock" => "Uhr",
+		"until" => "bis",
 	),
 	"no" => Array (
 	),

@@ -44,12 +44,20 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		
+
 		// view & Offset
 		$offset = intval($this->piVars['offset']);
 		if (!$offset) $offset = mktime(0,0,0);
 		if ($this->piVars['view']) $this->conf['view'] = $this->piVars['view'];
 		$this->conf['offset'] = $offset;
+		
+		// read TS
+		if ($this->conf['filter_cat']) $filters['categories'][0] = intval($this->conf['filter_cat']);
+		if ($this->conf['filter_target']) $filters['targetgroups'][0] = intval($this->conf['filter_target']);
+		if ($this->conf['filter_loc']) $filters['locations'][0] = intval($this->conf['filter_loc']);
+		if ($this->conf['filter_orga']) $filters['organizers'][0] = intval($this->conf['filter_orga']);
+		
+		// Override with userinputs
 		if ($this->piVars['targetgroups']) $filters['targetgroups'][0] = intval($this->piVars['targetgroups']);
 		if ($this->piVars['categories']) $filters['categories'][0] = intval($this->piVars['categories']);
 		if ($this->piVars['locations']) $filters['locations'][0] = intval($this->piVars['locations']);

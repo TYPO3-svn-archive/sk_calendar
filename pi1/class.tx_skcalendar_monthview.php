@@ -54,7 +54,14 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 					$next['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$month,$d,$this->year);
 					$next['tx_skcalendar_pi1[view]']= 'detail';
 					$next['tx_skcalendar_pi1[uid]']= $data['uid'];
-						$this->content .= '<br><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target'],$next) . '"><font color="' . $data['color'] . '">'.  $data['title'] . '</font></a>';
+					if ($this->conf['iconmode']) {
+					$cat = $this->getCategory($data['category']);
+					if (!$cat['icon']) $cat['icon'] = 'cat_fallback.gif';
+					$linktext = '<img border=0 width=10 src="uploads/tx_skcalendar/'.  $cat['icon'] . '">';
+					}
+					else $linktext = $data['title'];
+					
+						$this->content .= '<br><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target'],$next) . '"><font color="' . $data['color'] . '">'. $linktext.'</font></a>';
 					}
 				}
 				$this->content .= '</td>';

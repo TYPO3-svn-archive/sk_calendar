@@ -38,7 +38,7 @@ class tx_skcalendar_detailview extends tx_skcalendar_htmlview {
 	
 	$act_date = $this->offset;
 	
-	
+	debug($this->conf['general']['rtefield_stdWrap']);
 	// topwrap
 	
 	// show data
@@ -52,7 +52,7 @@ class tx_skcalendar_detailview extends tx_skcalendar_htmlview {
 			
 			while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
 				if ($data['uid'] == $this->showID) {
-					$data['description'] = $this->myCobj->stdWrap($data['description'],$this->conf['general']['rtefield_stdWrap.']);
+					$data['description'] = $this->myCobj->stdWrap($data['description'],$this->conf['general']['rtefield_stdWrap']);
 					$this->template->setItem($data);
 					$content .= $this->template->parseTemplate();
 					}

@@ -41,6 +41,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 	* This is only an example output of the data, so other ways of displaying data will be developed on demand.
 	*/
 	function main($content,$conf)	{
+	
 		$this->pi_initPIflexForm();
 		$this->conf = ARRAY(
 			'general' => array(
@@ -50,6 +51,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 				'pdftemplate' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'pdf_template','sDEF'),
 				'overrideTF' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'overrideTF','sDEF'),
 				'showfilters' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showfilters','sDEF'),
+				'rtefield_stdWrap' => $conf['general.']['rtefield_stdWrap.'], // for RTE
 				),
 			'box' => array(
 				'range' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'boxrange','s_view'),

@@ -40,7 +40,7 @@ class tx_skcalendar_weekview extends tx_skcalendar_htmlview {
 		while ($act_date < $this->todate) {
 			$m = intval(date('m',$act_date));
 			$d = intval(date('d',$act_date));
-			$this->content .= '<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td>' . strftime('%A, %d.%m %Y',$act_date) . '<br>';
+			$this->content .= '<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td class="week_' . $this->calendarArray[$month][$d]['style'] . '">' . strftime('%A, %d.%m %Y',$act_date) . '<br>';
 			if ($this->calendarArray[$m][$d]['events']) {
 				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
 					
@@ -49,7 +49,7 @@ class tx_skcalendar_weekview extends tx_skcalendar_htmlview {
 					$next['tx_skcalendar[view]']= 'detail';
 					$next['tx_skcalendar[uid]']= $data['uid'];
 
-					$this->content .= '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->targetpage,$next) . '">' . $data['title'] . '</a><br>' . $data['description'] . '<br><br>';
+					$this->content .= '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->targetpage,$next) . '"><font color="' . $data['color'] . '">'.  $data['title'] . '</font></a><br>' . $data['description'] . '<br><br>';
 				}
 			}
 			$this->content .= '</td></tr></table></td></tr>';

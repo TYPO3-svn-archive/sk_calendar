@@ -65,18 +65,20 @@ var $targetgroups = array();
 			while (list($id, $value) = each ($this->filters[organziers])) $this->query .= ',' . $value;
 			$this->query .= ') ';
 		}
+		
+		parent::prepareQuery();
 	}
 	
-		function getAdditionalInformation () {
+		function getAddInfo () {
 	// retrieve data
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title','tx_skcalendar_category','NOT deleted AND NOT hidden','','title');
-	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->categories[$prefix][] = array($id,$name);
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,color','tx_skcalendar_category','NOT deleted AND NOT hidden','','title');
+	while (list($id,$name,$color) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->categories[$id] = array($id,$name,$color);
 	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title','tx_skcalendar_location','NOT deleted AND NOT hidden','','title');
-	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->locations[$prefix][] = array($id,$name);
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->locations[$id] = array($id,$name);
 	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,name','tx_skcalendar_organizer','NOT deleted AND NOT hidden','','name');
-	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->organizers[$prefix][] = array($id,$name);
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->organizers[$id] = array($id,$name);
 	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title','tx_skcalendar_targetgroup','NOT deleted AND NOT hidden','','title');
-	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->targetgroups[$prefix][] = array($id,$name);
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->targetgroups[$id] = array($id,$name);
 }
 
 
@@ -90,6 +92,7 @@ var $targetgroups = array();
 		if ($result) {
 			while ($event = mysql_fetch_array($result,MYSQL_ASSOC))
 			{
+				$event['color'] = $this->categories[$event['category']][2]; // put some color into the event
 				$this->result[] = $event;
 
 			}

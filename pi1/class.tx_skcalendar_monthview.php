@@ -46,9 +46,8 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 		for ($w=1; $w<=5;$w++) {
 			$this->content .= '<tr valign=top>';
 			for ($i=1;$i<=7;$i++) {
-				$this->content .= '<td height=50 width=14%';
-				if ($this->calendarArray[$month][$d]['isholiday']) $this->content .= ' bgcolor=#efefef';
-				$this->content .= '>' . $this->calendarArray[$month][$d]['d_name']['no'] . '&nbsp;' . $this->calendarArray[$month][$d]['d_name']['short'];
+				$this->content .= '<td height=50 width=14% class="month_' . $this->calendarArray[$month][$d]['style'] . '">';
+				$this->content .= $this->calendarArray[$month][$d]['d_name']['no'] . '&nbsp;' . $this->calendarArray[$month][$d]['d_name']['short'];
 				if ($this->calendarArray[$month][$d]['events']) {
 					while (list(,$data) = each($this->calendarArray[$month][$d]['events'])) {
 					$next = $this->prepareTypolink();
@@ -56,7 +55,7 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 					$next['tx_skcalendar[view]']= 'detail';
 					$next['tx_skcalendar[uid]']= $data['uid'];
 
-						$this->content .= '<br><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->targetpage,$next) . '">'.  $data['title'] . '</a>';
+						$this->content .= '<br><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->targetpage,$next) . '"><font color="' . $data['color'] . '">'.  $data['title'] . '</font></a>';
 					}
 				}
 				$this->content .= '</td>';

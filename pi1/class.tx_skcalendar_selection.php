@@ -68,6 +68,7 @@ class tx_skcalendar_selection {
 	* @desc Prepares the query in this case builds the SQL-Statement
 	*/
 	function prepareQuery () {
+	$this->getAddInfo();
 	}
 	
 	/**
@@ -75,6 +76,7 @@ class tx_skcalendar_selection {
 	* @desc Executes the query and gets the results
 	*/
 	function getResults () {
+		
 		if ($this->error) return false;
 		else return true;
 	}
@@ -86,7 +88,6 @@ class tx_skcalendar_selection {
 	function postprocessQuery() {
 		$this->result = addRecurringEvents($this->result);
 		$this->result = filterRange($this->result,$this->filters);
-		$this->getAddInfo();
 	}
 }
 

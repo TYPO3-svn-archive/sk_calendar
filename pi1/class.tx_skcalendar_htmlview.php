@@ -117,6 +117,7 @@ class tx_skcalendar_htmlview extends fe_engine {
 		for ($temp=$from_m; $temp<=$to_m; $temp++)
 		{
 			$date_unix = mktime(0,0,0,$temp,1,$this->year);
+			$now = mktime(0,0,0);
 			$count_days = date("t",$date_unix);
 			for ($day=1; $day<=$count_days; $day++)
 			{
@@ -124,7 +125,9 @@ class tx_skcalendar_htmlview extends fe_engine {
 				$this->calendarArray[$temp][$day]['d_name']['no'] = strftime("%d",$date_unix);
 				$this->calendarArray[$temp][$day]['d_name']['short'] = strftime("%a",$date_unix);
 				$this->calendarArray[$temp][$day]['d_name']['long'] = strftime("%A",$date_unix);
-				if (date("w",$date_unix)==0) $this->calendarArray[$temp][$day]['isholiday']='1'; // sunday
+				if ($date_unix < $now) $this->calendarArray[$temp][$day]['style'] = 'past_weekday';
+				else $this->calendarArray[$temp][$day]['style'] = 'weekday';
+				if (date("w",$date_unix)==0) $this->calendarArray[$temp][$day]['style']='holiday'; // sunday
 			}
 		}
 
@@ -133,7 +136,7 @@ class tx_skcalendar_htmlview extends fe_engine {
 			$date = explode('.',$date);
 			if ($this->calendarArray[$date[1]]) {
 				$this->calendarArray[$date[1]][$date[0]]['hname'] = $name; // name in this case is an unique string that can be used in the $this->pi_getLL() function later
-				$this->calendarArray[$date[1]][$date[0]]['isholiday'] = 1;
+				$this->calendarArray[$date[1]][$date[0]]['style']='holiday';
 			}
 		}
 		while (list($id, $event) = each($this->events))
@@ -142,7 +145,6 @@ class tx_skcalendar_htmlview extends fe_engine {
 			$date = explode('-',$date);
 			$this->calendarArray[intval($date[1])][intval($date[2])]['events'][] = $event;
 		}
-
 	}
 
 

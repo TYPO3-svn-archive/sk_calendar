@@ -70,7 +70,7 @@ function addRecurringEvents($event_arr) {
 			$uid = $row['uid'];
 			while ($row['date'] <= $row['recurr_until'])
 			{
-				if (!in_array($row['date'],$exept_arr)) // ignore exepted dates
+				if (!in_array($row['date'],$exeptions)) // ignore exepted dates
 				{
 					$row['uid'] = $uid .  '_re'.$row['date']; // distinction between different Ghostcopies	
 					$sortfield = $row['date'] . '_' . $count; // so multiple events per Day are possible

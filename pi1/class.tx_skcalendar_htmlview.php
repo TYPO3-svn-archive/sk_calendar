@@ -36,7 +36,15 @@ class tx_skcalendar_htmlview extends tx_skcalendar_feengine {
 	* @return void
 	* @desc create the differnt holidays
 	*/
-
+	function detailLink($id,$text,$color,$date) {
+		$link = $this->prepareTypolink();
+		
+		$link['tx_skcalendar_pi1[offset]'] = $date;
+		$link['tx_skcalendar_pi1[view]'] = 'detail';
+		$link['tx_skcalendar_pi1[uid]'] = $id;
+		$return = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target'],$link) . '"><font color="' . $data['color'] . '">'. $text.'</font></a>';
+return $return;
+		}
 
 	function prepareTypolink() {
 		$link['tx_skcalendar_pi1[offset]'] = $this->offset;

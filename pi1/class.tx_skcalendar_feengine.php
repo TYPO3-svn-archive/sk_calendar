@@ -50,7 +50,7 @@ class tx_skcalendar_feengine {
 	$this->conf = $conf;
 	$this->container = $container;
 	if (!$conf['target']) $this->conf['target'] = $GLOBALS["TSFE"]->id;
-	$this->view = $conf['view'];
+	$this->view = $conf['general']['view'];
 	$this->events = $container->result;
 	if (!$this->events) $this->events = Array();
 	

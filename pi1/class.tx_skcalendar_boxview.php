@@ -43,9 +43,12 @@ class tx_skcalendar_boxview extends tx_skcalendar_htmlview {
 			if ($this->calendarArray[$m][$d]['events']) {
 				$this->content .= '<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td>' . strftime('%A, %d.%m %Y',$act_date) . '<br>';
 				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
-					$time = $this->parseTime($data['wholeday'],$data['date'],$data['start_time'],$data['end_time']);
-					
-					$this->content .= '<table cellspacing=0 cellpadding=0><tr valign=top><td width=30%><font color="' . $data['color'] . '">'.  $data['title'] . '</font><br>' . $time . '</td><td>' . $data['description'] . '</td></tr></table>';
+					unset($linktext);
+					if ($data['start_time']) $linktext = $data['start_time'] . ' '; 
+					$linktext .= $data['title'];
+					$this->content .= '<table cellspacing=0 cellpadding=0><tr valign=top><td width=30% nowrap>';
+					$this->content .= $this->detailLink($data['uid'],$linktext,$data['color'],$data['date']);
+					$this->content .= '</td></tr></table>';
 					
 				}
 				$this->content .= '</td></tr></table></td></tr>';
@@ -55,7 +58,17 @@ class tx_skcalendar_boxview extends tx_skcalendar_htmlview {
 			$act_date = $act_date+86400;
 
 		}
-		$this->content .= '<tr><td>&nbsp;</td></tr></table>';
+		$this->content .= '<tr><td>&nbsp;</td></tr><tr><td>' . $this->makeNavigation() . '</td><tr></table>';
+	}
+	
+	function makeNavigation() {
+		$offset = $this->fromdate;
+		$step = $this->todate - $this->fromdate;
+		$next = $this->prepareTypolink();
+		$back = $this->prepareTypolink();
+		$next['tx_skcalendar_pi1[offset]'] = $offset + $step;
+		$back['tx_skcalendar_pi1[offset]'] = $offset - $step;
+		return '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"><img src="' . t3lib_extMgm::siteRelPath('sk_calendar') . 'pi1/images/arrow_l.gif" border=0></a></td><td align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"><img src="' . t3lib_extMgm::siteRelPath('sk_calendar') . 'pi1/images/arrow_r.gif" border=0></a></td></tr></table>';
 	}
 }
 

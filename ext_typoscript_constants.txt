@@ -1,4 +1,34 @@
+
+
+
 plugin.tx_skcalendar >
 
-#cat=tx_skcalendar//test; type=options[,1,2]; label=Testentry: This does nothing whatsoever.
-plugin.tx_skcalendar.test = 1
+#cat=plugin.tx_skcalendar/dims/a; type=int+; label=Range: Range of Boxview in Days.
+plugin.tx_skcalendar_pi1.box.range = 7
+
+#cat=plugin.tx_skcalendar/enable/a; type=boolean; label=Iconmode: Show Cat-icons or Eventtitles.
+plugin.tx_skcalendar_pi1.month.iconmode = 0
+
+#cat=plugin.tx_skcalendar/others/a; type=options[boxview=box,weekly View=week, Monthly view=month]; label=Default View: Choose the defaultview for the Calendar.
+plugin.tx_skcalendar_pi1.general.view = month
+
+#cat=plugin.tx_skcalendar/enable/b; type=boolean; label=Show Links: Show Links to other views
+plugin.tx_skcalendar_pi1.general.showlinks = 1
+
+#cat=plugin.tx_skcalendar/enable/c; type=boolean; label=Show Filters: Show filters for Categories, Targetgroups, etc.
+plugin.tx_skcalendar_pi1.general.showfilters = 1
+
+#cat=plugin.tx_skcalendar/other/d; type=int+; label=Targetpage: Page to Target the Detailview.
+plugin.tx_skcalendar_pi1.general.pid = 
+
+#cat=plugin.tx_skcalendar/other/e; type=int+; label=Default Category: Sets a default Category to filter.
+plugin.tx_skcalendar_pi1.general.filter_cat = 
+
+#cat=plugin.tx_skcalendar/other/f; type=int+; label=Default Organizer: Sets a default Organizer to filter.
+plugin.tx_skcalendar_pi1.general.filter_orga = 
+
+#cat=plugin.tx_skcalendar/other/g; type=int+; label=Default Location: Sets a default Location to filter.
+plugin.tx_skcalendar_pi1.general.filter_loc = 
+
+#cat=plugin.tx_skcalendar/other/h; type=int+; label=Default Targetgroup: Sets a default Targetgroup to filter.
+plugin.tx_skcalendar_pi1.general.filter_target = 

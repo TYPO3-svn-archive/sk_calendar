@@ -34,8 +34,8 @@ class tx_skcalendar_weekview extends tx_skcalendar_htmlview {
 
 	function parseCalendar() {
 		$act_date = $this->offset;
-		if ($this->conf['showlinks']) $this->makeLinks();
-		if ($this->conf['showfilters']) $this->makeFilters();
+		if ($this->conf['general']['showlinks']) $this->makeLinks();
+		if ($this->conf['general']['showfilters']) $this->makeFilters();
 				$this->content .= '<table cellspacing=0 cellpadding=0 border=1 width=400 bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>' . $this->pi_getLL('week_view') . ':</b></td></tr></table></td></tr>';
 		while ($act_date < $this->todate) {
 			$m = intval(date('m',$act_date));
@@ -43,13 +43,7 @@ class tx_skcalendar_weekview extends tx_skcalendar_htmlview {
 			$this->content .= '<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td class="week_' . $this->calendarArray[$month][$d]['style'] . '">' . strftime('%A, %d.%m %Y',$act_date) . '<br>';
 			if ($this->calendarArray[$m][$d]['events']) {
 				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
-					
-					$next = $this->prepareTypolink();
-					$next['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$m,$d,$this->year);
-					$next['tx_skcalendar_pi1[view]']= 'detail';
-					$next['tx_skcalendar_pi1[uid]']= $data['uid'];
-
-					$this->content .= '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target'],$next) . '"><font color="' . $data['color'] . '">'.  $data['title'] . '</font></a><br>' . $data['description'] . '<br><br>';
+					$this->content .= $this->detailLink($data['uid'],$data['title'],$data['color'],$data['date']) . '<br>' . $data['description'] . '<br><br>';
 				}
 			}
 			$this->content .= '</td></tr></table></td></tr>';

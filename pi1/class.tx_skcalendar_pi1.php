@@ -41,31 +41,33 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 	* This is only an example output of the data, so other ways of displaying data will be developed on demand.
 	*/
 	function main($content,$conf)	{
-		$this->conf=$conf;
+		$this->conf['general']=$conf['general.']; // I have no idea why there are dots all the sudden.
+		$this->conf['box']=$conf['box.'];
+		$this->conf['month']=$conf['month.'];
+		$this->conf['userFunc'] = $conf['userFunc'];
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
 	
 		// view & Offset
 		$offset = intval($this->piVars['offset']);
 		if (!$offset) $offset = mktime(0,0,0);
-		if ($this->piVars['view']) $this->conf['view'] = $this->piVars['view'];
+		if ($this->piVars['view']) $this->conf['general']['view'] = $this->piVars['view'];
 		$this->conf['offset'] = $offset;
 		
 		// read TS
-		if ($this->conf['filter_cat']) $filters['categories'][0] = intval($this->conf['filter_cat']);
-		if ($this->conf['filter_target']) $filters['targetgroups'][0] = intval($this->conf['filter_target']);
-		if ($this->conf['filter_loc']) $filters['locations'][0] = intval($this->conf['filter_loc']);
-		if ($this->conf['filter_orga']) $filters['organizers'][0] = intval($this->conf['filter_orga']);
+		if ($this->conf['general']['filter_cat']) $filters['categories'][0] = intval($this->conf['general']['filter_cat']);
+		if ($this->conf['general']['filter_target']) $filters['targetgroups'][0] = intval($this->conf['general']['filter_target']);
+		if ($this->conf['general']['filter_loc']) $filters['locations'][0] = intval($this->conf['general']['filter_loc']);
+		if ($this->conf['general']['filter_orga']) $filters['organizers'][0] = intval($this->conf['general']['filter_orga']);
 		
 		// Override with userinputs
 		if ($this->piVars['targetgroups']) $filters['targetgroups'][0] = intval($this->piVars['targetgroups']);
 		if ($this->piVars['categories']) $filters['categories'][0] = intval($this->piVars['categories']);
 		if ($this->piVars['locations']) $filters['locations'][0] = intval($this->piVars['locations']);
 		if ($this->piVars['organizers']) $filters['organizers'][0] = intval($this->piVars['organizers']);
-		if (!$this->conf['pid']) $this->conf['pid'] = $GLOBALS["TSFE"]->id; // same page if no pid is given
-		$filters['pid'] = $this->conf['pid'];
-		
-		switch ($this->conf['view']) {
+		if (!$this->conf['general']['pid']) $this->conf['general']['pid'] = $GLOBALS["TSFE"]->id; // same page if no pid is given
+		$filters['pid'] = $this->conf['general']['pid'];
+		switch ($this->conf['general']['view']) {
 			case 'week':
 			$offset = $offset - date('w',$offset) * 86400 + 86400; // we like mondays
 			$filters['startdate'] = $offset;
@@ -74,7 +76,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 
 			case 'box';
 			$filters['startdate'] = $offset;
-			$filters['enddate'] = $offset + $this->conf['range']; // default one week
+			$filters['enddate'] = $offset + ($this->conf['box']['range']*86400); // default one week
 			break;
 
 			case 'day': // not yet implemented
@@ -106,12 +108,12 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 
 
 		}
-
+$this->conf['offset'] = $offset;
 		$selection = new tx_skcalendar_internal();
 		$selection->setFilters($filters);
 		$selection->getResults();
 
-		switch ($this->conf['view']) {
+		switch ($this->conf['general']['view']) {
 			case 'week':
 			$calendar = new tx_skcalendar_weekview($selection,$this->conf);
 			break;
@@ -131,6 +133,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 
 			case 'year':
 			$calendar = new tx_skcalendar_yearview($selection,$this->conf);
+			$calendar->createHolidays('de');
 			break;
 
 			case 'detail';

@@ -31,6 +31,7 @@ define('FPDF_CACHE',t3lib_extMgm::extPath('sk_calendar').'fpdf152/cache/');//FŸr
 class tx_skcalendar_yearview extends tx_skcalendar_htmlview {
 
 	function tx_skcalendar_yearview($container,$conf) {
+		
 		// calls mothership
 		$this->tx_skcalendar_feengine($container,$conf);
 	}
@@ -38,6 +39,7 @@ class tx_skcalendar_yearview extends tx_skcalendar_htmlview {
 	function parseCalendar() {
 		reset ($this->events);
 		$offset = 1;
+		
 		$pdf=new FPDF('L', 'mm', 'A4');
 		$pdf->Open();
 		$pdf->SetAutoPageBreak(0);
@@ -69,7 +71,7 @@ class tx_skcalendar_yearview extends tx_skcalendar_htmlview {
 			{
 				$pdf->setxy($xcoord,$ycoord);
 				$pdf->SetFont('Arial','',8);
-				if ($this->calendarArray[$month][$day][isholiday])
+				if ($this->calendarArray[$month][$day]['style']=='holiday')
 				{
 					$pdf->SetTextColor(255,0,0);
 					$pdf->Cell(47,5,$this->calendarArray[$month][$day][d_name][no] . ' ' . $this->calendarArray[$month][$day][d_name][short],1,0,'l',1);
@@ -143,7 +145,7 @@ class tx_skcalendar_yearview extends tx_skcalendar_htmlview {
 			{
 				$pdf->setxy($xcoord,$ycoord);
 				$pdf->SetFont('Arial','',8);
-				if ($this->calendarArray[$month][$day][isholiday])
+				if ($this->calendarArray[$month][$day]['style'] == 'holiday')
 				{
 					$pdf->SetTextColor(255,0,0);
 					$pdf->Cell(47,5,$this->calendarArray[$month][$day][d_name][no] . ' ' . $this->calendarArray[$month][$day][d_name][short],1,0,'l',1);
@@ -193,7 +195,7 @@ class tx_skcalendar_yearview extends tx_skcalendar_htmlview {
 
 		$pdf->Output($path, 'F');
 		$this->content = $this->pi_getLL('pdf_generated') . ' ' . $this->pi_getLL('dl_pdf') . ' <a href="' . t3lib_extMgm::extRelPath('sk_calendar') . 'fpdf152/cache/' . $file . '">' . $this->pi_getLL('here') . '</a>.';
-		header ('Location: typo36/' . t3lib_extMgm::extRelPath('sk_calendar') . 'fpdf152/cache/' . $file); // This has proven to be best behind paranoid firewalls,
+		header ('Location: ' . t3lib_extMgm::extRelPath('sk_calendar') . 'fpdf152/cache/' . $file); // This has proven to be best behind paranoid firewalls,
 	}
 
 	function random($length=3)

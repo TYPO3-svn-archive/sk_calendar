@@ -7,7 +7,7 @@
 	$pdf->settextcolor(0,0,0);
 	$pdf->SetFont('Arial','',6);
 	$pdf->setxy(7,198);
-	$pdf->Cell(136,12,"(c) $this->year Sitekick");
+	$pdf->Cell(136,12,"(c) 2004 Sitekick");
 	$pdf->setxy(245,198);
 	$pdf->Cell(136,12,'Created by: Sitekick (http://www.sitekick.de)');
 	$pdf->SetFont('Arial','',10);

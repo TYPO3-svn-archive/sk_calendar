@@ -38,16 +38,17 @@ class tx_skcalendar_detailview extends tx_skcalendar_htmlview {
 		$act_date = $this->offset;
 		$this->content = '<table cellspacing=0 cellpadding=0 border=0 width=100%>';
 		while ($act_date < $this->todate) {
+		
 			$m = intval(date('m',$act_date));
 			$d = intval(date('d',$act_date));
-
+			
 			if ($this->calendarArray[$m][$d]['events']) {
 				$this->content .= '<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td>';
 				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
 					
 					if ($data['uid'] == $this->showID) {
 						$this->content .= '<b>' . $data['title'] . '</b><br>';
-						$this->content .= $this->parseTime($data['wholeday'],$data['date'],$data['start_time'],$data['end_time']);
+						$this->content .= $this->parseTime($data['wholeday'],$data['date'],$data['start_time'],$data['end_time']) .'<br>';
 						if ($data['cost']) $this->content .= $this->pi_getLL('cost') . ': ' . $data['cost'] . ' &euro;<br>';
 						if ($data['description']) $this->content .=$this->pi_getLL('description').':'. $data['description'] . '<br>';
 						if ($data['highlight']) $this->content .= 'Ausgebucht!<br>';

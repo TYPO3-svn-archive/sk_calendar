@@ -36,8 +36,8 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 	function parseCalendar() {
 		$month = intval(date('m',$this->offset));
 		
-		if ($this->conf['showlinks']) $this->makeLinks();
-		if ($this->conf['showfilters']) $this->makeFilters();
+		if ($this->conf['general']['showlinks']) $this->makeLinks();
+		if ($this->conf['general']['showfilters']) $this->makeFilters();
 		$this->content .= '<table cellspacing=0 cellpadding=0 border=0 width=100% bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>' . $this->pi_getLL('month_view') . ' ' . strftime('%B %Y',$this->offset) . ':</b></td></tr></table></td></tr>';
 		$this->content .= '<tr><td><table cellspacing=0 cellpadding=2 border=1 width =100%><tr><td><b>Mo</b></td><td><b>Di</b></td><td><b>Mi</b></td><td><b>Do</b></td><td><b>Fr</b></td><td><b>Sa</b></td><td><b>So</b></b></td></tr>';
 		$d = date('w',mktime(0,0,0,$month,1,$this->year));
@@ -50,18 +50,13 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 				$this->content .= $this->calendarArray[$month][$d]['d_name']['no'] . '&nbsp;' . $this->calendarArray[$month][$d]['d_name']['short'];
 				if ($this->calendarArray[$month][$d]['events']) {
 					while (list(,$data) = each($this->calendarArray[$month][$d]['events'])) {
-					$next = $this->prepareTypolink();
-					$next['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$month,$d,$this->year);
-					$next['tx_skcalendar_pi1[view]']= 'detail';
-					$next['tx_skcalendar_pi1[uid]']= $data['uid'];
-					if ($this->conf['iconmode']) {
+					if ($this->conf['month']['iconmode']) {
 					$cat = $this->getCategory($data['category']);
 					if (!$cat['icon']) $cat['icon'] = 'cat_fallback.gif';
 					$linktext = '<img border=0 width=10 src="uploads/tx_skcalendar/'.  $cat['icon'] . '">';
 					}
 					else $linktext = $data['title'];
-					
-						$this->content .= '<br><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target'],$next) . '"><font color="' . $data['color'] . '">'. $linktext.'</font></a>';
+					$this->content .= '<br>'. $this->detailLink($data['uid'],$linktext,$data['color'],$data['date']);
 					}
 				}
 				$this->content .= '</td>';

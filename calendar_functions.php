@@ -14,19 +14,22 @@ function addRecurringEvents($event_arr) {
 	$recurr_until_fallback = mktime(0,0,0,$recurr_until_fallback [1]+12,$recurr_until_fallback [2],$recurr_until_fallback [0]);
 	$count = 1;
 	
+	// get exeptions
+	$sql = "SELECT * FROM tx_skcalendar_exeptions";
+	$result = mysql_query($sql);
+	
+	while ($data = mysql_fetch_array($result))
+	{
+		$exept_arr[$data['event']][] = trim($data['exeptdate']);
+	}
+	
 	// arrayforming
 	if($event_arr) {
 	foreach($event_arr as $row) {
 		// Exeption Shootout
 		
-		$exept_arr = array();
-		
-		$exeptions = explode(',',$row['exeptions']);
-		while (list($void, $exeption) = each ($exeptions))
-		{
-			$exeption = trim($exeption);
-			$exept_arr[] =  $exeption;
-		}
+		$exeptions = ARRAY();
+		if ($exept_arr[$row['uid']]) $exeptions = $exept_arr[$row['uid']];
 		
 		$sortfield = $row['date'] . '_' . $count; // so multiple events per Day are possible
 		if (!$row['recurr_until']) $row['recurr_until'] = $recurr_until_fallback;
@@ -35,7 +38,7 @@ function addRecurringEvents($event_arr) {
 			$uid = $row['uid'];
 			while ($row['date'] <= $row['recurr_until'])
 			{
-				if (!in_array($row['date'],$exept_arr)) // ignore exepted dates
+				if (!in_array($row['date'],$exeptions)) // ignore exepted dates
 				{
 					$row['uid'] = $uid .  '_re'.$row['date']; // distinction between different Ghostcopies	
 					$sortfield = $row['date'] . '_' . $count; // so multiple events per Day are possible
@@ -51,7 +54,7 @@ function addRecurringEvents($event_arr) {
 			$uid = $row['uid'];
 			while ($row['date'] <= $row['recurr_until'])
 			{
-				if (!in_array($row['date'],$exept_arr)) // ignore exepted dates
+				if (!in_array($row['date'],$exeptions)) // ignore exepted dates
 				{
 					$row['uid'] = $uid .  '_re'.$row['date']; // distinction between different Ghostcopies	
 					$sortfield = $row['date'] . '_' . $count; // so multiple events per Day are possible
@@ -85,7 +88,7 @@ function addRecurringEvents($event_arr) {
 			$uid = $row['uid'];
 			while ($row['date'] <= $row['recurr_until'])
 			{
-				if (!in_array($row['date'],$exept_arr)) // ignore exepted dates
+				if (!in_array($row['date'],$exeptions)) // ignore exepted dates
 				{
 					$row['uid'] = $uid .  '_re'.$row['date']; // distinction between different Ghostcopies	
 					$sortfield = $row['date'] . '_' . $count; // so multiple events per Day are possible
@@ -102,7 +105,7 @@ function addRecurringEvents($event_arr) {
 			$uid = $row['uid'];
 			while ($row['date'] <= $row['recurr_until'])
 			{
-				if (!in_array($row['date'],$exept_arr)) // ignore exepted dates
+				if (!in_array($row['date'],$exeptions)) // ignore exepted dates
 				{
 					$row['uid'] = $uid .  '_re'.$row['date']; // distinction between different Ghostcopies	
 					$sortfield = $row['date'] . '_' . $count; // so multiple events per Day are possible

@@ -48,7 +48,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 $this->listTemplateCode = $this->cObj->fileResource($this->conf["templateFile"]);
 $tmpl_listwrap = $this->cObj->getSubpart($this->listTemplateCode, "###LISTWRAP###");
 $tmpl_row =  $this->cObj->getSubpart($this->listTemplateCode, "###ROW###");
-$tmpl_row =  $this->cObj->getSubpart($this->listTemplateCode, "###DETAIL###");
+$tmpl_detail =  $this->cObj->getSubpart($this->listTemplateCode, "###DETAIL###");
 if ($GLOBALS['HTTP_GET_VARS']['skevent']) {
 	// detail view
 	$uid = explode('_',$GLOBALS['HTTP_GET_VARS']['skevent']);
@@ -56,8 +56,8 @@ if ($GLOBALS['HTTP_GET_VARS']['skevent']) {
 	$uid = $uid[0];
 	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tx_skcalendar_events',"uid='$uid'");
 	$event = mysql_fetch_array($result,MYSQL_ASSOC);
+       $event['date'] = date('Y-m-d',$event['date']); // convert date
 	if ($ovrride_date) $event['date'] = $ovrride_date;
-	
 	$event = $calendar->decodeEvent($event);
 
 	$markerArray["###DETAIL_LINK###"] = $this->pi_getPageLink($GLOBALS["TSFE"]->id) . '&skevent=' . $event['uid'];
@@ -88,6 +88,7 @@ else
 		while (list(,$event) = each ($calendar->events)) 
 		{
 			$event = $calendar->decodeEvent($event);
+
 			$markerArray["###DETAIL_LINK###"] = $this->pi_getPageLink($GLOBALS["TSFE"]->id) . '&skevent=' . $event['uid'];
 			$markerArray["###TITLE###"] = $event['title'];
 			$markerArray["###DURATION###"] = $event['duration'];

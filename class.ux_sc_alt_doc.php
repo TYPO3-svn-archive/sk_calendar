@@ -13,24 +13,29 @@ class ux_sc_alt_doc extends SC_alt_doc
 {
 	
 	function processData() {
-	$table = 'tx_skcalendar_events';
+	global $BE_USER;
+	
 	$data_arr = t3lib_div::_GP('data');
-	if ($data_arr[$table]) {
-	list(,$data)  = each ($data_arr[$table]); // get first entry
+	if ($data_arr['tx_skcalendar_events']) {
+	list(,$data)  = each ($data_arr['tx_skcalendar_events']); // get first entry
 	$exeptdate = $data['date'];
-	
-	
+		
 	// should we write an exeption?
 	if (strpos($data['exeptions'],'_to_')) $uid = substr($data['exeptions'],strpos($data['exeptions'],'exept_to_')+9); // get the ID
 
 	if ($uid) {
 		// get data
-		$record = t3lib_BEfunc::getRecord($table,$uid);
+		$record['substitute_event'] = ''; //todo
+		$record['pid'] = ''; //todo
+		$record['tstamp'] = mktime();
+		$record['crdate'] = mktime();
+		$record['cruser_id'] = ''; //todo
+		$record['event'] = $uid;
+		$record['exeptdate'] = $exeptdate;
+				
 		// write exeption
-		$updatefields['exeptions'] = addToExeptions($record['exeptions'],$exeptdate);
-		$where = "uid='$uid'";
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,$where,$updatefields);
-
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_skcalendar_exeptions',$record);
+		// oh my...
 	}
 	}
 		// go on saving

@@ -126,6 +126,25 @@ $TCA["tx_skcalendar_events"] = Array (
 	)
 );
 
+t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_exeptions");
+
+$TCA["tx_skcalendar_exeptions"] = Array (
+	"ctrl" => Array (
+		"title" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_exeptions",		
+		"label" => "title",	
+		"tstamp" => "tstamp",
+		"crdate" => "crdate",
+		"cruser_id" => "cruser_id",
+		"default_sortby" => "ORDER BY event",	
+		"readOnly" => 1,
+		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
+		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_skcalendar_events_x.gif",
+	),
+	"feInterface" => Array (
+		"fe_admin_fieldList" => "",
+	)
+);
+
 
 t3lib_div::loadTCA("tt_content");
 $TCA["tt_content"]["types"]["list"]["subtypes_excludelist"][$_EXTKEY."_pi1"]="layout,select_key";

@@ -724,6 +724,62 @@ $TCA["tx_skcalendar_events"] = Array (
 	)
 );
 
+$TCA["tx_skcalendar_exeptions"] = Array (
+	"ctrl" => $TCA["tx_skcalendar_exeptions"]["ctrl"],
+	"interface" => Array (
+		"showRecordFieldList" => ""
+	),
+	"feInterface" => $TCA["tx_skcalendar_exeptions"]["feInterface"],
+	"columns" => Array (
+		"event" => Array (
+			"exclude" => 0,
+			"label" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_exeptions.event",
+			"config" => Array (
+				"type" => "select",
+				"foreign_table" => "tx_skcalendar_events",
+				"foreign_table_where" => "ORDER BY tx_skcalendar_events.uid",
+				"size" => 1,
+				"minitems" => 0,
+				"maxitems" => 1,
+			)
+
+		),
+		"exeptdate" => Array (
+		"exclude" => 0,
+		"label" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.exeptdate",
+		"config" => Array (
+			"type" => "input",
+			"size" => "8",
+			"max" => "20",
+			"eval" => "date",
+			"checkbox" => "0",
+			"default" => "0"
+			)
+		),
+
+		"substitute_event" => Array (
+			"exclude" => 0,
+			"label" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_exeptions.substitute_event",
+			"config" => Array (
+				"type" => "select",
+				"foreign_table" => "tx_skcalendar_events",
+				"foreign_table_where" => "ORDER BY tx_skcalendar_events.uid",
+				"size" => 1,
+				"minitems" => 0,
+				"maxitems" => 1,
+				)
+
+			),
+
+		),
+	"types" => Array (
+		"0" => Array("showitem" => "")
+		),
+	"palettes" => Array (
+	"1" => Array("showitem" => "")
+	)
+);
+
 function user_exeption_handling($PA)
 {
 	if (!$PA['row']['exeptions'] || strchr($PA['row']['exeptions'],'_')) $out = "No exeptions";

@@ -108,7 +108,7 @@ CREATE TABLE tx_skcalendar_events (
 	end_time varchar(5) DEFAULT '' NOT NULL,
 	wholeday tinyint(3) unsigned DEFAULT '0' NOT NULL,
 	link tinytext NOT NULL,
-	cost varchar(5) DEFAULT '0' NOT NULL,
+	cost varchar(12) DEFAULT '0' NOT NULL,
 	description text NOT NULL,
 	image blob NOT NULL,
 	highlight tinyint(3) unsigned DEFAULT '0' NOT NULL,

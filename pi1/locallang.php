@@ -7,19 +7,14 @@
 
 $LOCAL_LANG = Array (
 	"default" => Array (
-		"list_mode_1" => "Mode 1",	
-		"list_mode_2" => "Mode 2",	
-		"list_mode_3" => "Mode 3",	
-		"submit_button_label" => "Click here to submit value",	
 		"more" => "more",
+		"dteinheit" => "Day of German reunion",
 	),
 	"dk" => Array (
-		"list_mode_1" => "Visning 1",	
-		"list_mode_2" => "Visning 2",	
-		"list_mode_3" => "Visning 3",	
 	),
 	"de" => Array (
 		"more" => "mehr",
+		"dteinheit" => "Tag der dt. Einheit",
 	),
 	"no" => Array (
 	),

@@ -25,6 +25,7 @@ class ux_sc_alt_doc extends SC_alt_doc
 		$uid = explode('_ex',$exept_to['edit']); // get the ID
 		$uid = $uid[0];
 		}
+	}
 
 	// save first
 		parent::processData();
@@ -44,7 +45,7 @@ class ux_sc_alt_doc extends SC_alt_doc
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_skcalendar_exeptions',$record);
 		
 	}
-	}
+	
 		
 	}
 	

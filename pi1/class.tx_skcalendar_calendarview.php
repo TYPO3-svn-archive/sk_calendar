@@ -43,6 +43,7 @@ class tx_skcalendar_calendarview {
 	var $todate;
 	var $targetpage;
 	var $events;
+	var $makelinks;
 
 	/**
 	* @return void
@@ -51,6 +52,7 @@ class tx_skcalendar_calendarview {
 	function tx_skcalendar_calendarview($container, $type,$conf) {
 		if ($conf['target']) $this->targetpage = $conf['target'];
 		else $this->targetpage = $GLOBALS["TSFE"]->id;
+		$this->makelinks = $conf['makelinks'];
 
 		$this->container = $container;
 		$this->type = $type;
@@ -144,6 +146,16 @@ class tx_skcalendar_calendarview {
 	}
 
 	function makeLinks() {
+	$link_arr = array ('week' => 'Wochenansicht', 'box' => 'Nächste Termine', 'month' => 'Monatsansicht');
+	
+	$this->content .= '<table cellspacing=0 cellpadding=0 width=100%><tr valign=top>';
+		$link['tx_skcalendar[offset]'] = $this->offset;
+	while (list($key,$value) = each($link_arr)) {
+
+		$link['tx_skcalendar[view]'] = $key;
+		$this->content .= '<td><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$link) . '">'. $value .'</a></td>';
+	}
+	$this->content .= '</tr></table>';
 	}
 
 	/**

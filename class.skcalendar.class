@@ -30,8 +30,11 @@ class sk_calendar {
 	function setCalendar($startdate='01-01', $enddate='12-31', $limit='')
 	{
 		$this->year = date('Y');
-		$this->startdate = $this->year . '-' . $startdate;
-		$this->enddate = $this->year . '-' . $enddate;
+		$startdate = explode('-',$startdate);
+		$enddate = explode('-',$enddate);
+		$this->startdate = mktime(0,0,0,$startdate[0],$startdate[1],$this->year);
+		$this->enddate = mktime(0,0,0,$enddate[0],$enddate[1],$this->year);
+		
 	}
 
 	function setYear($year)
@@ -95,10 +98,12 @@ class sk_calendar {
 		}
 
 		$this->events = addRecurringEvents($this->events);
+		
 		// now filter start & enddate
 		while (list($key, $value) = each($this->events)) {
 		$date = substr($key,0,10);
-		if ($date>=$this->startdate) $filtered_events[$key] = $value;
+
+		if ($date>=$this->startdate && $date <=$this->enddate) $filtered_events[$key] = $value;
 		}
 		$this->events = $filtered_events;
 		
@@ -108,13 +113,13 @@ class sk_calendar {
 	function decodeEvent($event) 
 	{
 		// decode Time & Date
-		if ($event['wholeday']==0) {
+		if ($event['wholeday']==0 && $event['start_time'] && $event['end_time']) {
 			$val = $event['start_time'];
 			$val = $val / 60;
 			$h = $val/60; // hours
 			$h =  floor($h);
 			$m = $val-($h*60);
-			$event['start_time'] = $h . ':' . $m;
+			$event['start_time'] = $h . ':' . $m;		
 			$val = $event['end_time'];
 			$val = $val / 60;
 			$h = $val/60; // hours
@@ -123,8 +128,7 @@ class sk_calendar {
 			$event['end_time'] = $h . ':' . $m;
 			$event['duration'] = $event['start_time'] . ' - ' . $event['end_time'] . ' ';
 		}
-		$event['date'] = explode('-',$event['date']);
-		$event['date'] = $event['date'][2] . '.' . $event['date'][1] . '.' . $event['date'][0];
+		if ($event['date']) $event['date'] = date('d.m.Y',$event['date']);
 		$event['duration'] .= $event['date'];
 		// Link
 		$event['link'] = '<a href="http://' . $event['link'] . '">http://' . $event['link'] . '</a>';

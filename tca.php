@@ -773,7 +773,7 @@ $TCA["tx_skcalendar_exeptions"] = Array (
 		),
 		"exeptdate" => Array (
 		"exclude" => 0,
-		"label" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.exeptdate",
+		"label" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_exeptions.exeptdate",
 		"config" => Array (
 			"type" => "input",
 			"size" => "8",

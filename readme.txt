@@ -49,3 +49,4 @@ To Do:
 - Multiple Select
 - yearview should not base on htmlview since it generates a pdf
 - Additional Holidays via TS
+- Why is TStamp of exeptionsdates not decoded? ($TCA Someplace)

@@ -53,6 +53,21 @@ class ux_sc_alt_doc extends SC_alt_doc
 	}
 	
 	function closeDocument($code=0)	{
+	
+	$data_arr = t3lib_div::_GP('data');
+	
+	if ($data_arr['tx_skcalendar_events']) {
+	list(,$data)  = each ($data_arr['tx_skcalendar_events']); // get first entry
+	$exeptdate = $data['date'];
+		$exept_to = array_flip($this->editconf['tx_skcalendar_events']);
+	// should we write an exeption?
+	if (strpos($exept_to['edit'],'_ex')) {
+		$this->uid = explode('_ex',$exept_to['edit']); // get the ID
+		$this->uid = $this->uid[0];
+		}
+		
+	}
+	
 		
 		if ($this->uid) {
 		// get data

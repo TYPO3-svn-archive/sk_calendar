@@ -138,6 +138,9 @@ $TCA["tx_skcalendar_exeptions"] = Array (
 		"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",
 		"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_skcalendar_events_x.gif",
 	),
+	"feInterface" => Array (
+		"fe_admin_fieldList" => "hidden, exeptdate",
+	)
 );
 
 

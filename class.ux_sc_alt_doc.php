@@ -19,27 +19,33 @@ class ux_sc_alt_doc extends SC_alt_doc
 	if ($data_arr['tx_skcalendar_events']) {
 	list(,$data)  = each ($data_arr['tx_skcalendar_events']); // get first entry
 	$exeptdate = $data['date'];
-		
+		$exept_to = array_flip($this->editconf['tx_skcalendar_events']);
 	// should we write an exeption?
-	if (strpos($data['exeptions'],'_to_')) $uid = substr($data['exeptions'],strpos($data['exeptions'],'exept_to_')+9); // get the ID
+	if (strpos($exept_to['edit'],'_ex')) {
+		$uid = explode('_ex',$exept_to['edit']); // get the ID
+		$uid = $uid[0];
+		}
+
+	// save first
+		parent::processData();
 
 	if ($uid) {
 		// get data
-		$record['substitute_event'] = ''; //todo
-		$record['pid'] = ''; //todo
+		$record['substitute_event'] = array_flip($this->editconf['tx_skcalendar_events']); //todo
+		$record['substitute_event'] = intval($record['substitute_event']['edit']);
+		$record['pid'] = intval($data['pid']);
 		$record['tstamp'] = mktime();
 		$record['crdate'] = mktime();
-		$record['cruser_id'] = ''; //todo
-		$record['event'] = $uid;
-		$record['exeptdate'] = $exeptdate;
-				
-		// write exeption
+		$record['cruser_id'] = ''; // todo
+		$record['event'] = intval($uid);
+		$record['exeptdate'] = intval($exeptdate);
+
+		// write exception
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_skcalendar_exeptions',$record);
-		// oh my...
+		
 	}
 	}
-		// go on saving
-		parent::processData();
+		
 	}
 	
 	
@@ -104,8 +110,6 @@ class ux_sc_alt_doc extends SC_alt_doc
 					// get data
 					$record = t3lib_BEfunc::getRecord($table,$uid);
 					
-					// prepare data
-					$record['exeptions']= 'exept_to_' . $uid;
 					$record['date'] = $exeptdate;
 					$pid = $record['pid']; // save this one for later
 unset($record['uid'],$record['pid'],$record['tstamp'],$record['crdate'],$record['cruser_id'],$record['sorting'],$record['deleted'],$record['hidden'],$record['recurring'],$record['recurr_until']);
@@ -116,7 +120,7 @@ unset($record['uid'],$record['pid'],$record['tstamp'],$record['crdate'],$record[
 					
 					// prepare new entry
 					$this->editconf['tx_skcalendar_events'] = Array($pid => 'new');
-
+					
 					// proceed to making new 
 					return parent::makeEditForm();
 					break;

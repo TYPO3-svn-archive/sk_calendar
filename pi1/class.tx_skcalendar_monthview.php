@@ -122,10 +122,10 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 		$backyear['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$offset,1,$this->year-1);
 
 		$navi['backlinkyear'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$backyear) . '"> << ' . strftime("%Y",mktime(0,0,0,$offset,1,$this->year-1)) . '</a>';
-		$navi['nextlinkyear'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$nextyear) . '">' . strftime("%Y",mktime(0,0,0,$offset,1,$this->year+1)) . ' >> ' .'</a>';
+		$navi['nextlinkyear'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$nextyear) . '">' . strftime("%Y",mktime(0,0,0,$offset,1,$this->year+1)) . ' >></a>';
 
 		$navi['backlink'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"> << ' . $this->pi_getLL('prev_month') . '</a>';
-		$navi['nextlink'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"> >> ' . $this->pi_getLL('next_month') . '</a>';
+		$navi['nextlink'] = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '">' . $this->pi_getLL('next_month') . ' >></a>';
 		return $navi;
 	}
 }

@@ -8,13 +8,13 @@ plugin.tx_skcalendar_pi1.general.rtefield_stdWrap.parseFunc < tt_content.text.20
 plugin.tx_skcalendar_pi1 {
   _CSS_DEFAULT_STYLE (
       /* example styles for sk_calendar */
-      .month_past_weekday TD { color:#C0C0C0; } 
-      .month_weekday TD { color:#000000; }
-      .month_holiday TD { color:#FF0000; }
+      td.month_past_weekday { color:#C0C0C0; } 
+      td.month_weekday { color:#000000; }
+      td.month_holiday { color:#FF0000; }
 
-      .week_past_weekday TD { color:#C0C0C0; } 
-      .week_weekday TD { color:#000000; }
-      .week_holiday  TD { color:#FF0000; }   
+      td.week_past_weekday { color:#C0C0C0; } 
+      td.week_weekday { color:#000000; }
+      td.week_holiday { color:#FF0000; }   
   )
   
 

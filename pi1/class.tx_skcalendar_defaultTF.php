@@ -102,6 +102,7 @@ var $snippet;
 
 	function templatefunc_weekno() {
 		$this->snippet = strftime('%W',$this->TempData['timestamp']-3600); // minus one hour
+		if ($this->snippet==0) $this->snippet= strftime('%W',mktime(0,0,0,12,31,date('Y',$this->TempData['timestamp'])-1))+1; //there seems to be a problem with the strftime function
 	}
 
 

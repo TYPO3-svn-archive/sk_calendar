@@ -1,0 +1,4 @@
+plugin.tx_skcalendar >
+
+#cat=tx_skcalendar//test; type=options[,1,2]; label=Testentry: This does nothing whatsoever.
+plugin.tx_skcalendar.test = 1

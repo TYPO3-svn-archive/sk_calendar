@@ -29,11 +29,14 @@
 
 
 require_once(PATH_tslib."class.tslib_pibase.php");
+require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_feEngine.php');
+require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_selection.php');
 
 class tx_skcalendar_pi1 extends tslib_pibase {
 	var $prefixId = "tx_skcalendar_pi1";		// Same as class name
 	var $scriptRelPath = "pi1/class.tx_skcalendar_pi1.php";	// Path to this script relative to the extension dir.
 	var $extKey = "sk_calendar";	// The extension key.
+	var $notch; // move between days/weeks/months/years
 	
 	/**
 	 * This is only an example output of the data, so other ways of displaying data will be developed on demand.
@@ -42,75 +45,28 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		require_once(t3lib_extMgm::extPath($this->extKey).'class.skcalendar.class');
-		$calendar = new sk_calendar;
-		if (!$this->conf['templateFile']) $this->conf['templateFile'] = 'typo3conf/ext/sk_calendar/pi1/template.tmpl';
-$this->listTemplateCode = $this->cObj->fileResource($this->conf["templateFile"]);
-$tmpl_listwrap = $this->cObj->getSubpart($this->listTemplateCode, "###LISTWRAP###");
-$tmpl_row =  $this->cObj->getSubpart($this->listTemplateCode, "###ROW###");
-$tmpl_detail =  $this->cObj->getSubpart($this->listTemplateCode, "###DETAIL###");
-if ($GLOBALS['HTTP_GET_VARS']['skevent']) {
-	// detail view
-	$uid = explode('_',$GLOBALS['HTTP_GET_VARS']['skevent']);
-	$ovrride_date = substr($uid[1],2);
-	$uid = $uid[0];
-	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','tx_skcalendar_events',"uid='$uid'");
-	$event = mysql_fetch_array($result,MYSQL_ASSOC);
-       $event['date'] = date('Y-m-d',$event['date']); // convert date
-	if ($ovrride_date) $event['date'] = $ovrride_date;
-	$event = $calendar->decodeEvent($event);
-	// fe editing
-	$markerArray["###DETAIL_LINK###"] = $this->pi_getPageLink($GLOBALS["TSFE"]->id) . '&skevent=' . $event['uid'];
-	$markerArray["###TITLE###"] = $event['title'];
-	$markerArray["###DURATION###"] = $event['duration'];
-	$markerArray["###LINK###"] = $event['link'];
-	$markerArray["###COST###"] = $event['cost'];
-	$markerArray["###DESCRIPTION###"] = $event['description'];
-	$markerArray["###IMAGE###"] = $event['image'];
-	$markerArray["###PAGES###"] = $event['pages'];
-	$markerArray["###HIGHLIGHT###"] = $event['highlight'];
-	$markerArray["###CATEGORY###"] = $event['category']['title'];
-	$markerArray["###ORGANIZER###"] = $event['organizer']['name'];
-	$markerArray["###TARGETGROUP###"] = $event['targetgroup']['title'];
-	$markerArray["###LOCATION###"] = $event['location']['title'];
-	$content = $this->cObj->substituteMarkerArrayCached($tmpl_detail,$markerArray,array(),array());
-}
-else
-{
-// listview
-	// get data
-	$offset = date('m-d');
+		if (!$GLOBALS['HTTP_POST_VARS']['fromdate']) $fromdate = '01-01';
+		if (!$GLOBALS['HTTP_POST_VARS']['todate']) $todate = '12-31';
+		debug($notch);
+		// prepare typolinks
+		$this->allowCaching = 0;
+		$link_conf = $this->typolink_conf;
 		
-		$calendar->setCalendar($offset);
-		$calendar->queryCalendar();
+		$link_conf['parameter'] = $GLOBALS["TSFE"]->id;
+		$link_conf["parameter."]["wrap"] = "|,".$GLOBALS["TSFE"]->type;
+		$link_conf["useCacheHash"]=$this->allowCaching;
+		$link_conf["no_cache"]=!$this->allowCaching;
 		
-		if ($calendar->events) {
-		while (list(,$event) = each ($calendar->events)) 
-		{
-			$event = $calendar->decodeEvent($event);
-			$markerArray["###FE_EDIT###"] = $this->pi_getEditPanel($event,"tx_skcalendar_events");
-			$markerArray["###DETAIL_LINK###"] = $this->pi_getPageLink($GLOBALS["TSFE"]->id) . '&skevent=' . $event['uid'];
-			$markerArray["###TITLE###"] = $event['title'];
-			$markerArray["###DURATION###"] = $event['duration'];
-			$markerArray["###LINK###"] = $event['link'];
-			$markerArray["###COST###"] = $event['cost'];
-			$markerArray["###DESCRIPTION###"] = $event['description'];
-			$markerArray["###IMAGE###"] = $event['image'];
-			$markerArray["###PAGES###"] = $event['pages'];
-			$markerArray["###HIGHLIGHT###"] = $event['highlight'];
-			$markerArray["###CATEGORY###"] = $event['category']['title'];
-			$markerArray["###ORGANIZER###"] = $event['organizer']['name'];
-			$markerArray["###TARGETGROUP###"] = $event['targetgroup']['title'];
-			$markerArray["###LOCATION###"] = $event['location']['title'];
-			$row = $this->cObj->substituteMarkerArrayCached($tmpl_row,$markerArray,array(),array());
-			$cache['###LIST###'] .= $row;
-		}
-		}
-		else $cache['###LIST###'] = ' '; // in case there are no events
-		// wrapit
-		$content = $this->cObj->substituteMarkerArrayCached($tmpl_listwrap,$cache,array(),array());
-	}
-	return $this->pi_wrapInBaseClass($content);
+		$selection = new tx_skcalendar_internal();
+		$selection->prepareQuery();
+		$selection->getResults();
+		
+		$calendar = new tx_skcalendar_HTMLview($selection,'list',$conf);
+		$calendar->createHolidays('DE');
+		$calendar->createCalendar($fromdate,$todate);
+		$calendar->parseCalendar();
+		
+	return $this->pi_wrapInBaseClass($calendar->content);
 	}
 }
 

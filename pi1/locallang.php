@@ -11,6 +11,7 @@ $LOCAL_LANG = Array (
 		"list_mode_2" => "Mode 2",	
 		"list_mode_3" => "Mode 3",	
 		"submit_button_label" => "Click here to submit value",	
+		"more" => "more",
 	),
 	"dk" => Array (
 		"list_mode_1" => "Visning 1",	
@@ -18,6 +19,7 @@ $LOCAL_LANG = Array (
 		"list_mode_3" => "Visning 3",	
 	),
 	"de" => Array (
+		"more" => "mehr",
 	),
 	"no" => Array (
 	),

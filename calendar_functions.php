@@ -72,7 +72,7 @@ function addRecurringEvents($event_arr) {
 				// bit tricky for months have differnt amounts of days
 				$date = date('Y-m-d', $row['date']);
 				$date = explode('-',$date);
-				$row['date'] = mktime(0,0,0,$date[1],$date[2]+1,$date[0]);
+				$row['date'] = mktime(0,0,0,$date[1]+1,$date[2],$date[0]);
 				
 			}
 			break;

@@ -48,13 +48,14 @@ class tx_skcalendar_selection {
 	* @desc Sets the Filters
 	*/
 	function setFilters ($filter_array = false) {
-		$this->filters[startdate]=intval($filter_array[startdate]); // startdate unixTS
-		$this->filters[enddate]=intval($filter_array[enddate]); // enddate unixTS
-		$this->filters[categories]=$filter_array[categories]; // array with categories
-		$this->filters[locations]=$filter_array[locations]; // array with locations
-		$this->filters[organizers]=$filter_array[organizers]; // array with organizers
-		$this->filters[targetgroups]=$filter_array[targetgroups]; // array with targetgroups
-		$this->filters[pid] = $filter_array[pid];
+		$this->filters['startdate']=intval($filter_array['startdate']); // startdate unixTS
+		$this->filters['enddate']=intval($filter_array['enddate']); // enddate unixTS
+		$this->filters['categories']=$filter_array['categories']; // array with categories
+		$this->filters['locations']=$filter_array['locations']; // array with locations
+		$this->filters['organizers']=$filter_array['organizers']; // array with organizers
+		$this->filters['targetgroups']=$filter_array['targetgroups']; // array with targetgroups
+		$this->filters['pid'] = $filter_array['pid'];
+		$this->filters['sword'] = $filter_array['sword'];
 	}
 	
 	/**

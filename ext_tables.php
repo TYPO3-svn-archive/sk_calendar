@@ -126,8 +126,6 @@ $TCA["tx_skcalendar_events"] = Array (
 	)
 );
 
-t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_exeptions");
-
 $TCA["tx_skcalendar_exeptions"] = Array (
 	"ctrl" => Array (
 		"title" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_exeptions",		

@@ -113,9 +113,38 @@ class tx_skcalendar_cm1 extends t3lib_SCbase {
 	
 	function moduleContent()	{
 	global $LANG;
+	
+	require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_feengine.php');
+	require_once(t3lib_extMgm::extPath('sk_calendar').'class.tx_skcalendar_vceedit.php');
+	require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_selection.php');
+	if($GLOBALS["HTTP_GET_VARS"]['offset']) $offset = $GLOBALS["HTTP_GET_VARS"]['offset'];
+	else $offset=mktime();
+	
+	$offset_y = date('Y',$offset);
+	$offset_m = date('m',$offset);
+	if ($offset_m >6) $offset_m = 7;
+	else $offset_m = 1;
+	$start = mktime(0,0,0,$offset_m,1,$offset_y);
+	$end = mktime(23,59,59,$offset_m+5,31,$offset_y);
+	$filters['startdate'] = $start;
+	$filters['enddate'] = $end;
+	$filters['pid'] = $this->id;
+	$selection = new tx_skcalendar_internal();
+	$selection->setFilters($filters);
+	$selection->getResults();
+	
+	$calendar = new tx_skcalendar_vceedit($selection,$this->conf);
+	$calendar->createHolidays('de');
+	$calendar->setRange($filters['startdate'],$filters['enddate']);
+	$calendar->createCalendar();
+	$content = $calendar->parseCalendar();
+
+	/*
+	
+	
 		switch((string)$this->MOD_SETTINGS["function"])	{
 			case 1:
-			include_once('../class.skcalendar.class');
+			include_once('../class.skcalendar.php');
 			$editcal = new htmlView();
 			$editcal->setCalendar();
 			$editcal->setYear(2004);
@@ -135,7 +164,7 @@ class tx_skcalendar_cm1 extends t3lib_SCbase {
 					<BR>This is the GET/POST vars sent to the script:<BR>".
 					"GET:".t3lib_div::view_array($GLOBALS["HTTP_GET_VARS"])."<BR>".
 					"POST:".t3lib_div::view_array($GLOBALS["HTTP_POST_VARS"])."<BR>".
-					""; */				$this->content.=$this->doc->section($LANG->getLL("ovr_cm1"),$content,0,1);
+					""; 		$this->content.=$this->doc->section($LANG->getLL("ovr_cm1"),$content,0,1);
 			break;
 			case 2:
 				$content="<div align=center><strong>Menu item #2...</strong></div>";
@@ -146,6 +175,9 @@ class tx_skcalendar_cm1 extends t3lib_SCbase {
 				$this->content.=$this->doc->section("Message #3:",$content,0,1);
 			break;
 		} 
+		
+		*/
+		$this->content.=$this->doc->section($LANG->getLL("ovr_cm1"),$content,0,1);
 	}
 }
 

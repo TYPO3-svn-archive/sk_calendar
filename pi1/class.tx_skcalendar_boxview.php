@@ -41,23 +41,25 @@ class tx_skcalendar_boxview extends tx_skcalendar_htmlview {
 			$d = intval(date('d',$act_date));
 
 			if ($this->calendarArray[$m][$d]['events']) {
-				$this->content .= '<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td>' . strftime('%A, %d.%m %Y',$act_date) . '<br>';
+				$c_result .= '<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td>' . strftime('%A, %d.%m %Y',$act_date) . '<br>';
 				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
 					unset($linktext);
-					if ($data['start_time']) $linktext = $data['start_time'] . ' '; 
+					if ($data['start_time']) $linktext = date('h:m',$data['start_time']) . ' '; 
 					$linktext .= $data['title'];
-					$this->content .= '<table cellspacing=0 cellpadding=0><tr valign=top><td width=30% nowrap>';
-					$this->content .= $this->detailLink($data['uid'],$linktext,$data['color'],$data['date']);
-					$this->content .= '</td></tr></table>';
+					$c_result .= '<table cellspacing=0 cellpadding=0><tr valign=top><td width=30% nowrap>';
+					$c_result .= $this->detailLink($data['uid'],$linktext,$data['color'],$data['date']);
+					$c_result .= '</td></tr></table>';
 					
 				}
-				$this->content .= '</td></tr></table></td></tr>';
+				$c_result .= '</td></tr></table></td></tr>';
 			}
 			
 
 			$act_date = $act_date+86400;
 
 		}
+		if ($c_result) $this->content .= $c_result;
+		else $this->content .= '<tr><td align=center>' . $this->pi_getLL('no_entries') . '</td></tr>';
 		$this->content .= '<tr><td>&nbsp;</td></tr><tr><td>' . $this->makeNavigation() . '</td><tr></table>';
 	}
 	

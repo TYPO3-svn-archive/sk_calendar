@@ -1,6 +1,27 @@
 <?php
 if (!defined ("TYPO3_MODE")) 	die ("Access denied.");
 
+// Sysfolder-Mode?
+$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['sk_calendar']);
+
+if ($confArr['centralStoragePid']) { // special sysfolder for cats, etc.
+    $dataSource = $confArr['centralStoragePid'];
+}
+else {
+	// allow calendardata on normal pages, events are always allowed
+	t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_category");
+	t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_organizer");
+	t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_location");
+	t3lib_extMgm::allowTableOnStandardPages("tx_skcalendar_targetgroup");
+
+	$dataSource = '###CURRENT_PID###';
+}
+$fTableWhere['cat'] = 'AND tx_skcalendar_category.pid='. $dataSource . ' ';
+$fTableWhere['org'] = 'AND tx_skcalendar_organizer.pid='. $dataSource . ' ';
+$fTableWhere['loc'] = 'AND tx_skcalendar_location.pid='. $dataSource . ' ';
+$fTableWhere['tar'] = 'AND tx_skcalendar_targetgroup.pid='. $dataSource . ' ';
+
+
 $TCA["tx_skcalendar_category"] = Array (
 	"ctrl" => $TCA["tx_skcalendar_category"]["ctrl"],
 	"interface" => Array (
@@ -572,7 +593,7 @@ $TCA["tx_skcalendar_events"] = Array (
 					Array("LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.choose_cat",0),
 					),
 				"foreign_table" => "tx_skcalendar_category",
-				"foreign_table_where" => "ORDER BY tx_skcalendar_category.uid",
+				"foreign_table_where" => $fTableWhere['cat'] . "ORDER BY tx_skcalendar_category.uid",
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,
@@ -585,8 +606,8 @@ $TCA["tx_skcalendar_events"] = Array (
 						"icon" => "add.gif",
 						"params" => Array(
 						"table"=>"tx_skcalendar_category",
-						"pid" => "###CURRENT_PID###",
-						"setValue" => "prepend"
+						"pid" =>$dataSource,
+						"setValue" => "set"
 						),
 					"script" => "wizard_add.php",
 					),
@@ -611,7 +632,7 @@ $TCA["tx_skcalendar_events"] = Array (
 					),
 
 				"foreign_table" => "tx_skcalendar_organizer",
-				"foreign_table_where" => "ORDER BY tx_skcalendar_organizer.uid",
+				"foreign_table_where" => $fTableWhere['org'] . "ORDER BY tx_skcalendar_organizer.uid",
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,
@@ -624,8 +645,8 @@ $TCA["tx_skcalendar_events"] = Array (
 						"icon" => "add.gif",
 						"params" => Array(
 						"table"=>"tx_skcalendar_organizer",
-						"pid" => "###CURRENT_PID###",
-						"setValue" => "prepend"
+						"pid" => $dataSource,
+						"setValue" => "set"
 						),
 					"script" => "wizard_add.php",
 					),
@@ -650,7 +671,7 @@ $TCA["tx_skcalendar_events"] = Array (
 					),
 
 				"foreign_table" => "tx_skcalendar_targetgroup",
-				"foreign_table_where" => "ORDER BY tx_skcalendar_targetgroup.uid",
+				"foreign_table_where" => $fTableWhere['tar'] . "ORDER BY tx_skcalendar_targetgroup.uid",
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,
@@ -663,8 +684,8 @@ $TCA["tx_skcalendar_events"] = Array (
 						"icon" => "add.gif",
 						"params" => Array(
 						"table"=>"tx_skcalendar_targetgroup",
-						"pid" => "###CURRENT_PID###",
-						"setValue" => "prepend"
+						"pid" => $dataSource,
+						"setValue" => "set"
 						),
 					"script" => "wizard_add.php",
 					),
@@ -689,7 +710,7 @@ $TCA["tx_skcalendar_events"] = Array (
 					),
 
 				"foreign_table" => "tx_skcalendar_location",
-				"foreign_table_where" => "ORDER BY tx_skcalendar_location.uid",
+				"foreign_table_where" => $fTableWhere['loc'] . "ORDER BY tx_skcalendar_location.uid",
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,
@@ -702,8 +723,8 @@ $TCA["tx_skcalendar_events"] = Array (
 						"icon" => "add.gif",
 						"params" => Array(
 						"table"=>"tx_skcalendar_location",
-						"pid" => "###CURRENT_PID###",
-						"setValue" => "prepend"
+						"pid" => $dataSource,
+						"setValue" => "set"
 						),
 					"script" => "wizard_add.php",
 					),

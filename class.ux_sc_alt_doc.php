@@ -40,7 +40,7 @@ class ux_sc_alt_doc extends SC_alt_doc
 		$record['pid'] = intval($data['pid']);
 		$record['tstamp'] = mktime();
 		$record['crdate'] = mktime();
-		$record['cruser_id'] = ''; // todo
+		$record['cruser_id'] = $GLOBALS["BE_USER"]->user["uid"];
 		$record['event'] = intval($this->uid);
 		$record['exeptdate'] = intval($exeptdate);
 
@@ -61,7 +61,7 @@ class ux_sc_alt_doc extends SC_alt_doc
 		$record['pid'] = intval($data['pid']);
 		$record['tstamp'] = mktime();
 		$record['crdate'] = mktime();
-		$record['cruser_id'] = ''; // todo
+		$record['cruser_id'] = $GLOBALS["BE_USER"]->user["uid"];
 		$record['event'] = intval($this->uid);
 		$record['exeptdate'] = intval($exeptdate);
 		

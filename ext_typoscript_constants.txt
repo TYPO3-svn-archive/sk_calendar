@@ -3,23 +3,29 @@
 
 plugin.tx_skcalendar >
 
-#cat=plugin.tx_skcalendar/dims/a; type=int+; label=Range: Range of Boxview in Days.
+#cat=plugin.tx_skcalendar/dims/a; type=int+; label=Boxview-Range: Range of Boxview in Days.
 plugin.tx_skcalendar_pi1.box.range = 7
 
-#cat=plugin.tx_skcalendar/enable/a; type=boolean; label=Iconmode: Show Cat-icons or Eventtitles.
+#cat=plugin.tx_skcalendar/dims/b; type=int+; label=Listview-Range: Range of Listview in items.
+plugin.tx_skcalendar_pi1.list.limit = 20
+
+#cat=plugin.tx_skcalendar/enable/a; type=options[yes=1, no=0]; label=Iconmode: Show Cat-icons or Eventtitles in Monthview.
 plugin.tx_skcalendar_pi1.month.iconmode = 0
 
-#cat=plugin.tx_skcalendar/others/a; type=options[boxview=box,weekly View=week, Monthly view=month]; label=Default View: Choose the defaultview for the Calendar.
+#cat=plugin.tx_skcalendar/others/a; type=options[boxview=box, listview=list, weekly View=week, Monthly view=month]; label=Default View: Choose the defaultview for the Calendar.
 plugin.tx_skcalendar_pi1.general.view = month
 
-#cat=plugin.tx_skcalendar/enable/b; type=boolean; label=Show Links: Show Links to other views
+#cat=plugin.tx_skcalendar/enable/b; type=options[yes=1, no=0]; label=Show Links: Show Links to other views
 plugin.tx_skcalendar_pi1.general.showlinks = 1
 
-#cat=plugin.tx_skcalendar/enable/c; type=boolean; label=Show Filters: Show filters for Categories, Targetgroups, etc.
+#cat=plugin.tx_skcalendar/enable/c; type=options[yes=1, no=0]; label=Show Filters: Show filters for Categories, Targetgroups, etc.
 plugin.tx_skcalendar_pi1.general.showfilters = 1
 
+#cat=plugin.tx_skcalendar/enable/d; type=options[yes=1, no=0]; label=Filter Warning: Show warning if no dropdownfilters are present.
+plugin.tx_skcalendar_pi1.warning.filter = 1
+
 #cat=plugin.tx_skcalendar/other/d; type=int+; label=Targetpage: Page to Target the Detailview.
-plugin.tx_skcalendar_pi1.general.pid = 
+plugin.tx_skcalendar_pi1.general.target_pid = 
 
 #cat=plugin.tx_skcalendar/other/e; type=int+; label=Default Category: Sets a default Category to filter.
 plugin.tx_skcalendar_pi1.general.filter_cat = 

@@ -48,8 +48,9 @@ class tx_skcalendar_feengine {
 	
 	function tx_skcalendar_feengine ($container,$conf) {
 	$this->conf = $conf;
+	
 	$this->container = $container;
-	if (!$conf['target']) $this->conf['target'] = $GLOBALS["TSFE"]->id;
+	if (!$conf['general']['target_pid']) $this->conf['general']['target_pid'] = $GLOBALS["TSFE"]->id;
 	$this->view = $conf['general']['view'];
 	$this->events = $container->result;
 	if (!$this->events) $this->events = Array();
@@ -147,8 +148,13 @@ class tx_skcalendar_feengine {
 		return $name;
 	}
 
-	function getCategory($catid) {
-		return $this->categories[$catid];
+	function getCategory($catid,$field=FALSE) {
+		if ($field) return $this->categories[$catid][$field];
+		else return $this->categories[$catid];
+	}
+
+	function getLocation($locid) {
+		return $this->locations[$locid];
 	}
 
 	function getOrganizer($orga) {

@@ -162,21 +162,19 @@ function filterRange($events,$filters=false) {
 	while (list(,$data) = each ($events)) {
 		if ($data['date'] >= $filters['startdate']) $event_arr[] = $data;
 		}
-		$events = $event_arr;
-		unset($event_arr);
+			$events = $event_arr;
+			unset($event_arr);
 		}
-		
 		
 	if ($filters['enddate'] && $events) {
-	reset($events);
-	while (list(,$data) = each ($events)) {
+		reset($events);
+		while (list(,$data) = each ($events)) {
+			
 		if ($data['date'] <= $filters['enddate']) $event_arr[] = $data;
-		}
-		
-		$events = $event_arr;
-		}
-		
-	return $events;
+			}
+			$events = $event_arr;
+			}
+		return $events;
 	
 	}
 

@@ -43,16 +43,24 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 	function main($content,$conf)	{
 		$this->conf['general']=$conf['general.']; // I have no idea why there are dots all the sudden.
 		$this->conf['box']=$conf['box.'];
+		$this->conf['list']=$conf['list.'];
 		$this->conf['month']=$conf['month.'];
+		$this->conf['warning']=$conf['warning.'];
 		$this->conf['userFunc'] = $conf['userFunc'];
+		
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
+		$pages = $this->pi_getPidList($this->cObj->data['pages'],$this->cObj->data['pages']);
+		// meanwhile
+				
 	
 		// view & Offset
 		$offset = intval($this->piVars['offset']);
 		if (!$offset) $offset = mktime(0,0,0);
 		if ($this->piVars['view']) $this->conf['general']['view'] = $this->piVars['view'];
 		$this->conf['offset'] = $offset;
+		$this->conf['notch'] = $this->piVars['notch']; // listview
+		$this->conf['sorting'] = $this->piVars['sorting']; // listview
 		
 		// read TS
 		if ($this->conf['general']['filter_cat']) $filters['categories'][0] = intval($this->conf['general']['filter_cat']);
@@ -61,12 +69,14 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		if ($this->conf['general']['filter_orga']) $filters['organizers'][0] = intval($this->conf['general']['filter_orga']);
 		
 		// Override with userinputs
+		$filters['sword'] = $this->piVars['sword'];
 		if ($this->piVars['targetgroups']) $filters['targetgroups'][0] = intval($this->piVars['targetgroups']);
 		if ($this->piVars['categories']) $filters['categories'][0] = intval($this->piVars['categories']);
 		if ($this->piVars['locations']) $filters['locations'][0] = intval($this->piVars['locations']);
 		if ($this->piVars['organizers']) $filters['organizers'][0] = intval($this->piVars['organizers']);
-		if (!$this->conf['general']['pid']) $this->conf['general']['pid'] = $GLOBALS["TSFE"]->id; // same page if no pid is given
-		$filters['pid'] = $this->conf['general']['pid'];
+		if ($pages) $filters['pid'] = $pages; 
+		else $filters['pid'] = $GLOBALS["TSFE"]->id; // same page if no pid is given
+		
 		switch ($this->conf['general']['view']) {
 			case 'week':
 			$offset = $offset - date('w',$offset) * 86400 + 86400; // we like mondays
@@ -106,9 +116,23 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			$filters['enddate'] = $offset + 86400;
 			break;
 
+			case 'list':
+			$filters['startdate'] = $offset;
+			$offset_temp = date('m-d-Y',$offset);
+			$filters['enddate'] = mktime(0,0,0,$offset_temp[0],$offset_temp[1],$offset_temp[2]+5); // 5 years should result enough entries for the list. Cannot select unlimited because of infinite recurring events
+			break;
+			
+			case 'archive':
+			$filters['startdate'] = 1; // show us everything (0 would disable filter)
+			$offset_temp = date('m-d-Y');
+			$filters['enddate'] = mktime(); // ... until today
+			break;
+
 
 		}
-$this->conf['offset'] = $offset;
+		$this->conf['offset'] = $offset;
+		
+		// initiate selection
 		$selection = new tx_skcalendar_internal();
 		$selection->setFilters($filters);
 		$selection->getResults();
@@ -139,6 +163,14 @@ $this->conf['offset'] = $offset;
 			case 'detail';
 			$this->conf['uid'] = $this->piVars['uid'];
 			$calendar = new tx_skcalendar_detailview($selection,$this->conf);
+			break;
+
+			case 'list';
+			$calendar = new tx_skcalendar_listview($selection,$this->conf);
+			break;
+
+			case 'archive';
+			$calendar = new tx_skcalendar_archiveview($selection,$this->conf);
 			break;
 		}		
 		$calendar->setRange($filters['startdate'],$filters['enddate']);

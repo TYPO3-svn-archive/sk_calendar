@@ -26,6 +26,8 @@ require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_boxvi
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_detailview.php');
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_yearview.php');
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_monthview.php');
+require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_listview.php');
+require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_archiveview.php');
 
 // FE-Engine
 class tx_skcalendar_htmlview extends tx_skcalendar_feengine {
@@ -42,7 +44,7 @@ class tx_skcalendar_htmlview extends tx_skcalendar_feengine {
 		$link['tx_skcalendar_pi1[offset]'] = $date;
 		$link['tx_skcalendar_pi1[view]'] = 'detail';
 		$link['tx_skcalendar_pi1[uid]'] = $id;
-		$return = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target'],$link) . '"><font color="' . $data['color'] . '">'. $text.'</font></a>';
+		$return = '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['general']['target_pid'],$link) . '"><font color="' . $data['color'] . '">'. $text.'</font></a>';
 return $return;
 		}
 
@@ -52,13 +54,14 @@ return $return;
 		$link['tx_skcalendar_pi1[categories]'] = $this->container->filters['categories'][0];
 		$link['tx_skcalendar_pi1[locations]'] = $this->container->filters['locations'][0];
 		$link['tx_skcalendar_pi1[organizers]'] = $this->container->filters['organizers'][0];
+		$link['tx_skcalendar_pi1[sword]'] = $this->container->filters['sword'];
 		$link['tx_skcalendar_pi1[view]'] = $this->view;
 		$link['no_cache'] = 1;
 		return $link;
 	}
 
 	function makeLinks() {
-		$link_arr = array ('week' => $this->pi_getLL('week_view'), 'month' =>  $this->pi_getLL('month_view'), 'year' => $this->pi_getLL('pdf_view'));
+		$link_arr = array ('week' => $this->pi_getLL('week_view'), 'month' =>  $this->pi_getLL('month_view'), 'list' =>  $this->pi_getLL('list_view'), 'year' => $this->pi_getLL('pdf_view'));
 
 		$this->content .= '<table cellspacing=0 cellpadding=0 width=100%><tr><td colspan=4><b>' . $this->pi_getLL('other_views') . '</b></td></tr><tr valign=top>';
 		$link= $this->prepareTypolink();
@@ -73,68 +76,61 @@ return $return;
 
 	function parseTime($wholeday, $date, $start, $end) {
 		if (!$wholeday && $start) {
-			$start = $date + $start;
-			
-			$out = $this->pi_getLL('begin') . ': ' . strftime('%H:%M',$start) . ' ' . $this->pi_getLL('clock');
+			$out = $this->pi_getLL('begin') . ': ' . gmstrftime('%H:%M',$start) . ' ' . $this->pi_getLL('clock');
 			if ($end) {
-				$end = $date + $end;
-				$out .= ' '. $this->pi_getLL('until') .' ' . strftime('%H:%M',$end) . ' ' . $this->pi_getLL('clock');
+				$out .= ' '. $this->pi_getLL('until') .' ' . gmstrftime('%H:%M',$end) . ' ' . $this->pi_getLL('clock');
 			}
 		}
-		else $out = $this->pi_getLL('date') . ': ' . strftime('%A, %d.%m %Y',$date);
+		else $out = $this->pi_getLL('date') . ': ' . gmstrftime('%A, %d.%m %Y',$date);
 		return $out;
 	}
 
 		function makeFilters() {
+		$this->content .= '<br><form action="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target']) . '" method="post"><input type=hidden name=tx_skcalendar_pi1[view] value=' . $this->view . '><input type=hidden name=no_cache value=1><input type=hidden name=tx_skcalendar_pi1[offset] value=' . $this->offset . '><b>' . $this->pi_getLL('filter_view') . '</b></br>';
+		$this->content .= '<table class=calendar_sword><tr valign=middle><td>' . $this->pi_getLL('searchword') . '</td><td><input type=text name=tx_skcalendar_pi1[sword] value="' . $this->container->filters['sword'] . '"></td></tr><tr></table>';
+			$this->content .= '<table class=calendar_filters>';
+			// dropdowns
 			if ((count($this->categories)>1) || (count($this->locations)>1) || (count($this->organizers)>1) || (count($this->targetgroups)>1)) {
-				$this->content .= '<br><form action="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target']) . '" method="post"><input type=hidden name=tx_skcalendar_pi1[view] value=' . $this->view . '><input type=hidden name=no_cache value=1><input type=hidden name=tx_skcalendar_pi1[offset] value=' . $this->offset . '><table><tr><td nowrap colspan=5><b>' . $this->pi_getLL('filter_view') . '</b></td></tr><tr>';
+				
+
+
 
 				reset ($this->categories);
 				if (count($this->categories)>1) {
 					$cat_sel[$this->container->filters['categories'][0]] = ' selected';
-					$this->content .= '<td><select name="tx_skcalendar_pi1[categories]"><option value="">' . $this->pi_getLL('all_cat') . '</option>';
+					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_cat') . '</td><td><select name="tx_skcalendar_pi1[categories]"><option value="">' . $this->pi_getLL('all_cat') . '</option>';
 					while (list(,$data) = each ($this->categories)) $this->content .= '<option value="' . $data['id'] . '"'. $cat_sel [$data['id']] . '>' . $data['name'] . '</option>';
-					$this->content .= '</select></td>';
-					$trigger = 1;
-				}
+					$this->content .= '</select></td></tr>';
+					}
 
 				reset ($this->locations);
 				if (count($this->locations)>1) {
 					$loc_sel[$this->container->filters['locations'][0]] = ' selected';
-					$this->content .= '<td><select name="tx_skcalendar_pi1[locations]"><option value="">' . $this->pi_getLL('all_location') . '</option>';
+					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_loc') . '</td><td><select name="tx_skcalendar_pi1[locations]"><option value="">' . $this->pi_getLL('all_location') . '</option>';
 					while (list(,$data) = each ($this->locations)) $this->content .= '<option value="' . $data['id'] . '"'. $loc_sel [$data['id']] . '>' . $data['name'] . '</option>';
-					$this->content .= '</select></td>';
-					if ($trigger) {
-						$this->content .= '</tr><tr>';
-						unset($trigger);
-					}
-					else $trigger = 1;
+					$this->content .= '</select></td></tr>';
 				}
 				reset ($this->organizers);
 				if (count($this->organizers)>1) {
 					$org_sel[$this->container->filters['organizers'][0]] = ' selected';
-					$this->content .= '<td><select name="tx_skcalendar_pi1[organizers]"><option value="">' . $this->pi_getLL('all_organizer') . '</option>';
+					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_org') . '</td><td><select name="tx_skcalendar_pi1[organizers]"><option value="">' . $this->pi_getLL('all_organizer') . '</option>';
 					while (list(,$data) = each ($this->organizers)) $this->content .= '<option value="' . $data['id'] . '"'. $org_sel [$data['id']] . '>' . $data['name'] . '</option>';
-					$this->content .= '</select></td>';
-					if ($trigger) {
-						$this->content .= '</tr><tr>';
-						unset($trigger);
-					}
-					else $trigger = 1;
+					$this->content .= '</select></td></tr>';
 				}
 				reset ($this->targetgroups);
 				if (count($this->targetgroups)>1) {
 					$tar_sel[$this->container->filters['targetgroups'][0]] = ' selected';
-					$this->content .= '<td><select name="tx_skcalendar_pi1[targetgroups]"><option value="">' . $this->pi_getLL('all_targetgroup') . '</option>';
+					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_tar') . '</td><td><select name="tx_skcalendar_pi1[targetgroups]"><option value="">' . $this->pi_getLL('all_targetgroup') . '</option>';
 					while (list(,$data) = each ($this->targetgroups)) $this->content .= '<option value="' . $data['id'] . '"'. $tar_sel [$data['id']] . '>' . $data['name'] . '</option>';
-					$this->content .= '</select></td>';
-					$this->content .= '</tr><tr>';
+					$this->content .= '</select></td></tr>';
 				}
-
+				$this->content .= '</table>';
 				// close form
-				$this->content .= '<td><input type=submit value="Anzeige Filtern"></td></tr></table></form>';
+				
 			}
-			else $this->content .= '<br>' . $this->pi_getLL('filter_error') . '';
+			elseif ($this->conf['warning']['filter']) $this->content .= '<tr valign=top><td>' . $this->pi_getLL('filter_error') . '</td></tr></table>';
+
+			$this->content .= '<br><input type=submit value="' . $this->pi_getLL('do_filter') . '"></form>';
 
 
 		}

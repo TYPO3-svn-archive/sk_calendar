@@ -1,12 +1,27 @@
 plugin.tx_skcalendar >
 
 plugin.tx_skcalendar_pi1.box.range = {$plugin.tx_skcalendar_pi1.box.range}
+plugin.tx_skcalendar_pi1.list.limit = {$plugin.tx_skcalendar_pi1.list.limit}
 plugin.tx_skcalendar_pi1.month.iconmode = {$plugin.tx_skcalendar_pi1.month.iconmode}
 plugin.tx_skcalendar_pi1.general.view = {$plugin.tx_skcalendar_pi1.general.view}
 plugin.tx_skcalendar_pi1.general.showlinks = {$plugin.tx_skcalendar_pi1.general.showlinks}
 plugin.tx_skcalendar_pi1.general.showfilters = {$plugin.tx_skcalendar_pi1.general.showfilters}
-plugin.tx_skcalendar_pi1.general.pid = {$plugin.tx_skcalendar_pi1.general.pid}
+plugin.tx_skcalendar_pi1.general.target_pid = {$plugin.tx_skcalendar_pi1.general.target_pid}
 plugin.tx_skcalendar_pi1.general.filter_cat = {$plugin.tx_skcalendar_pi1.general.filter_cat}
 plugin.tx_skcalendar_pi1.general.filter_orga = {$plugin.tx_skcalendar_pi1.general.filter_orga}
 plugin.tx_skcalendar_pi1.general.filter_loc = {$plugin.tx_skcalendar_pi1.general.filter_loc}
 plugin.tx_skcalendar_pi1.general.filter_target = {$plugin.tx_skcalendar_pi1.general.filter_target}
+plugin.tx_skcalendar_pi1.warning.filter = {$plugin.tx_skcalendar_pi1.warning.filter}
+
+plugin.tx_skcalendar_pi1 {
+  _CSS_DEFAULT_STYLE (
+      /* example styles for sk_calendar */
+      .month_past_weekday TD { color:#C0C0C0; } 
+      .month_weekday TD { color:#000000; }
+      .month_holiday TD { color:#FF0000; }
+
+      .week_past_weekday TD { color:#C0C0C0; } 
+      .week_weekday TD { color:#000000; }
+      .week_holiday  TD { color:#FF0000; }   
+  )
+}

@@ -61,7 +61,8 @@ class fe_engine {
 	$this->offset = $conf['offset'];
 }
 
-	function createHolidays () {
+	function createHolidays ($lang) {
+	$lang = strtolower($lang);
 		//international christian holidays
 		$this->holidays = array(
 		'newyear' => "1.1.",
@@ -110,7 +111,7 @@ class fe_engine {
 		// local Holidays
 		switch ($lang) {
 			case 'de': // german holidays
-			$holidays = array(
+			$this->holidays = array(
 			'mai' => "1.5.",
 			'mariaehf' => "15.8.", // Bavaria should be added by Typoscript later
 			'dteinheit' => "3.10.",

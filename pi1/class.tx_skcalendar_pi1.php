@@ -46,22 +46,16 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 		
 		// view & Offset
-		if ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']) $offset = intval($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']);
-		elseif ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']) $offset = intval($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']);
-		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['view']) $this->conf['view'] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['view'];
-		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['view']) $this->conf['view'] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['view'];
+		$offset = intval($this->piVars['offset']);
 		if (!$offset) $offset = mktime(0,0,0);
+		if ($this->piVars['view']) $this->conf['view'] = $this->piVars['view'];
 		$this->conf['offset'] = $offset;
-		
-		// Filters
-		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['targetgroups']) $filters['targetgroups'][0] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['targetgroups'];
-		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['targetgroups']) $filters['targetgroups'][0] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['targetgroups'];
-		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['categories']) $filters['categories'][0] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['categories'];
-		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['categories']) $filters['categories'][0] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['categories'];
-		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['locations']) $filters['locations'][0] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['locations'];
-		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['locations']) $filters['locations'][0] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['locations'];
-		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['organizers']) $filters['organizers'][0] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['organizers'];
-		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['organizers']) $filters['organizers'][0] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['organizers'];
+		if ($this->piVars['targetgroups']) $filters['targetgroups'][0] = intval($this->piVars['targetgroups']);
+		if ($this->piVars['categories']) $filters['categories'][0] = intval($this->piVars['categories']);
+		if ($this->piVars['locations']) $filters['locations'][0] = intval($this->piVars['locations']);
+		if ($this->piVars['organizers']) $filters['organizers'][0] = intval($this->piVars['organizers']);
+		if (!$this->conf['pid']) $this->conf['pid'] = $GLOBALS["TSFE"]->id; // same page if no pid is given
+		$filters['pid'] = $this->conf['pid'];
 		
 		switch ($this->conf['view']) {
 			case 'week':
@@ -124,6 +118,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 
 			case 'month':
 			$calendar = new tx_skcalendar_monthview($selection,$this->conf);
+			$calendar->createHolidays('de');
 			break;
 
 			case 'year':
@@ -131,7 +126,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			break;
 
 			case 'detail';
-			$this->conf['uid'] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['uid'];
+			$this->conf['uid'] = $this->piVars['uid'];
 			$calendar = new tx_skcalendar_detailview($selection,$this->conf);
 			break;
 		}		

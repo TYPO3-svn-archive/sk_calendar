@@ -51,11 +51,10 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 				if ($this->calendarArray[$month][$d]['events']) {
 					while (list(,$data) = each($this->calendarArray[$month][$d]['events'])) {
 					$next = $this->prepareTypolink();
-					$next['tx_skcalendar[offset]'] = mktime(0,0,0,$month,$d,$this->year);
-					$next['tx_skcalendar[view]']= 'detail';
-					$next['tx_skcalendar[uid]']= $data['uid'];
-
-						$this->content .= '<br><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->targetpage,$next) . '"><font color="' . $data['color'] . '">'.  $data['title'] . '</font></a>';
+					$next['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$month,$d,$this->year);
+					$next['tx_skcalendar_pi1[view]']= 'detail';
+					$next['tx_skcalendar_pi1[uid]']= $data['uid'];
+						$this->content .= '<br><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target'],$next) . '"><font color="' . $data['color'] . '">'.  $data['title'] . '</font></a>';
 					}
 				}
 				$this->content .= '</td>';
@@ -73,8 +72,8 @@ class tx_skcalendar_monthview extends tx_skcalendar_htmlview {
 		$offset = date('m',$this->offset);
 		$next = $this->prepareTypolink();
 		$back = $this->prepareTypolink();
-		$next['tx_skcalendar[offset]'] = mktime(0,0,0,$offset+1,1,$this->year);
-		$back['tx_skcalendar[offset]'] = mktime(0,0,0,$offset-1,1,$this->year);
+		$next['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$offset+1,1,$this->year);
+		$back['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$offset-1,1,$this->year);
 		$this->content .= '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"> << vorheriger Monat</a></td><td align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"> >> nächster Monat</a></td></tr></table>';
 	}
 }

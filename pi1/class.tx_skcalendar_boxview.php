@@ -43,11 +43,11 @@ class tx_skcalendar_boxview extends tx_skcalendar_htmlview {
 			if ($this->calendarArray[$m][$d]['events']) {
 				$this->content .= '<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td>' . strftime('%A, %d.%m %Y',$act_date) . '<br>';
 				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
-					$next['tx_skcalendar[offset]'] = mktime(0,0,0,$m,$d,$this->year);
-					$next['tx_skcalendar[view]']= 'detail';
-					$next['tx_skcalendar[uid]']= $data['uid'];
+					$next['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$m,$d,$this->year);
+					$next['tx_skcalendar_pi1[view]']= 'detail';
+					$next['tx_skcalendar_pi1[uid]']= $data['uid'];
 					$next['no_cache'] = 1;
-					$this->content .= '<font color="' . $data['color'] . '">'.  $data['title'] . '</font><br>' . $data['description'] . '<br><div align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->targetpage,$next) . '"> >> mehr</a></div><br><br>';
+					$this->content .= '<font color="' . $data['color'] . '">'.  $data['title'] . '</font><br>' . $data['description'] . '<br><div align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target'],$next) . '"> >> mehr</a></div><br><br>';
 				}
 				$this->content .= '</td></tr></table></td></tr>';
 			}

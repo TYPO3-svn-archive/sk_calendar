@@ -39,12 +39,12 @@ class tx_skcalendar_htmlview extends fe_engine {
 
 	
 	function prepareTypolink() {
-		$link['tx_skcalendar[offset]'] = $this->offset;
-		$link['tx_skcalendar[targetgroups]'] = $this->container->filters['targetgroups'][0];
-		$link['tx_skcalendar[categories]'] = $this->container->filters['categories'][0];
-		$link['tx_skcalendar[locations]'] = $this->container->filters['locations'][0];
-		$link['tx_skcalendar[organizers]'] = $this->container->filters['organizers'][0];
-		$link['tx_skcalendar[view]'] = $this->type;
+		$link['tx_skcalendar_pi1[offset]'] = $this->offset;
+		$link['tx_skcalendar_pi1[targetgroups]'] = $this->container->filters['targetgroups'][0];
+		$link['tx_skcalendar_pi1[categories]'] = $this->container->filters['categories'][0];
+		$link['tx_skcalendar_pi1[locations]'] = $this->container->filters['locations'][0];
+		$link['tx_skcalendar_pi1[organizers]'] = $this->container->filters['organizers'][0];
+		$link['tx_skcalendar_pi1[view]'] = $this->view;
 		$link['no_cache'] = 1; 
 		return $link;
 	}
@@ -56,7 +56,7 @@ class tx_skcalendar_htmlview extends fe_engine {
 		$link= $this->prepareTypolink();
 		while (list($key,$value) = each($link_arr)) {
 
-		$link['tx_skcalendar[view]'] = $key;
+		$link['tx_skcalendar_pi1[view]'] = $key;
 		$this->content .= '<td><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$link) . '">'. $value .'</a></td>';
 	}
 	$this->content .= '</tr></table>';
@@ -65,33 +65,33 @@ class tx_skcalendar_htmlview extends fe_engine {
 	
 	function makeFilters() {
 	if ((count($this->categories)>1) || (count($this->locations)>1) || (count($this->organizers)>1) || (count($this->targetgroups)>1)) {
-	$this->content .= '<br><form action="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target']) . '" method="post"><input type=hidden name=view value=' . $this->type . '><input type=hidden name=offset value=' . $this->offset . '><table><tr><td nowrap colspan=5><b>Anzeige Filtern</b></td></tr><tr><td>';
+	$this->content .= '<br><form action="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target']) . '" method="post"><input type=hidden name=tx_skcalendar_pi1[view] value=' . $this->type . '><input type=hidden name=tx_skcalendar_pi1[offset] value=' . $this->offset . '><table><tr><td nowrap colspan=5><b>Anzeige Filtern</b></td></tr><tr><td>';
 	
 	reset ($this->categories);
 	if (count($this->categories)>1) {
 	$cat_sel[$this->container->filters['categories'][0]] = ' selected';
-	$this->content .= '<td><select name="tx_skcalendar[categories]"><option value="">Alle Kategorien</option>';
+	$this->content .= '<td><select name="tx_skcalendar_pi1[categories]"><option value="">Alle Kategorien</option>';
 	while (list(,$data) = each ($this->categories)) $this->content .= '<option value="' . $data[0] . '"'. $cat_sel [$data[0]] . '>' . $data[1] . '</option>';
 	$this->content .= '</select></td>';
 	}
 	reset ($this->locations);
 	if (count($this->locations)>1) {
 	$loc_sel[$this->container->filters['locations'][0]] = ' selected';
-	$this->content .= '<td><select name="tx_skcalendar[locations]"><option value="">Alle Veranstaltungsorte</option>';
+	$this->content .= '<td><select name="tx_skcalendar_pi1[locations]"><option value="">Alle Veranstaltungsorte</option>';
 	while (list(,$data) = each ($this->locations)) $this->content .= '<option value="' . $data[0] . '"'. $loc_sel [$data[0]] . '>' . $data[1] . '</option>';
 	$this->content .= '</select></td>';
 	}
 	reset ($this->organizers);
 	if (count($this->organizers)>1) {
 	$org_sel[$this->container->filters['organizers'][0]] = ' selected';
-	$this->content .= '<td><select name="tx_skcalendar[organizers]"><option value="">Alle Veranstalter</option>';
+	$this->content .= '<td><select name="tx_skcalendar_pi1[organizers]"><option value="">Alle Veranstalter</option>';
 	while (list(,$data) = each ($this->organizers)) $this->content .= '<option value="' . $data[0] . '"'. $org_sel [$data[0]] . '>' . $data[1] . '</option>';
 	$this->content .= '</select></td>';
 	}
 	reset ($this->targetgroups);
 	if (count($this->targetgroups)>1) {
 	$tar_sel[$this->container->filters['targetgroups'][0]] = ' selected';
-	$this->content .= '<td><select name="tx_skcalendar[targetgroups]"><option value="">Alle Zielgruppen</option>';
+	$this->content .= '<td><select name="tx_skcalendar_pi1[targetgroups]"><option value="">Alle Zielgruppen</option>';
 	while (list(,$data) = each ($this->targetgroups)) $this->content .= '<option value="' . $data[0] . '"'. $tar_sel [$data[0]] . '>' . $data[1] . '</option>';
 	$this->content .= '</select></td>';
 	}
@@ -135,7 +135,8 @@ class tx_skcalendar_htmlview extends fe_engine {
 		{
 			$date = explode('.',$date);
 			if ($this->calendarArray[$date[1]]) {
-				$this->calendarArray[$date[1]][$date[0]]['hname'] = $name; // name in this case is an unique string that can be used in the $this->pi_getLL() function later
+				$this->calendarArray[$date[1]][$date[0]]['d_name']['short'] = $this->pi_getLL($name);
+				$this->calendarArray[$date[1]][$date[0]]['d_name']['long'] = $this->pi_getLL($name);
 				$this->calendarArray[$date[1]][$date[0]]['style']='holiday';
 			}
 		}

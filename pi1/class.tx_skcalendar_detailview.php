@@ -31,7 +31,7 @@ class tx_skcalendar_detailview extends tx_skcalendar_htmlview {
 	function tx_skcalendar_detailview($container,$conf) {
 		$this->showID = $conf['uid'];
 		// calls mothership
-		$this->tx_skcalendar_htmlview($container,$conf);
+		$this->tx_skcalendar_feengine($container,$conf);
 	}
 
 	function parseCalendar() {

@@ -24,7 +24,6 @@
 
 
 class tx_skcalendar_internal extends tx_skcalendar_selection {
-var $prefix = 'INT';
 var $categories =array();
 var $locations = array();
 var $organizers = array();
@@ -37,35 +36,35 @@ var $targetgroups = array();
 	*/
 	function prepareQuery () {
 		$this->query = "SELECT * FROM tx_skcalendar_events WHERE NOT deleted AND NOT hidden";
-		if (is_array($this->filters[targetgroups]))
+		if (is_array($this->filters['targetgroups']))
 		{
-			$this->query .= 'AND targetgroup in (' . $this->filters[targetgroups][0];
-			next ($this->filters[targetgroups]);
-			while (list($id, $value) = each ($this->filters[targetgroups])) $this->query .= ',' . $value;
+			$this->query .= 'AND targetgroup in (' . $this->filters['targetgroups'][0];
+			next ($this->filters['targetgroups']);
+			while (list($id, $value) = each ($this->filters['targetgroups'])) $this->query .= ',' . $value;
 			$this->query .= ') ';
 		}
-		if (is_array($this->filters[categories]))
+		if (is_array($this->filters['categories']))
 		{
-			$this->query .= 'AND category in (' . $this->filters[categories][0];
-			next ($this->filters[categories]);
-			while (list($id, $value) = each ($this->filters[categories])) $this->query .= ',' . $value;
+			$this->query .= 'AND category in (' . $this->filters['categories'][0];
+			next ($this->filters['categories']);
+			while (list($id, $value) = each ($this->filters['categories'])) $this->query .= ',' . $value;
 			$this->query .= ') ';
 		}
-		if (is_array($this->filters[locations]))
+		if (is_array($this->filters['locations']))
 		{
-			$this->query .= 'AND category in (' . $this->filters[locations][0];
-			next ($this->filters[locations]);
-			while (list($id, $value) = each ($this->filters[locations])) $this->query .= ',' . $value;
+			$this->query .= 'AND category in (' . $this->filters['locations'][0];
+			next ($this->filters['locations']);
+			while (list($id, $value) = each ($this->filters['locations'])) $this->query .= ',' . $value;
 			$this->query .= ') ';
 		}
-		if (is_array($this->filters[organziers]))
+		if (is_array($this->filters['organziers']))
 		{
-			$this->query .= 'AND organizer in (' . $this->filters[organziers][0];
-			next ($this->filters[organziers]);
-			while (list($id, $value) = each ($this->filters[organziers])) $this->query .= ',' . $value;
+			$this->query .= 'AND organizer in (' . $this->filters['organziers'][0];
+			next ($this->filters['organziers']);
+			while (list($id, $value) = each ($this->filters['organziers'])) $this->query .= ',' . $value;
 			$this->query .= ') ';
 		}
-		
+		$this->query  .= ' AND pid=' . $this->filters['pid'];
 		parent::prepareQuery();
 	}
 	
@@ -97,7 +96,9 @@ var $targetgroups = array();
 
 			}
 			$this->postprocessQuery();
+			
 		}
+		
 		else $this->error = 'There is a Problem with the database';
 
 		// return operation result

@@ -45,11 +45,11 @@ class tx_skcalendar_weekview extends tx_skcalendar_htmlview {
 				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
 					
 					$next = $this->prepareTypolink();
-					$next['tx_skcalendar[offset]'] = mktime(0,0,0,$m,$d,$this->year);
-					$next['tx_skcalendar[view]']= 'detail';
-					$next['tx_skcalendar[uid]']= $data['uid'];
+					$next['tx_skcalendar_pi1[offset]'] = mktime(0,0,0,$m,$d,$this->year);
+					$next['tx_skcalendar_pi1[view]']= 'detail';
+					$next['tx_skcalendar_pi1[uid]']= $data['uid'];
 
-					$this->content .= '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->targetpage,$next) . '"><font color="' . $data['color'] . '">'.  $data['title'] . '</font></a><br>' . $data['description'] . '<br><br>';
+					$this->content .= '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->conf['target'],$next) . '"><font color="' . $data['color'] . '">'.  $data['title'] . '</font></a><br>' . $data['description'] . '<br><br>';
 				}
 			}
 			$this->content .= '</td></tr></table></td></tr>';
@@ -65,8 +65,8 @@ class tx_skcalendar_weekview extends tx_skcalendar_htmlview {
 		
 		$next = $this->prepareTypolink();
 		$back = $this->prepareTypolink();
-		$next['tx_skcalendar[offset]'] = $this->offset + $span;
-		$back['tx_skcalendar[offset]'] = $this->offset - $span;
+		$next['tx_skcalendar_pi1[offset]'] = $this->offset + $span;
+		$back['tx_skcalendar_pi1[offset]'] = $this->offset - $span;
 		$this->content .= '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"> << vorherige Woche</a></td><td align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"> >> nächste Woche</a></td></tr></table>';
 	}
 }

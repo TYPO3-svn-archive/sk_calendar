@@ -113,10 +113,10 @@ class fe_engine {
 			case 'de': // german holidays
 			$this->holidays = array(
 			'mai' => "1.5.",
-			'mariaehf' => "15.8.", // Bavaria should be added by Typoscript later
+			//'mariaehf' => "15.8.", // Bavaria should be added by Typoscript later
 			'dteinheit' => "3.10.",
 			'allerheilig' => "1.11.",
-			'christmas25' => "26.12."
+			'christmas26' => "26.12."
 			);
 
 			// Christi Himmelfahrt

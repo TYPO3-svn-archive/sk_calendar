@@ -78,7 +78,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			$offset_temp = date('m-d-Y',$offset);
 			$offset_temp = explode('-',$offset_temp);
 			$start = mktime(0,0,0,$offset_temp[0],1,$offset_temp[2]);
-			$end = mktime(0,0,0,$offset_temp[0]+1,1,$offset_temp[2]);
+			$end = mktime(0,0,0,$offset_temp[0],31,$offset_temp[2]);
 			$filters['startdate'] = $start;
 			$filters['enddate'] = $end;
 			break;

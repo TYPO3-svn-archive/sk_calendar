@@ -38,7 +38,7 @@ History:
 - fix in filter (organizer now work)
 - finish and dutch translation
 
-18.01.2004
+01.02.2004
 - Switchable BE-Modes (data from same page or specified sysfolder)
 - smart TEMPLATE-SYSTEM (!)
 - Flexforms
@@ -67,3 +67,9 @@ To Do:
 - Why is TStamp of exeptionsdates not decoded? ($TCA Someplace)
 - Get rid of Errors in EM-Overview
 - DBAL-Functions rather than MYSQL-Calls (sorry for that)
+- Most Anoying Bug: 
+RTE doesn't work default. For some reason (maybe someone can provide a solution?) the settings in ext_typoscript_setup.txt are no longer included. How can this be debugged? Anybody?
+Until then you will have to add
+plugin.tx_skcalendar_pi1.general.rtefield_stdWrap.parseFunc < tt_content.text.20.parseFunc
+to your Template setup-field manualy.
+

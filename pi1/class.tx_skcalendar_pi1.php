@@ -59,7 +59,7 @@ if ($GLOBALS['HTTP_GET_VARS']['skevent']) {
        $event['date'] = date('Y-m-d',$event['date']); // convert date
 	if ($ovrride_date) $event['date'] = $ovrride_date;
 	$event = $calendar->decodeEvent($event);
-
+	// fe editing
 	$markerArray["###DETAIL_LINK###"] = $this->pi_getPageLink($GLOBALS["TSFE"]->id) . '&skevent=' . $event['uid'];
 	$markerArray["###TITLE###"] = $event['title'];
 	$markerArray["###DURATION###"] = $event['duration'];
@@ -88,7 +88,7 @@ else
 		while (list(,$event) = each ($calendar->events)) 
 		{
 			$event = $calendar->decodeEvent($event);
-
+			$markerArray["###FE_EDIT###"] = $this->pi_getEditPanel($event,"tx_skcalendar_events");
 			$markerArray["###DETAIL_LINK###"] = $this->pi_getPageLink($GLOBALS["TSFE"]->id) . '&skevent=' . $event['uid'];
 			$markerArray["###TITLE###"] = $event['title'];
 			$markerArray["###DURATION###"] = $event['duration'];

@@ -117,7 +117,8 @@ $TCA["tx_skcalendar_events"] = Array (
 			"1" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_skcalendar_events_d.gif",
 			"2" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_skcalendar_events_w.gif",
 			"3" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_skcalendar_events_m.gif",
-			"4" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_skcalendar_events_y.gif"
+			"4" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_skcalendar_events_y.gif",
+			"5" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_tx_skcalendar_events_m2.gif"
 			),
 	),
 	"feInterface" => Array (

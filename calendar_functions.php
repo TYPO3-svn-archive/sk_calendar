@@ -41,7 +41,9 @@ function addRecurringEvents($event_arr) {
 					$sortfield = $row['date'] . '_' . $count; // so multiple events per Day are possible
 					$temp_arr[$sortfield] = $row;
 				}
-				$row['date'] = $row['date'] + 86400; // one day
+				$date = date('Y-m-d', $row['date']);
+				$date = explode('-',$date);
+				$row['date'] = mktime(0,0,0,$date[1],$date[2]+1,$date[0]);
 			}			
 			break;
 			
@@ -51,11 +53,13 @@ function addRecurringEvents($event_arr) {
 			{
 				if (!in_array($row['date'],$exept_arr)) // ignore exepted dates
 				{
-					$row['uid'] = $uid .  '_re'.$row['date']; // distinction between different Ghostc	opies	
+					$row['uid'] = $uid .  '_re'.$row['date']; // distinction between different Ghostcopies	
 					$sortfield = $row['date'] . '_' . $count; // so multiple events per Day are possible
 					$temp_arr[$sortfield] = $row;
 				}
 				$row['date'] = $row['date'] + 604800; // one week
+				if (date('H',$row['date']) ==23) $row['date'] = $row['date'] + 3600; // stupid DST
+				elseif (date('H',$row['date']) ==1) $row['date'] = $row['date'] - 3600; // stupid DST
 			}			
 			break;
 						
@@ -65,7 +69,7 @@ function addRecurringEvents($event_arr) {
 			{
 				if (!in_array($row['date'],$exept_arr)) // ignore exepted dates
 				{
-					$row['uid'] = $uid .  '_re'.$row['date']; // distinction between different Ghostc	opies	
+					$row['uid'] = $uid .  '_re'.$row['date']; // distinction between different Ghostcopies	
 					$sortfield = $row['date'] . '_' . $count; // so multiple events per Day are possible
 					$temp_arr[$sortfield] = $row;
 				}
@@ -75,6 +79,50 @@ function addRecurringEvents($event_arr) {
 				$row['date'] = mktime(0,0,0,$date[1]+1,$date[2],$date[0]);
 				
 			}
+			break;
+			
+			case 4: // yearly
+			$uid = $row['uid'];
+			while ($row['date'] <= $row['recurr_until'])
+			{
+				if (!in_array($row['date'],$exept_arr)) // ignore exepted dates
+				{
+					$row['uid'] = $uid .  '_re'.$row['date']; // distinction between different Ghostcopies	
+					$sortfield = $row['date'] . '_' . $count; // so multiple events per Day are possible
+					$temp_arr[$sortfield] = $row;
+				}
+				// bit tricky for months have differnt amounts of days
+				$date = date('Y-m-d', $row['date']);
+				$date = explode('-',$date);
+				$row['date'] = mktime(0,0,0,$date[1],$date[2],$date[0]+1);
+				
+			}
+			
+			case 5: // monthly on a certain weekday
+			$uid = $row['uid'];
+			while ($row['date'] <= $row['recurr_until'])
+			{
+				if (!in_array($row['date'],$exept_arr)) // ignore exepted dates
+				{
+					$row['uid'] = $uid .  '_re'.$row['date']; // distinction between different Ghostcopies	
+					$sortfield = $row['date'] . '_' . $count; // so multiple events per Day are possible
+					$temp_arr[$sortfield] = $row;
+				}
+				// find next date
+				$date = date('Y-m-w', $row['date']); // all we need to know: weekday, month and Year
+				$date = explode('-',$date);
+				if ($date[2] == 0) $date[2] = 7; // week starts monday
+				$weekday_fnm = date('w',mktime(0,0,0,$date[1]+1,1,$date[0])); // fnm = first next month
+				if ($weekday_fnm == 0) $weekday_fnm =7;
+				if ($date[2] < $weekday_fnm) $add = 5*604800; // need an aditional week to jump the month
+				else $add = 4*604800;
+				echo date('d.m. h:i', $row['date']) . ' -> ' . $add . '<br>';
+				$row['date'] = $row['date']  + $add; // ta da ...
+				if (date('H',$row['date']) ==23) $row['date'] = $row['date'] + 3600; // stupid DST
+				elseif (date('H',$row['date']) ==1) $row['date'] = $row['date'] - 3600; // stupid DST
+				
+			}
+
 			break;
 			default:
 			

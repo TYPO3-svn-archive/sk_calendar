@@ -556,6 +556,7 @@ $TCA["tx_skcalendar_events"] = Array (
 					Array("LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.recurring.I.2", "2"),
 					Array("LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.recurring.I.3", "3"),
 					Array("LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.recurring.I.4", "4"),
+					Array("LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.recurring.I.5", "5"),
 				),
 			)
 		),

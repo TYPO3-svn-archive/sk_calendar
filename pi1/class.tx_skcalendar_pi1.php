@@ -47,6 +47,15 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		if ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']) $offset = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset'];
 		elseif ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']) $offset = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset'];
 		if (!$offset) $offset = '01-01-' . date('Y');
+		if (!$this->conf['type']) $this->conf['type'] = 'week';
+		
+		switch ($this->conf['type']) {
+			case 'week':
+			$unixdate = explode('-',$offset);
+			$filters['startdate'] = mktime(0,0,0,$unixdate[0],$unixdate[1],$unixdate[2]);
+			$filters['enddate'] = mktime(0,0,0,$unixdate[0],$unixdate[1]+7,$unixdate[2]);
+			break;
+			}
 		
 		// prepare typolinks
 		$this->allowCaching = 0;
@@ -58,7 +67,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$link_conf["no_cache"]=!$this->allowCaching;
 		
 		// prepare filters
-		$filters['startdate'] = $offset;
+		
 		
 		$selection = new tx_skcalendar_internal();
 		$selection->setFilters($filters);

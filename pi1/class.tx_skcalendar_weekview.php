@@ -49,4 +49,9 @@ class tx_skcalendar_weekview extends tx_skcalendar_calendarView {
 				. '<input type="submit" name="notch" value="d-"/>'
 				. '</form>';*/
 	}
+	
+	function makeLinks() {
+		$this->content .= '>> nächste Woche';
+		// 7 Tage = 604800
+		}
 }

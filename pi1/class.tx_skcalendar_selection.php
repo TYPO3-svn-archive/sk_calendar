@@ -47,8 +47,8 @@ class tx_skcalendar_selection {
 	* @desc Sets the Filters
 	*/
 	function setFilters ($filter_array = false) {
-		$this->filters[startdate]=$filter_array[startdate]; // startdate m-d-Y
-		$this->filters[enddate]=$filter_array[enddate]; // enddate m-d-Y
+		$this->filters[startdate]=intval($filter_array[startdate]); // startdate unixTS
+		$this->filters[enddate]=intval($filter_array[enddate]); // enddate unixTS
 		$this->filters[categories]=$filter_array[categories]; // array with categories
 		$this->filters[locations]=$filter_array[locations]; // array with locations
 		$this->filters[organizers]=$filter_array[organizers]; // array with organizers

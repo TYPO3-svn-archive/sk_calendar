@@ -32,7 +32,7 @@ class tx_skcalendar_calendarview {
 	var $type;
 	var $holidays;
 	var $year;
-	var $content;
+	//var $content;
 	var $offset;
 	var $todate;
 	var $events;
@@ -127,61 +127,58 @@ class tx_skcalendar_calendarview {
 		}
 	}
 
-	function setOffset($offset=false) {
-		if ($offset) $this->offset = $offset;
-		else $this->offset = date('m-d-Y');
-		
-		$this->year = intval(strrev(substr(strrev($this->offset),0,4))); // :)
-		if (!$this->todate) $this->todate = $this->offset; // just to be sure
-		}
-	/**
-	* @return string
-	* @desc calculate enddate dummyfunction
-	*/
-	function makeToDate($offset) {
-		return $offset;
-		}
+	function setRange($offset,$todate) {
+		$this->offset = $offset;
+		$this->todate = $todate;
+		$this->year = date('Y',$offset);
+	}
+
+	function makeLinks() {
+	}
 
 	/**
 	* @return void
 	* @desc create calendararray
 	*/
-	function createCalendar () { 
-	$fromdate = explode('-',$this->offset);
-	$todate = explode('-',$this->todate);
-	// forming the basic calendar array with the form $calendar[month][day]
-	for ($temp=intval($fromdate[0]); $temp<=(intval($todate[0])); $temp++)
-	{
-		$date_unix = mktime(0,0,0,$temp,1,$this->year);
-		$count_days = date("t",$date_unix);
-		for ($day=1; $day<=$count_days; $day++)
+	function createCalendar () {
+		$from_m = intval(date('m',$this->offset));
+		$to_m = intval(date('m',$this->todate));
+		// forming the basic calendar array with the form $calendar[month][day]
+		for ($temp=$from_m; $temp<=$to_m; $temp++)
 		{
-			$date_unix = mktime(0,0,0,$temp,$day,$this->year);
-			$d_name = strftime("%d %a",$date_unix);
-			$d_name[strlen($d_name)-1] = '';
-			$this->calendarArray[$temp][$day]['d_name'] = $d_name;
-			if (date("w",$date_unix)==0) $this->calendarArray[$temp][$day]['isholiday']='1'; // sunday
+			$date_unix = mktime(0,0,0,$temp,1,$this->year);
+			$count_days = date("t",$date_unix);
+			for ($day=1; $day<=$count_days; $day++)
+			{
+				$date_unix = mktime(0,0,0,$temp,$day,$this->year);
+				$this->calendarArray[$temp][$day]['d_name']['no'] = strftime("%d",$date_unix);
+				$this->calendarArray[$temp][$day]['d_name']['short'] = strftime("%a",$date_unix);
+				$this->calendarArray[$temp][$day]['d_name']['long'] = strftime("%A",$date_unix);
+				if (date("w",$date_unix)==0) $this->calendarArray[$temp][$day]['isholiday']='1'; // sunday
+			}
 		}
+
+		while (list($name,$date) = each($this->holidays))
+		{
+			$date = explode('.',$date);
+			if ($this->calendarArray[$date[1]]) {
+				$this->calendarArray[$date[1]][$date[0]]['hname'] = $name; // name in this case is an unique string that can be used in the $this->pi_getLL() function later
+				$this->calendarArray[$date[1]][$date[0]]['isholiday'] = 1;
+			}
+		}
+		while (list($id, $event) = each($this->events))
+		{
+			$date = date('Y-m-d',$event['date']);
+			$date = explode('-',$date);
+			$this->calendarArray[intval($date[1])][intval($date[2])]['events'][] = $event;
+		}
+
 	}
 
-	while (list($name,$date) = each($this->holidays))
-	{
-		$date = explode('.',$date);
-		$this->calendarArray[$date[1]][$date[0]]['hname'] = $name; // name in this case is an unique string that can be used in the $this->pi_getLL() function later
-		$this->calendarArray[$date[1]][$date[0]]['isholiday'] = 1;
-	}
-	while (list($id, $event) = each($this->events))
-	{
-		$date = date('Y-m-d',$event['date']);
-		$date = explode('-',$date);
-		$this->calendarArray[intval($date[1])][intval($date[2])]['events'][] = $event;
-	}
-	
-	}
-	
 	function getMonthName($month) {
-			$date_unix = mktime(0,0,0,$month,1,$year);
-	$name = strftime("%B",$date_unix);
-	return $name;
-}
+		$date_unix = mktime(0,0,0,$month,1,$year);
+		$name = strftime("%B",$date_unix);
+		return $name;
+	}
+
 }

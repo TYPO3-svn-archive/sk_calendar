@@ -119,12 +119,14 @@ class sk_calendar {
 			$h = $val/60; // hours
 			$h =  floor($h);
 			$m = $val-($h*60);
+			if ($m < 10) $m = '0'.$m;
 			$event['start_time'] = $h . ':' . $m;		
 			$val = $event['end_time'];
 			$val = $val / 60;
 			$h = $val/60; // hours
 			$h =  floor($h);
 			$m = $val-($h*60);
+			if ($m < 10) $m = '0'.$m;
 			$event['end_time'] = $h . ':' . $m;
 			$event['duration'] = $event['start_time'] . ' - ' . $event['end_time'] . ' ';
 		}
@@ -294,7 +296,8 @@ class htmlView extends sk_calendar {
 		}
 		while (list($id, $event) = each($this->events))
 		{
-			$date = explode('-',$event['date']);
+			$date = date('Y-m-d',$event['date']);
+			$date = explode('-',$date);
 			$this->calendarArray[intval($date[1])][intval($date[2])]['events'][] = $event;
 		}
 	}

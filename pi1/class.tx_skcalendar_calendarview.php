@@ -25,6 +25,7 @@ require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_weekv
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_boxview.php');
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_detailview.php');
 require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_yearview.php');
+require_once(t3lib_extMgm::extPath('sk_calendar').'pi1/class.tx_skcalendar_monthview.php');
 
 // FE-Engine
 class tx_skcalendar_calendarview {

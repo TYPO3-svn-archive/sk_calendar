@@ -153,18 +153,19 @@ function addToExeptions($exeptions, $exeption)
 }
 
 function filterRange($events,$filters=false) {
-	reset ($events);
 	
-	if ($filters['startdate']) {
+	if ($filters['startdate'] && $events) {
+	reset($events);
 	while (list(,$data) = each ($events)) {
 		if ($data['date'] >= $filters['startdate']) $event_arr[] = $data;
 		}
 		$events = $event_arr;
 		unset($event_arr);
 		}
-		reset($events);
 		
-	if ($filters['enddate']) {
+		
+	if ($filters['enddate'] && $events) {
+	reset($events);
 	while (list(,$data) = each ($events)) {
 		if ($data['date'] <= $filters['enddate']) $event_arr[] = $data;
 		}

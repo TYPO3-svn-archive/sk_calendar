@@ -44,10 +44,22 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
+		
+		// view & Offset
 		if ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']) $offset = intval($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['offset']);
 		elseif ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']) $offset = intval($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['offset']);
 		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['view']) $this->conf['type'] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['view'];
 		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['view']) $this->conf['type'] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['view'];
+		
+		// Filters
+		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['targetgroups']) $filters['targetgroups'][0] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['targetgroups'];
+		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['targetgroups']) $filters['targetgroups'][0] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['targetgroups'];
+		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['categories']) $filters['categories'][0] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['categories'];
+		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['categories']) $filters['categories'][0] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['categories'];
+		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['locations']) $filters['locations'][0] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['locations'];
+		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['locations']) $filters['locations'][0] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['locations'];
+		if ($GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['organizers']) $filters['organizers'][0] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['organizers'];
+		elseif ($GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['organizers']) $filters['organizers'][0] = $GLOBALS['HTTP_POST_VARS']['tx_skcalendar']['organizers'];
 		
 		switch ($this->conf['type']) {
 			case 'week':
@@ -98,33 +110,32 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 
 		$selection = new tx_skcalendar_internal();
 		$selection->setFilters($filters);
-		$selection->prepareQuery();
 		$selection->getResults();
 
 		switch ($this->conf['type']) {
 			case 'week':
-			$calendar = new tx_skcalendar_weekview($selection,'',$this->conf);
+			$calendar = new tx_skcalendar_weekview($selection,$this->conf);
 			break;
 
 			case 'box';
-			$calendar = new tx_skcalendar_boxview($selection,'',$this->conf);
+			$calendar = new tx_skcalendar_boxview($selection,$this->conf);
 			break;
 
 			case 'day':
-			$calendar = new tx_skcalendar_dayview($selection,'',$this->conf);
+			$calendar = new tx_skcalendar_dayview($selection,$this->conf);
 			break;
 
 			case 'month':
-			$calendar = new tx_skcalendar_monthview($selection,'',$this->conf);
+			$calendar = new tx_skcalendar_monthview($selection,$this->conf);
 			break;
 
 			case 'year':
-			$calendar = new tx_skcalendar_yearview($selection,'',$this->conf);
+			$calendar = new tx_skcalendar_yearview($selection,$this->conf);
 			break;
 
 			case 'detail';
 			$this->conf['uid'] = $GLOBALS['HTTP_GET_VARS']['tx_skcalendar']['uid'];
-			$calendar = new tx_skcalendar_detailview($selection,'',$this->conf);
+			$calendar = new tx_skcalendar_detailview($selection,$this->conf);
 			break;
 		}
 		$calendar->setRange($filters['startdate'],$filters['enddate']);

@@ -30,9 +30,9 @@ define('FPDF_CACHE',t3lib_extMgm::extPath('sk_calendar').'fpdf152/cache/');//FŸr
 
 class tx_skcalendar_yearview extends tx_skcalendar_calendarView {
 
-	function tx_skcalendar_yearview($container,$type,$conf) {
+	function tx_skcalendar_yearview($container,$conf) {
 		// calls mothership
-		$this->tx_skcalendar_calendarView($container,$type,$conf);
+		$this->tx_skcalendar_calendarView($container,$conf);
 	}
 
 	function parseCalendar() {

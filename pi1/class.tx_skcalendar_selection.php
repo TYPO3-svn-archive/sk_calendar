@@ -52,6 +52,7 @@ class tx_skcalendar_selection {
 		$this->filters[categories]=$filter_array[categories]; // array with categories
 		$this->filters[locations]=$filter_array[locations]; // array with locations
 		$this->filters[organizers]=$filter_array[organizers]; // array with organizers
+		$this->filters[targetgroups]=$filter_array[targetgroups]; // array with targetgroups
 	}
 	
 	/**

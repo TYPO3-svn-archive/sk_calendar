@@ -28,10 +28,10 @@
 class tx_skcalendar_detailview extends tx_skcalendar_calendarView {
 	var $showID;
 
-	function tx_skcalendar_detailview($container,$type,$conf) {
+	function tx_skcalendar_detailview($container,$conf) {
 		$this->showID = $conf['uid'];
 		// calls mothership
-		$this->tx_skcalendar_calendarView($container,$type,$conf);
+		$this->tx_skcalendar_calendarView($container,$conf);
 	}
 
 	function parseCalendar() {

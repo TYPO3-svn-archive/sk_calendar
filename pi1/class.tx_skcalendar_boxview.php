@@ -28,9 +28,9 @@
 class tx_skcalendar_boxview extends tx_skcalendar_calendarView {
 
 
-	function tx_skcalendar_boxview($container,$type,$conf) {
+	function tx_skcalendar_boxview($container,$conf) {
 		// calls mothership
-		$this->tx_skcalendar_calendarView($container,$type,$conf);
+		$this->tx_skcalendar_calendarView($container,$conf);
 	}
 
 	function parseCalendar() {
@@ -44,7 +44,7 @@ class tx_skcalendar_boxview extends tx_skcalendar_calendarView {
 				$this->content .= '<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td>' . strftime('%A, %d.%m %Y',$act_date) . '<br>';
 				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
 					$next['tx_skcalendar[offset]'] = mktime(0,0,0,$m,$d,$this->year);
-					$next['tx_skcalendar[detail]']= 1;
+					$next['tx_skcalendar[view]']= 'detail';
 					$next['tx_skcalendar[uid]']= $data['uid'];
 					$next['no_cache'] = 1;
 					$this->content .= $data['title'] . '<br>' . $data['description'] . '<br><div align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->targetpage,$next) . '"> >> mehr</a></div><br><br>';

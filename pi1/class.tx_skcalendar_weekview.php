@@ -27,21 +27,29 @@
 
 class tx_skcalendar_weekview extends tx_skcalendar_calendarView {
 
-	function tx_skcalendar_weekview($container,$type,$conf) {
+	function tx_skcalendar_weekview($container,$conf) {
 		// calls mothership
-		$this->tx_skcalendar_calendarView($container,$type,$conf);
+		$this->tx_skcalendar_calendarView($container,$conf);
 	}
 
 	function parseCalendar() {
 		$act_date = $this->offset;
-		$this->content = '<table cellspacing=0 cellpadding=0 border=1 width=400 bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>Wochenansicht:</b></td></tr></table></td></tr>';
+		if ($this->makelinks) $this->makeLinks();
+		if ($this->makefilters) $this->makeFilters();
+		$this->content .= '<table cellspacing=0 cellpadding=0 border=1 width=400 bordercolor="#EFEFEF"><tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td><b>Wochenansicht:</b></td></tr></table></td></tr>';
 		while ($act_date < $this->todate) {
 			$m = intval(date('m',$act_date));
 			$d = intval(date('d',$act_date));
 			$this->content .= '<tr><td><table cellspacing=0 cellpadding =3><tr valign=top><td>&nbsp;</td><td>' . strftime('%A, %d.%m %Y',$act_date) . '<br>';
 			if ($this->calendarArray[$m][$d]['events']) {
 				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
-					$this->content .= $data['title'] . '<br>' . $data['description'] . '<br><br>';
+					
+					$next = $this->prepareTypolink();
+					$next['tx_skcalendar[offset]'] = mktime(0,0,0,$m,$d,$this->year);
+					$next['tx_skcalendar[view]']= 'detail';
+					$next['tx_skcalendar[uid]']= $data['uid'];
+
+					$this->content .= '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->targetpage,$next) . '">' . $data['title'] . '</a><br>' . $data['description'] . '<br><br>';
 				}
 			}
 			$this->content .= '</td></tr></table></td></tr>';
@@ -49,14 +57,15 @@ class tx_skcalendar_weekview extends tx_skcalendar_calendarView {
 
 		}
 				$this->content .= '<tr><td><table cellspacing=0 cellpadding =3 width=100%><tr valign=bottom><td>';
-		$this->makeLinks(604800);
+		$this->makeNavigation(604800);
 		$this->content .= '</td></tr></table></td></tr></table>';
 	}
 
-	function makeLinks($span) {
+	function makeNavigation($span) {
+		
+		$next = $this->prepareTypolink();
+		$back = $this->prepareTypolink();
 		$next['tx_skcalendar[offset]'] = $this->offset + $span;
-		$next['no_cache'] = 1;
-		$back['no_cache'] = 1;
 		$back['tx_skcalendar[offset]'] = $this->offset - $span;
 		$this->content .= '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td align=left><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$back) . '"> << vorherige Woche</a></td><td align=right><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$next) . '"> >> nächste Woche</a></td></tr></table>';
 	}

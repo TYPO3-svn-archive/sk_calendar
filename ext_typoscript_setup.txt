@@ -4,4 +4,5 @@ plugin.tx_skcalendar >
 plugin.tx_skcalendar_pi1.range = 604800
 plugin.tx_skcalendar_pi1.type = month
 plugin.tx_skcalendar_pi1.showlinks = 1
+plugin.tx_skcalendar_pi1.filters = 1
 plugin.tx_skcalendar_pi1.pdflink = 1

@@ -32,6 +32,7 @@ class tx_skcalendar_calendarview {
 	var $categories;
 	var $targetgroups;
 	var $organizers;
+	var $locations;
 	var $results;
 	var $calendarArray;
 	var $container;
@@ -49,13 +50,14 @@ class tx_skcalendar_calendarview {
 	* @return void
 	* @desc init stuff
 	*/
-	function tx_skcalendar_calendarview($container, $type,$conf) {
+	function tx_skcalendar_calendarview($container, $conf) {
 		if ($conf['target']) $this->targetpage = $conf['target'];
 		else $this->targetpage = $GLOBALS["TSFE"]->id;
-		$this->makelinks = $conf['makelinks'];
+		$this->makelinks = $conf['showlinks'];
+		$this->makefilters = $conf['filters'];
 
 		$this->container = $container;
-		$this->type = $type;
+		$this->type = $conf['type'];
 		$this->year = date('Y');
 		$this->holidays = array();
 		$this->events = $container->result;
@@ -144,19 +146,80 @@ class tx_skcalendar_calendarview {
 		$this->todate = $todate;
 		$this->year = date('Y',$offset);
 	}
+	
+	function prepareTypolink() {
+		$link['tx_skcalendar[offset]'] = $this->offset;
+		$link['tx_skcalendar[targetgroups]'] = $this->container->filters['targetgroups'][0];
+		$link['tx_skcalendar[categories]'] = $this->container->filters['categories'][0];
+		$link['tx_skcalendar[locations]'] = $this->container->filters['locations'][0];
+		$link['tx_skcalendar[organizers]'] = $this->container->filters['organizers'][0];
+		$link['tx_skcalendar[view]'] = $this->type;
+		$link['no_cache'] = 1; 
+		return $link;
+	}
 
 	function makeLinks() {
-	$link_arr = array ('week' => 'Wochenansicht', 'box' => 'Nächste Termine', 'month' => 'Monatsansicht');
+			$link_arr = array ('week' => 'Wochenansicht', 'month' => 'Monatsansicht', 'year' => 'Jahresansicht als PDF');
 	
-	$this->content .= '<table cellspacing=0 cellpadding=0 width=100%><tr valign=top>';
-		$link['tx_skcalendar[offset]'] = $this->offset;
-	while (list($key,$value) = each($link_arr)) {
+	$this->content .= '<table cellspacing=0 cellpadding=0 width=100%><tr><td colspan=4><b>Alternative Ansichten</b></td></tr><tr valign=top>';
+		$link= $this->prepareTypolink();
+		while (list($key,$value) = each($link_arr)) {
 
 		$link['tx_skcalendar[view]'] = $key;
 		$this->content .= '<td><a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$link) . '">'. $value .'</a></td>';
 	}
 	$this->content .= '</tr></table>';
+
 	}
+	
+	function makeFilters() {
+	$this->content .= '<br><form action="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($this->targetpage) . '" method="post"><input type=hidden name=view value=' . $this->type . '><input type=hidden name=offset value=' . $this->offset . '><table><tr><td nowrap colspan=5><b>Anzeige Filtern</b></td></tr><tr><td>';
+        // retrieve Data
+	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title','tx_skcalendar_category','NOT deleted AND NOT hidden','','title');
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->categories[] = array($id,$name);
+	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title','tx_skcalendar_location','NOT deleted AND NOT hidden','','title');
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->locations[] = array($id,$name);
+	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,name','tx_skcalendar_organizer','NOT deleted AND NOT hidden','','name');
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->organizers[] = array($id,$name);
+	$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title','tx_skcalendar_targetgroup','NOT deleted AND NOT hidden','','title');
+	while (list($id,$name) = $GLOBALS['TYPO3_DB']->sql_fetch_row($result)) $this->targetgroups[] = array($id,$name);
+	
+	reset ($this->categories);
+	if (count($this->categories)>1) {
+	$cat_sel[$this->container->filters['categories'][0]] = ' selected';
+	$this->content .= '<td><select name="tx_skcalendar[categories]"><option value="">Alle Kategorien</option>';
+	while (list(,$data) = each ($this->categories)) $this->content .= '<option value="' . $data[0] . '"'. $cat_sel [$data[0]] . '>' . $data[1] . '</option>';
+	$this->content .= '</select></td>';
+	}
+	reset ($this->locations);
+	if (count($this->locations)>1) {
+	$loc_sel[$this->container->filters['locations'][0]] = ' selected';
+	$this->content .= '<td><select name="tx_skcalendar[locations]"><option value="">Alle Veranstaltungsorte</option>';
+	while (list(,$data) = each ($this->locations)) $this->content .= '<option value="' . $data[0] . '"'. $loc_sel [$data[0]] . '>' . $data[1] . '</option>';
+	$this->content .= '</select></td>';
+	}
+	reset ($this->organizers);
+	if (count($this->organizers)>1) {
+	$org_sel[$this->container->filters['organizers'][0]] = ' selected';
+	$this->content .= '<td><select name="tx_skcalendar[organizers]"><option value="">Alle Veranstalter</option>';
+	while (list(,$data) = each ($this->organizers)) $this->content .= '<option value="' . $data[0] . '"'. $org_sel [$data[0]] . '>' . $data[1] . '</option>';
+	$this->content .= '</select></td>';
+	}
+	reset ($this->targetgroups);
+	if (count($this->targetgroups)>1) {
+	$tar_sel[$this->container->filters['targetgroups'][0]] = ' selected';
+	$this->content .= '<td><select name="tx_skcalendar[targetgroups]"><option value="">Alle Zielgruppen</option>';
+	while (list(,$data) = each ($this->targetgroups)) $this->content .= '<option value="' . $data[0] . '"'. $tar_sel [$data[0]] . '>' . $data[1] . '</option>';
+	$this->content .= '</select></td>';
+	}
+
+	// close form
+	$this->content .= '<td><input type=submit value="Anzeige Filtern"></td></tr></table></form>';
+	
+	
+	}
+	function makeNavigation() {
+}
 
 	/**
 	* @return void
@@ -195,12 +258,6 @@ class tx_skcalendar_calendarview {
 			$this->calendarArray[intval($date[1])][intval($date[2])]['events'][] = $event;
 		}
 
-	}
-	
-	function pdfLink() {
-		$pdf['tx_skcalendar[offset]'] = $this->offset;
-		$pdf['tx_skcalendar[view]'] = 'year';
-		$this->content .= '<a href="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id,$pdf) . '">Jahreskalender als PDF</a>';
 	}
 
 	function getMonthName($month) {

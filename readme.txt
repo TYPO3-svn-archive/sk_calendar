@@ -23,11 +23,10 @@ ToDo:
 - JS error when editing recurring event
 - System blows when trying to add a cat,target,organizer,location entry on a normal page Somehow the target sys-folder should be specified
 - After editing an recurring event system does not automatically return to listview ($backpath?)
-- No access to module langfile so far
 - codeoptimization wherever it is commented in the code
 - Force Category Icons to be 10x10 pixel and .gif or .jpg (I assume this can be done in the $tca)
 - Colorpicker is not picking colors
 - Although you can assign usergroups they are ignored in frontend
 - Dates > 100 seem to be a problem
 - Count of the dates only count physical amounts (bug or feature?)
-- Disable the creation of exeptions, but still show them readonly
+- Disable the creation of exeptions as item on page, but still show them readonly

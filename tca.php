@@ -568,6 +568,9 @@ $TCA["tx_skcalendar_events"] = Array (
 			"label" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.category",		
 			"config" => Array (
 				"type" => "select",
+				"items" => array (
+					Array("LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.choose_cat",0),
+					),
 				"foreign_table" => "tx_skcalendar_category",
 				"foreign_table_where" => "ORDER BY tx_skcalendar_category.uid",
 				"size" => 1,	
@@ -603,6 +606,10 @@ $TCA["tx_skcalendar_events"] = Array (
 			"label" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.organizer",		
 			"config" => Array (
 				"type" => "select",
+				"items" => array (
+					Array("LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.choose_orga",0),
+					),
+
 				"foreign_table" => "tx_skcalendar_organizer",
 				"foreign_table_where" => "ORDER BY tx_skcalendar_organizer.uid",
 				"size" => 1,	
@@ -638,6 +645,10 @@ $TCA["tx_skcalendar_events"] = Array (
 			"label" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.targetgroup",		
 			"config" => Array (
 				"type" => "select",
+				"items" => array (
+					Array("LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.choose_target",0),
+					),
+
 				"foreign_table" => "tx_skcalendar_targetgroup",
 				"foreign_table_where" => "ORDER BY tx_skcalendar_targetgroup.uid",
 				"size" => 1,	
@@ -673,6 +684,10 @@ $TCA["tx_skcalendar_events"] = Array (
 			"label" => "LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.location",		
 			"config" => Array (
 				"type" => "select",
+				"items" => array (
+					Array("LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.choose_loc",0),
+					),
+
 				"foreign_table" => "tx_skcalendar_location",
 				"foreign_table_where" => "ORDER BY tx_skcalendar_location.uid",
 				"size" => 1,	

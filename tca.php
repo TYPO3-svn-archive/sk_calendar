@@ -143,6 +143,7 @@ $TCA["tx_skcalendar_organizer"] = Array (
 			"config" => Array (
 				"type" => "input",	
 				"size" => "30",
+				"eval" => "required",
 			)
 		),
 		"link" => Array (		

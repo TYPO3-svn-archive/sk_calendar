@@ -1,10 +1,18 @@
 <?php
 if (!defined ("TYPO3_MODE")) 	die ("Access denied.");
  
- ## Extending TypoScript from static template uid=43 to set up userdefined tag:
+// Extending TypoScript from static template uid=43 to set up userdefined tag:
 t3lib_extMgm::addTypoScript($_EXTKEY,"editorcfg","
 	tt_content.CSS_editor.ch.tx_skcalendar_pi1 = < plugin.tx_skcalendar_pi1.CSS_editor
 ",43);
+// save'and'new buttons
+t3lib_extMgm::addUserTSConfig('
+	options.saveDocNew.tx_skcalendar_category=1
+	options.saveDocNew.tx_skcalendar_organizer=1
+	options.saveDocNew.tx_skcalendar_location=1
+	options.saveDocNew.tx_skcalendar_targetgroup=1
+	options.saveDocNew.tx_skcalendar_events=1
+');
 // Alters Listview adding ghost copies
 $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['typo3/class.db_list_extra.inc'] = t3lib_extMgm::extPath($_EXTKEY)."class.ux_localrecordlist.php";
 

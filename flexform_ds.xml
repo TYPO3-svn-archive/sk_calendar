@@ -157,23 +157,60 @@
 			</listmonths>
 </el>  </ROOT>
     </s_view>
-    <s_warning>
+    <s_filters>
 	  <ROOT>
 		<TCEforms>
-			<sheetTitle>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.sheet_warning</sheetTitle>
+			<sheetTitle>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.sheet_filters</sheetTitle>
 		</TCEforms>
 		<type>array</type>
 		<el>
-				<filters>
+				<showsearch>
 				<TCEforms>
-				<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.warning_filters</label>
+				<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.filters_showsearch</label>
 				<config>
 					<type>check</type>
+					<default>1</default>
 				</config>
 				</TCEforms>
-			</filters>
+			</showsearch>
+				<showcat>
+				<TCEforms>
+				<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.filters_showcat</label>
+				<config>
+					<type>check</type>
+					<default>1</default>
+				</config>
+				</TCEforms>
+			</showcat>
+				<showloc>
+				<TCEforms>
+				<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.filters_showloc</label>
+				<config>
+					<type>check</type>
+					<default>1</default>
+				</config>
+				</TCEforms>
+			</showloc>
+				<showorg>
+				<TCEforms>
+				<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.filters_showorg</label>
+				<config>
+					<type>check</type>
+					<default>1</default>
+				</config>
+				</TCEforms>
+			</showorg>
+				<showtar>
+				<TCEforms>
+				<label>LLL:EXT:sk_calendar/locallang_db.php:tt_content.pi_flexform.filters_showtar</label>
+				<config>
+					<type>check</type>
+					<default>1</default>
+				</config>
+				</TCEforms>
+			</showtar>
 	</el>
 	  </ROOT>
-    </s_warning>
+    </s_filters>
   </sheets>
 </T3DataStructure>

@@ -106,16 +106,12 @@ return $return;
 
 		function makeFilters() {
 		$this->content .= '<br><form action="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id) . '" method="post"><input type=hidden name=tx_skcalendar_pi1[view] value=' . $this->view . '><input type=hidden name=no_cache value=1><input type=hidden name=tx_skcalendar_pi1[offset] value=' . $this->offset . '><b>' . $this->pi_getLL('filter_view') . '</b></br>';
-		$this->content .= '<table class=calendar_sword><tr valign=middle><td>' . $this->pi_getLL('searchword') . '</td><td><input type=text name=tx_skcalendar_pi1[sword] value="' . $this->container->filters['sword'] . '"></td></tr><tr></table>';
+		if ($this->conf['filters']['showsearch']) $this->content .= '<table class=calendar_sword><tr valign=middle><td>' . $this->pi_getLL('searchword') . '</td><td><input type=text name=tx_skcalendar_pi1[sword] value="' . $this->container->filters['sword'] . '"></td></tr><tr></table>';
+		
 			$this->content .= '<table class=calendar_filters>';
 			// dropdowns
-			if ((count($this->categories)>1) || (count($this->locations)>1) || (count($this->organizers)>1) || (count($this->targetgroups)>1)) {
-				
-
-
-
-				reset ($this->categories);
-				if (count($this->categories)>1) {
+			reset ($this->categories);
+				if (count($this->categories)>1 && $this->conf['filters']['showcat']) {
 					$cat_sel[$this->container->filters['categories'][0]] = ' selected';
 					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_cat') . '</td><td><select name="tx_skcalendar_pi1[categories]"><option value="">' . $this->pi_getLL('all_cat') . '</option>';
 					while (list(,$data) = each ($this->categories)) $this->content .= '<option value="' . $data['uid'] . '"'. $cat_sel [$data['uid']] . '>' . $data['title'] . '</option>';
@@ -123,30 +119,26 @@ return $return;
 					}
 
 				reset ($this->locations);
-				if (count($this->locations)>1) {
+				if (count($this->locations)>1 && $this->conf['filters']['showloc']) {
 					$loc_sel[$this->container->filters['locations'][0]] = ' selected';
 					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_loc') . '</td><td><select name="tx_skcalendar_pi1[locations]"><option value="">' . $this->pi_getLL('all_location') . '</option>';
 					while (list(,$data) = each ($this->locations)) $this->content .= '<option value="' . $data['uid'] . '"'. $loc_sel[$data['uid']] . '>' . $data['title'] . '</option>';
 					$this->content .= '</select></td></tr>';
 				}
 				reset ($this->organizers);
-				if (count($this->organizers)>1) {
+				if (count($this->organizers)>1 && $this->conf['filters']['showorg']) {
 					$org_sel[$this->container->filters['organizers'][0]] = ' selected';
 					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_org') . '</td><td><select name="tx_skcalendar_pi1[organizers]"><option value="">' . $this->pi_getLL('all_organizer') . '</option>';
 					while (list(,$data) = each ($this->organizers)) $this->content .= '<option value="' . $data['uid'] . '"'. $org_sel[$data['uid']] . '>' . $data['name'] . '</option>';
 					$this->content .= '</select></td></tr>';
 				}
 				reset ($this->targetgroups);
-				if (count($this->targetgroups)>1) {
+				if (count($this->targetgroups)>1 && $this->conf['filters']['showtar']) {
 					$tar_sel[$this->container->filters['targetgroups'][0]] = ' selected';
 					$this->content .= '<tr valign=middle><td>' . $this->pi_getLL('choose_tar') . '</td><td><select name="tx_skcalendar_pi1[targetgroups]"><option value="">' . $this->pi_getLL('all_targetgroup') . '</option>';
 					while (list(,$data) = each ($this->targetgroups)) $this->content .= '<option value="' . $data['uid'] . '"'. $tar_sel[$data['uid']] . '>' . $data['title'] . '</option>';
 					$this->content .= '</select></td></tr>';
 				}
-				
-				
-			}
-			elseif ($this->conf['warning']['filter']) $this->content .= '<tr valign=top><td>' . $this->pi_getLL('filter_error') . '</td></tr>';
 			if ($this->conf['list']['filter_month']) {
 						
 					$month_sel[$this->offset] = ' selected';

@@ -63,8 +63,12 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 				'limit' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'listrange','s_view'),
 				'filter_month' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'listmonths','s_view'),
 				),
-			'warning' => array(
-				'filters' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'filters','s_warning'),
+			'filters' => array(
+				'showsearch' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showsearch','s_filters'),
+				'showcat' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showcat','s_filters'),
+				'showloc' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showloc','s_filters'),
+				'showorg' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showorg','s_filters'),
+				'showtar' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showtar','s_filters'),
 				),
 		);
 		
@@ -83,8 +87,16 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		else $this->conf['general']['showfilters'] =1;
 		if ($this->conf['general']['showlinks']) $this->conf['general']['showlinks'] = 0;
 		else $this->conf['general']['showlinks'] =1;		
-		if ($this->conf['warning']['filters']) $this->conf['warning']['filters'] = 0;
-		else $this->conf['warning']['filters'] =1;				
+		if ($this->conf['filters']['showsearch']) $this->conf['filters']['showsearch'] = 0;
+		else $this->conf['filters']['showsearch'] =1;			
+		if ($this->conf['filters']['showcat']) $this->conf['filters']['showcat'] = 0;
+		else $this->conf['filters']['showcat'] =1;			
+		if ($this->conf['filters']['showloc']) $this->conf['filters']['showloc'] = 0;
+		else $this->conf['filters']['showloc'] =1;			
+		if ($this->conf['filters']['showorg']) $this->conf['filters']['showorg'] = 0;
+		else $this->conf['filters']['showorg'] =1;			
+		if ($this->conf['filters']['showtar']) $this->conf['filters']['showtar'] = 0;
+		else $this->conf['filters']['showtar'] =1;			
 
 		$this->conf['userFunc'] = $conf['userFunc'];
 				

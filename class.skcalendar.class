@@ -12,7 +12,7 @@ class sk_calendar {
 	var $allorganizers;
 	var $locations;
 	var $organizer;
-	var $events;
+	var $events = Array();
 	var $calendar;
 	var $holidays;
 	var $year;

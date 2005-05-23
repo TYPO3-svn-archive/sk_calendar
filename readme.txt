@@ -50,6 +50,14 @@ History:
 - fix VCE-Editmode
 - minor fixes
 
+04.04.2005 0.2.1
+- Fixed Problem with PDF parsing
+- Fix Sorting - thanks Rainer
+- Fixed amount of weeks in month-view
+- Filters now switchable, got rid of warning-panel in FF
+- German Documentation (!)
+- minor fixes regarding 3.7 compatibility
+
 To Do:
 -------------------------------------------------------------------
 - Duration is not a field with content. Trying to show Duration in extended view (list) gives an error, so do not do that
@@ -63,13 +71,10 @@ To Do:
 - Count of the dates only count physical amounts (bug or feature?)
 - Multiple Select
 - yearview should not base on htmlview since it generates a pdf
+- more PDF views (3 Months a page, etc.)
 - Additional Holidays via TS
 - Why is TStamp of exeptionsdates not decoded? ($TCA Someplace)
 - Get rid of Errors in EM-Overview
 - DBAL-Functions rather than MYSQL-Calls (sorry for that)
-- Most Anoying Bug: 
-RTE doesn't work default. For some reason (maybe someone can provide a solution?) the settings in ext_typoscript_setup.txt are no longer included. How can this be debugged? Anybody?
-Until then you will have to add
-plugin.tx_skcalendar_pi1.general.rtefield_stdWrap.parseFunc < tt_content.text.20.parseFunc
-to your Template setup-field manualy.
-
+- Extend Organizer & Location with more fields
+- Make events searchable by indexed_search

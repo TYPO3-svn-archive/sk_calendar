@@ -43,7 +43,12 @@ class tx_skcalendar_boxview extends tx_skcalendar_htmlview {
 			if ($this->calendarArray[$m][$d]['events']) {	
 				while (list(,$data) = each($this->calendarArray[$m][$d]['events'])) {
 					unset($linktext);
-					if ($data['start_time']) $linktext = strftime('%H:%M',$data['start_time']) . ' '; 
+					if ($data['start_time']) {
+							$hours = floor($data['start_time']/3600);
+							$minutes = ($data['start_time']%3600)/60; // modulus
+							if ($minutes < 10) $minutes = '0' . $minutes;
+							$linktext =  $hours . ':' . $minutes . ' ';
+					}
 					$linktext .= $data['title'];
 					
 					$temp['linktext'] = $linktext;

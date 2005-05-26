@@ -5,6 +5,7 @@ Here you have a snapshot of the calendar, that means that some features might no
 Special Thanks to:
 Jan Wischnat - for bugging me with BE-Conformity ("There has to be a way to do this with normal BE-Functions"). 
 Sven Wilhelm - for explaining the concept of abstract PHP-Classes to me by using colored candy as an example.
+Rainer Sudhölter - for testing and writing the german Documentation
 Nils Teller - for having always an open ear / chatwindow for imminent problems.
 All Sponsors that helped developing sk_calendar
 All People testing and giving feedback to the calendar
@@ -21,13 +22,18 @@ Tettnang, Germany
 
 </DEDICATION>
 
+Licences:
+-------------------------------------------------------------------
+sk_calendar is under the same licence like TYPO3 - of cause. However, the PDF-Functions are provieded by FPDF (www.fpdf.org) which is licenced as Freeware. 
+The PDF-Template-function is provided by fpdi (http://fpdi.setasign.de/) which is licenced under the ASL 2.0.
+
 History:
 -------------------------------------------------------------------
 19.10.2004
 - First release to the Public
 
 28.10.2004 0.1.0
-- First Upload to TER after raising the uploadquota (thanks robert)
+- First Upload to TER after raising the uploadquota (thanks Robert)
 
 09.11.2004 0.1.1
 - Fix display of times
@@ -38,7 +44,7 @@ History:
 - fix in filter (organizer now work)
 - finish and dutch translation
 
-01.02.2004
+01.02.2005 0.2.0
 - Switchable BE-Modes (data from same page or specified sysfolder)
 - smart TEMPLATE-SYSTEM (!)
 - Flexforms
@@ -57,6 +63,10 @@ History:
 - Filters now switchable, got rid of warning-panel in FF
 - German Documentation (!)
 - minor fixes regarding 3.7 compatibility
+
+xx.xx.xxxx 0.2.2
+- Fixed default sorting in listview/archiveview
+- Issue with Time in boxview fixed.
 
 To Do:
 -------------------------------------------------------------------

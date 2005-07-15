@@ -99,22 +99,15 @@ class tx_skcalendar_selection {
 	*/
 	function sortItems() {
 		// after having included recurring events, the sort order is broken
-		// mutisort for array is needed
-		// sorting of daily events based on start_time
 		if (is_array($this->result)) {
- 		$mydata = array();
- 		$mystart = array();
-		$mydata = $this->result;
- 		foreach ($mydata as $key => $row) {
-    		$mystart[$key]  = $row['start_time'];
+ 		foreach ($this->result as $key => $row) {
+ 		// create unique sortfield
+    		$clean_arr[$row['date'] . $row['start_time'] . $row['uid']]  = $row;
  		}
- 		array_multisort($mystart, SORT_ASC,$mydata);
- 
- 		$this->result = $mydata;
-		 unset ($mydata);
-
+ 		$this->result = $clean_arr;
 		}
 		}
+	}
 }
 
 if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/sk_calendar/pi1/class.tx_skcalendar_selection.php"])	{

@@ -67,6 +67,7 @@ History:
 xx.xx.xxxx 0.2.2
 - Fixed default sorting in listview/archiveview
 - Issue with Time in boxview fixed.
+- Bug in sorting fixed (selection class)
 
 To Do:
 -------------------------------------------------------------------

@@ -280,7 +280,7 @@ $TCA["tx_skcalendar_location"] = Array (
 				"type" => "input",	
 				"size" => "5",	
 				"max" => "5",	
-				"eval" => "int,nospace",
+				"eval" => "trim",
 			)
 		),
 		"city" => Array (		
@@ -588,7 +588,7 @@ $TCA["tx_skcalendar_events"] = Array (
 					Array("LLL:EXT:sk_calendar/locallang_db.php:tx_skcalendar_events.choose_cat",0),
 					),
 				"foreign_table" => "tx_skcalendar_category",
-				"foreign_table_where" => $fTableWhere['cat'] . "ORDER BY tx_skcalendar_category.uid",
+				"foreign_table_where" => $fTableWhere['cat'] . "ORDER BY tx_skcalendar_category.title",
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,
@@ -627,7 +627,7 @@ $TCA["tx_skcalendar_events"] = Array (
 					),
 
 				"foreign_table" => "tx_skcalendar_organizer",
-				"foreign_table_where" => $fTableWhere['org'] . "ORDER BY tx_skcalendar_organizer.uid",
+				"foreign_table_where" => $fTableWhere['org'] . "ORDER BY tx_skcalendar_organizer.name",
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,
@@ -666,7 +666,7 @@ $TCA["tx_skcalendar_events"] = Array (
 					),
 
 				"foreign_table" => "tx_skcalendar_targetgroup",
-				"foreign_table_where" => $fTableWhere['tar'] . "ORDER BY tx_skcalendar_targetgroup.uid",
+				"foreign_table_where" => $fTableWhere['tar'] . "ORDER BY tx_skcalendar_targetgroup.title",
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,
@@ -705,7 +705,7 @@ $TCA["tx_skcalendar_events"] = Array (
 					),
 
 				"foreign_table" => "tx_skcalendar_location",
-				"foreign_table_where" => $fTableWhere['loc'] . "ORDER BY tx_skcalendar_location.uid",
+				"foreign_table_where" => $fTableWhere['loc'] . "ORDER BY tx_skcalendar_location.title",
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,

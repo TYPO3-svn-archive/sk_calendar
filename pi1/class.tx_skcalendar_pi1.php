@@ -41,6 +41,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 	* This is only an example output of the data, so other ways of displaying data will be developed on demand.
 	*/
 	function main($content,$conf)	{
+		$GLOBALS["TSFE"]->set_no_cache();
 	
 		$this->pi_initPIflexForm();
 		$this->conf = ARRAY(

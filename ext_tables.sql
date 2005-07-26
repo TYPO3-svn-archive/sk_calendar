@@ -59,7 +59,7 @@ CREATE TABLE tx_skcalendar_location (
 	title varchar(50) DEFAULT '' NOT NULL,
 	link tinytext NOT NULL,
 	street tinytext NOT NULL,
-	zip int(11) DEFAULT '0' NOT NULL,
+	zip varchar(5) DEFAULT '' NOT NULL,
 	city tinytext NOT NULL,
 	
 	PRIMARY KEY (uid),

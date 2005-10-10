@@ -67,6 +67,7 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			'filters' => array(
 				'showsearch' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showsearch','s_filters'),
 				'showcat' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showcat','s_filters'),
+				'showdate' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showdate','s_filters'),
 				'showloc' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showloc','s_filters'),
 				'showorg' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showorg','s_filters'),
 				'showtar' => $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'showtar','s_filters'),
@@ -92,6 +93,8 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		else $this->conf['filters']['showsearch'] =1;			
 		if ($this->conf['filters']['showcat']) $this->conf['filters']['showcat'] = 0;
 		else $this->conf['filters']['showcat'] =1;			
+		if ($this->conf['filters']['showdate']) $this->conf['filters']['showdate'] = 0;
+		else $this->conf['filters']['showdate'] =1;			
 		if ($this->conf['filters']['showloc']) $this->conf['filters']['showloc'] = 0;
 		else $this->conf['filters']['showloc'] =1;			
 		if ($this->conf['filters']['showorg']) $this->conf['filters']['showorg'] = 0;
@@ -122,6 +125,30 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		
 		// Override with userinputs
 		$filters['sword'] = $this->piVars['sword'];
+		
+		// datefilters
+		if ($this->piVars['datefrom']) {
+			$filters['datefrom'] = $this->piVars['datefrom'];
+			$filters['startdate'] = $this->transformToTimestamp($this->piVars['datefrom']);
+		}
+		if ($this->piVars['dateto']) {
+			$filters['dateto'] = $this->piVars['dateto'];
+			$filters['enddate'] = $this->transformToTimestamp($this->piVars['dateto']);
+		}
+		
+		// swap around
+		if (($filters['startdate'] > $filters['enddate']) && $filters['enddate']) {
+			$filters['datefrom'] = $this->piVars['dateto'];
+			$filters['startdate'] = $this->transformToTimestamp($this->piVars['dateto']);
+			$filters['dateto'] = $this->piVars['datefrom'];
+			$filters['enddate'] = $this->transformToTimestamp($this->piVars['datefrom']);
+		}
+	
+		
+		
+		
+
+		// other filters
 		if ($this->piVars['targetgroups']) $filters['targetgroups'][0] = intval($this->piVars['targetgroups']);
 		if ($this->piVars['categories']) $filters['categories'][0] = intval($this->piVars['categories']);
 		if ($this->piVars['locations']) $filters['locations'][0] = intval($this->piVars['locations']);
@@ -133,18 +160,18 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		switch ($this->conf['general']['view']) {
 			case 'week':
 			$offset = $offset - date('w',$offset) * 86400 + 86400; // we like mondays
-			$filters['startdate'] = $offset;
-			$filters['enddate'] = $offset + 604800;
+			if (!$filters['startdate']) $filters['startdate'] = $offset;
+			if (!$filters['enddate']) $filters['enddate'] = $offset + 604800;
 			break;
 
 			case 'box';
-			$filters['startdate'] = $offset;
-			$filters['enddate'] = $offset + ($this->conf['box']['range']*86400); // default one week
+			if (!$filters['startdate']) $filters['startdate'] = $offset;
+			if (!$filters['enddate']) $filters['enddate'] = $offset + ($this->conf['box']['range']*86400); // default one week
 			break;
 
 			case 'day': // not yet implemented
-			$filters['startdate'] = $offset;
-			$filters['enddate'] = $offset + 86400;
+			if (!$filters['startdate']) $filters['startdate'] = $offset;
+			if (!$filters['enddate']) $filters['enddate'] = $offset + 86400;
 			break;
 
 			case 'month':
@@ -152,16 +179,16 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 			$offset_temp = explode('-',$offset_temp);
 			$start = mktime(0,0,0,$offset_temp[0],1,$offset_temp[2]);
 			$end = mktime(0,0,0,$offset_temp[0],31,$offset_temp[2]);
-			$filters['startdate'] = $start;
-			$filters['enddate'] = $end;
+			if (!$filters['startdate']) $filters['startdate'] = $start;
+			if (!$filters['enddate']) $filters['enddate'] = $end;
 			break;
 
 			case 'year':
 			$offset_temp = date('Y',$offset);
 			$start = mktime(0,0,0,1,1,$offset_temp);
 			$end = mktime(23,59,59,12,31,$offset_temp);
-			$filters['startdate'] = $start;
-			$filters['enddate'] = $end;
+			if (!$filters['startdate']) $filters['startdate'] = $start;
+			if (!$filters['enddate']) $filters['enddate'] = $end;
 			break;
 
 			case 'detail':
@@ -179,10 +206,10 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 				$offset = $filters['monthfilter'];
 			}
 			else {
-				$filters['startdate'] = $offset;
+				if (!$filters['startdate']) $filters['startdate'] = $offset;
 				$offset_temp = date('m-d-Y',$offset);
 				$offset_temp = explode('-',$offset_temp);
-				$filters['enddate'] = mktime(0,0,0,$offset_temp[0],$offset_temp[1],$offset_temp[2]+5); // 5 years should result enough entries for the list. Cannot select unlimited because of possible infinite recurring events
+				if (!$filters['enddate']) $filters['enddate'] = mktime(0,0,0,$offset_temp[0],$offset_temp[1],$offset_temp[2]+5); // 5 years should result enough entries for the list. Cannot select unlimited because of possible infinite recurring events
 			}
 			break;
 			
@@ -195,9 +222,9 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 				$offset = $filters['monthfilter'];
 			}
 			else {
-				$filters['startdate'] = 1; // show us everything (0 would disable filter)
+				if (!$filters['startdate']) $filters['startdate'] = 1; // show us everything (0 would disable filter)
 				$offset_temp = date('m-d-Y');
-				$filters['enddate'] = mktime(0,0,0)-1; // ... until not quite today
+				if (!$filters['enddate']) $filters['enddate'] = mktime(0,0,0)-1; // ... until not quite today
 				}
 			break;
 
@@ -260,6 +287,15 @@ class tx_skcalendar_pi1 extends tslib_pibase {
 		$calendar->parseCalendar();
 
 		return $this->pi_wrapInBaseClass($calendar->content);
+	}
+	
+	function transformToTimestamp($date) {
+			if($date) {
+ 		$date = explode('.',$date);
+ 		if (!$date[2]) $date[2] = date('Y',$this->conf['offset']);
+ 		$date = mktime(0,0,0,$date[1],$date[0],$date[2]);
+ 		}
+ 		return $date;
 	}
 }
 

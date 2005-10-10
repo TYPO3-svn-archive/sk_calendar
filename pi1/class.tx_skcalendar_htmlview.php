@@ -59,6 +59,8 @@ return $return;
 
 	function prepareTypolink() {
 		$link['tx_skcalendar_pi1[offset]'] = $this->offset;
+		$link['tx_skcalendar_pi1[datefrom]'] = $this->container->filters['datefrom'];
+		$link['tx_skcalendar_pi1[dateto]'] = $this->container->filters['dateto'];
 		$link['tx_skcalendar_pi1[targetgroups]'] = $this->container->filters['targetgroups'][0];
 		$link['tx_skcalendar_pi1[categories]'] = $this->container->filters['categories'][0];
 		$link['tx_skcalendar_pi1[locations]'] = $this->container->filters['locations'][0];
@@ -97,6 +99,7 @@ return $return;
 		function makeFilters() {
 		$this->content .= '<br><form action="' . $GLOBALS["TSFE"]->cObj->getTypoLink_URL($GLOBALS["TSFE"]->id) . '" method="post"><input type=hidden name=tx_skcalendar_pi1[view] value=' . $this->view . '><input type=hidden name=no_cache value=1><input type=hidden name=tx_skcalendar_pi1[offset] value=' . $this->offset . '><b>' . $this->pi_getLL('filter_view') . '</b></br>';
 		if ($this->conf['filters']['showsearch']) $this->content .= '<table class=calendar_sword><tr valign=middle><td>' . $this->pi_getLL('searchword') . '</td><td><input type=text name=tx_skcalendar_pi1[sword] value="' . $this->container->filters['sword'] . '"></td></tr><tr></table>';
+		if ($this->conf['filters']['showdate']) $this->content .= '<table class=calendar_dateselect><tr valign=middle><td>' . $this->pi_getLL('dateselect') . '</td><td><input type=text name=tx_skcalendar_pi1[datefrom] value="' . $this->container->filters['datefrom'] . '" size=10> - <input type=text name=tx_skcalendar_pi1[dateto] value="' . $this->container->filters['dateto'] . '" size=10></td></tr><tr></table>';
 		
 			$this->content .= '<table class=calendar_filters>';
 			// dropdowns

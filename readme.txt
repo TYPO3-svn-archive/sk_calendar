@@ -69,6 +69,7 @@ xx.xx.xxxx 0.2.2
 - Issue with Time in boxview fixed.
 - Bug in sorting fixed (selection class)
 - Bug in locations (zip as INT, zt zt zt...)
+- Added Filter for Times
 
 To Do:
 -------------------------------------------------------------------
